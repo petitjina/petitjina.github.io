@@ -1,0 +1,104 @@
+---
+title: "Java 기초"
+layout: post
+date: 2022.05.17
+tag:
+- Java
+- Algorithm
+- Back-end
+headerImage: true
+projects: true
+hidden: true 
+category: project
+author: Jina Kim
+externalLink: false
+---
+
+## ASCII Code
+![](https://velog.velcdn.com/images/wlsk124/post/173db9b7-c9cd-4fcc-bd13-6f3e581c103f/image.png)
+
+[그림 출처](https://wayhome25.github.io/cs/2017/04/05/cs-06/)
+### 문제  
+- 문자(char) 하나를 입력받아 알맞은 숫자(int)를 리턴  
+- 숫자(int) 하나를 입력받아 알맞은 문자(char)를 리턴   
+
+### 풀이 1  
+```java
+public class Blogging {
+	public int charToint(char character) {
+    int result;
+    result = character - '0';
+    return result; 
+    }
+ }
+```  
+변수 character에 9라는 문자를 넣을 경우 -> ``` char character = '9' ```  
+문자 '9'는 아스키 코드(ASCII)에서 정수 57을 의미.  
+문자 '0'은 아스키 코드(ASCII)에서 정수 48을 의미.  
+result = 57 - 48  // result = 9(성립)  
+
+다른 문자 '5'를 character에 넣을 경우 -> '5'는 53을 의미.  
+result = 53 - 48 // result = 5(성립)
+
+### 풀이 2  
+```java
+public class Blogging {
+	public char charToint(int num) {
+    char result;
+    result = (char) (num + '0');
+    return result;
+    }
+]
+```  
+위의 풀이 1과 같이 아스키 코드를 이용해 문제 해결.  
+
+**주의할 점: `num + '0'` 은 문자가 아닌 정수로 인식  
+-> 정수를 문자로 바꿔주기 위해 `(char)`을 입력**   
+
+-----
+## Java Math object  
+### 문제  
+- 두 단어의 길이의 평균을 내림해서 리턴  
+(int타입 리턴)
+
+### 풀이  
+```java
+public class Blogging {
+	public int AverageLength(String word1, String word2) {
+    return (int) Math.floor((word1.length() + word2.length())/2);  
+	}
+}
+```  
+문자열의 길이를 알려주는 메서드 -> `변수명.length()`   
+Math 메서드 중 내림(버림) 시켜주는 메서드 -> `Math.floor()`  
+
+**boolean값은 int값 보다 데이터가 크기 때문에 down-casted** `(int) 사용`  
+
+-----
+## String 비교
+### 문제  
+- 두 개의 문자열을 입력받아 대소문자를 구분하지 않고 서로 같은지 리턴  
+(boolean타입 리턴)  
+
+### 풀이  
+```java
+public class Blogging {
+	public boolean CompareString(String str1, String str2) {
+    return str1.toUpperCase().equals(str2.toUpperCase());
+    }
+}
+```  
+대문자 혹은 소문자로 두 문자열을 통일 시키기  
+-> `toUpperCase()` 메서드(대문자 변환) 혹은 `toLowerCase` 메서드(소문자 변환)  
+
+문자열 String을 비교하기 위한 메서드 `.equals`를 사용   
+
+**나의 오답**   
+
+```
+	return boolean (toUpperCase(str1) == toUpperCase(str2)) = true
+```
+문제점  
+boolean타입으로 리턴에 집중, return 방법을 이해 못 함.   
+toUpperCase() 메서드 사용법을 몰랐다.  
+잘못된 연산자 사용(비교연산자는 문자열에는 사용 불가)  

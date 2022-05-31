@@ -1,0 +1,152 @@
+---
+title: "조건문"
+layout: post
+date: 2022.05.31
+tag:
+- Java
+- Algorithm
+- Back-end
+headerImage: true
+projects: true
+hidden: true 
+category: project
+author: Jina Kim
+externalLink: false
+---
+
+## if(boolean)
+### 문제
+- 두 수와  기호를 입력받아 계산기 작동  
+(정해지지 않은 기호는 0 리턴)  
+
+### 풀이
+```java
+public class Blogging {
+	public int calculatorTest(int num1, int num2, char operator) {
+	if(operator == '+'){
+		return num1 + num2;
+    } if(operator == '-'){
+		return num1 - num2;
+    } if(operator == '*'){
+		return num1 * num2;
+    } if(operator == '/'){
+		return num1 / num2;
+    } if(operator == '%'){
+		return num1 % num2;
+    } else {
+    	return 0;
+    }
+  }
+}
+```
+**나의 오답**   
+```
+if('+'){
+		return num1 + num2;
+    }
+```
+문제점   
+if절 사용 미숙  
+-> if(무조건 boolean값 입력) { }  
+값을 비교할 때는 비교하는 두 값의 타입이 일치해야 한다. 
+
+-----
+## Grade (with + -)  
+### 문제   
+- 점수를 입력받아 등급을 리턴   
+등급의 최고 점수보다 7점 이하 = "-"리턴 (단, 93점은 A 리턴)   
+등급의 최저 점수보다 8점 이상 = "+"리턴 (F등급은 +,- 없음)   
+
+### 풀이  
+```java
+public class Blogging {
+	public String gradeWithpm(int score) {
+    String grade;
+    
+    if(score > 100 || score < 0) {
+     return "INVALID SCORE";
+   } if(score == 100) {
+     return "A+"
+   } if(score >= 90) {
+     grade = "A";
+   } else if(score >= 80) {
+     grade = "B"
+   } else if(score >= 70) {
+     grade = "c"
+   } else if(score >= 60) {
+     grade = "D"
+   } else {
+     grade = "F" 
+   }
+   	if (!grade.equals("F")) {
+	int extra = score % 10;
+	if (extra <= 2) {
+		grade = grade + "-";
+   } else if (extra >= 8) {
+	  grade = grade + "+";
+	 }
+   }  return grade;
+  }
+}
+```
+점수에 +와 -를 담아주기 위해서 새로운 문자열 grade를 선언    
+연산자 !는 아니다를 의미 -> !grade.equals("F") = grade가 F와 다를때   
+점수의 최고 점수 = n9점, 최저 점수 = n0  
+
+-----
+## Math.pow()  
+### 문제  
+- 세 변을 입력받아 직각삼각형인지 여부를 리턴   
+
+### 풀이  
+```java
+public class Blogging {
+	public boolean Pythagorean(int side1, int side2, int side3) {
+    if(side1 > side2 && side1 > side3) {
+     if(Math.pow(side1,2) == Math.pow(side2,2) + Math.pow(side3,2)) {
+     return true;
+    } return false;
+  } if(side2 > side1 && side2 > side3) {
+      if(Math.pow(side2,2) == Math.pow(side1,2) + Math.pow(side3,2)) {
+     return true;
+    } return false;
+  } if(side3 > side1 && side3 > side2) {
+     if(Math.pow(side3,2) == Math.pow(side1,2) + Math.pow(side2,2)) {
+     return true;
+    } return false;
+  } return false;
+}
+}
+```
+`Math.pow() 메서드` 사용법   
+
+ Math.pow(밑, 지수)  
+ -> 밑과 지수를 입력해 제곱값을 구하는 메서드  
+
+
+-----
+## Clock
+### 문제
+- 시간(시, 분, 초)을 입력받아 1초 후 시간을 메시지로 리턴  
+(1초 뒤에 "hour"시 "min"분 "sec"초 입니다.)  
+
+### 풀이
+```java
+public class Blogging {
+	public String clockTest(int hour, int min, int sec) {
+    if(sec == 59) {
+    min += 1;
+    sec = 0;
+   } else {
+  	sec += 1;
+   } if(min == 60) {
+  	hour += 1;
+    min = 0;
+   } if(hour == 24) {
+  	hour = 0;
+   } return "1초 뒤에 " + hour"시 " + min"분 " + sec"초 입니다."
+  }
+}
+```
+
+**주의할 점: 59초에서 1분으로 넘어가고 60분에서 1시간으로 넘어간다.**  

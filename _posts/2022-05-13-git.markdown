@@ -1,0 +1,188 @@
+---
+title: "Git"
+layout: post
+date: 2022.05.13
+headerImage: false
+tag:
+- Concept
+- Back-end
+category: study
+author: Jina Kim
+---
+
+## Git
+>**버전 관리 시스템(Version Control System)**  
+    : 이전에 작성한 내용을 보존해 주는 시스템  
+**Git**  
+    : 버전 관리 시스템 중 가장 많이 쓰이는 도구  
+    코드를 효율적으로 관리하기 위해서 개발된 ‘분산형 버전 관리 시스템’  
+
+### Git 장점
+1. 파일이 변경되면 변경 이력을 저장 가능.
+2. 이전 버전으로 돌아갈 수 있다.
+3. 어떤 변경사항이 발생했는지 알아보기 쉽다.
+4. 협업하기 좋다.
+5. 백업용.
+
+>**Github**
+     : Git Repository를 관리할 수 있는 클라우드 기반 서비스.  
+개발자들의 SNS, Code Review 등을 통해 협업 가능,   
+오픈 소스 프로젝트들이 GitHub로부터 호스팅되고, 누구나 자유롭게 기여 가능.  
+- 오픈 소스(소스 코드가 공개된 소프트웨어)   
+: 누구나 자유롭게 해당 기능을 추가하고 개선할 수 있고 이 작업을 기여하다(contribute)라고 한다.     
+
+###  Git repository
+: Git으로 관리되는 내 폴더  
+
+**Remote Repository**
+    : 원격 온라인 서버 상의 저장소, 여러사람 공유 가능  
+
+**Local Repository**
+    : 내 컴퓨터의 저장소, 개인 전용 저장소  
+    남의 Remote Repository의 소스 코드를 내 Local Repository로 가지고 올 수 있다.   
+    
+### Git 환경설정
+
+**사용자 정보**
+    : Git을 설치하면 먼저, 사용자 이름과 이메일 주소를 설정.  
+    기록된 사용자 이름과 메일 주소를 앞으로 진행할 Git 커밋 내역에 기록.  
+
+```
+ git config --global user.name "나의 사용자 이름"
+ git config --global user.email "내 이메일 주소"
+```
+여러 프로젝트를 진행하고 있어서, 프로젝트마다 다른 사용자 이름과 이메일 주소를 사용하고 싶으면 `-global` 옵션을 빼고 명령.
+
+**에디터**
+
+``` 
+ git config --global core.editor nano
+```
+Git에서 커밋 메시지를 기록할 때, merge commit 확인 메시지가 나올 때 사용.
+
+------
+## ssh 등록
+
+>ssh(Secure Shell)  
+    : 보안이 강화된 shell 접속  
+    다른 PC에 접속하거나 요청할 때 사용  
+
+**1. ssh 키 생성**   
+    : 비대칭키로 구성, ssh 키 페어(쌍)을 생성.  
+
+```
+ssh-keygen
+```
+![](https://velog.velcdn.com/images/wlsk124/post/b266e4b1-ed4c-4802-830d-875e6a9057c6/image.png)
+
+ssh-keygen 명령어는 경로 ~/.ssh./ 에 두 파일 id_rsa 와 id_rsa.pub 를 생성  
+~~(나는 이미 존재해서 따로 설치X)~~   
+id_rsa.pub - 누구에게나 공개해도 되는 공개키(Public Key)   
+id_rsa - 공개되면 안 되는 개인키(Private Key), 비밀키(Secret Key)  
+
+
+**2. 공개키(Public Key) 복사**  
+```
+cat ~/.ssh/id_rsa.pub
+```
+![](https://velog.velcdn.com/images/wlsk124/post/a525009e-2696-45c2-b14b-78dbad8b617d/image.png)
+
+**3. Github에 공개키 등록**    
+Github -> Setting -> SSH and GPC keys -> new SSH key -> 복사한 키 입력   
+
+------
+## Git workflow  
+![](https://velog.velcdn.com/images/wlsk124/post/95172501-d666-4203-971c-95ad3a4c1c7d/image.png)
+### 개인 작업  
+**1. Fork**  
+Remote에 있는 다른 Repository를 Remote에 있는 내 Repository에 복사  
+**2. Clone**  
+코드를 수정하기 위해서는 내 컴퓨터로 가져오는 작업.  
+```
+git clone 레파지토리 주소
+```
+**3. Edit and add**    
+가져온 코드를 내 컴퓨터의 작업공간에서 수정.  
+```
+git status // 어떤 파일이 어떤 상황에 있는지 표시(staging area, untracked files)
+git add . // staging area에 모든 파일 한번에 추가
+```
+**4. Commit**  
+staging area에 들어온 파일 commit 가능.  
+remote에 commit 기록 가능.  
+```
+git commit -m '커밋 메시지'
+``` 
+**5. Push**    
+```
+git push origin main 
+// 레포지토리의 기본 브랜치에 따라 origin과 main은 변할 수 있다.
+```  
+**6. Pull request**   
+remote의 원래 레파지토리에 pull request를 보내면 Remote Repository로 내가 수정한 코드를 업로드.  
+
+### 함께작업  
+**1. init**  
+직접 만든 디렉토리를 Git의 관리하에 들어가게 만들어 주는 명령어.   
+```
+git init 
+//기존 프로젝트를 Git Repository로 변환, 새로운 Repository를 초기화하는 데에 사용.
+```
+**2. remote add origin**    
+Local Repository를 Remote Repository와 연결하는 작업.  
+```
+git remote add origin 레파지토리 주소
+// Github에 Repository를 만들고 주소를 명령어 뒤에 입력
+```
+**3. remote add pair**    
+remote add를 활용해서 다른 사람의 Repository 와 연결.  
+```
+git remote add pair 레파지토리 주소
+// 상대방의 Repository(pair) 주소를 명령어 뒤에 입력해 연결
+```
+**4. remote -v**   
+현재의 Local Repository와 연결된 모든 Remote Repository 목록 확인.  
+```
+git remote -v
+```
+**5. pull**  
+페어가 작업한 코드를 명령어를 통해 작업 내용 확인 가능.  
+받아오는 내용은 자동으로 병합(merge).  
+```
+git pull pair main
+// 페어의 브랜치가 main이 아닐 때, 해당 브랜치 이름을 입력
+```
+
+**+충돌해결**
+페어의 작업 내용을 받아오는 와중 내가 동일한 라인을 수정한 파일이 있다면?  
+-> 자동 병합(merge)에 실패하게 되고 충돌이 발생합니다.  
+
+>**해결법**
+git status 명령어를 통해 어떤 파일이 충돌하고 있는지 확인.  
+충돌이 발생한 파일을 열어, 어떤 부분에서 충돌이 발생한 것인지 확인.  
+충돌이 일어난 부분 직접 확인 후 수정.  
+
+수정을 마치고 파일을 staging area로 추가.  
+병합 커밋(merge commit)을 생성.   
+Merge commit은 자동으로 Commit 메시지가 생성(직접 메시지 생성도 가능).  
+Remote Repository에 Push.  
+
+### 기타 git 명령어
+**1. git restore**  
+처음 Clone을 받았던 상태로 되돌리는 방법
+```
+git restore 파일명
+// commit되지 않은 Local Repository의 변경 사항을 폐기
+```
+**2. git reset**  
+Remote Repository에 업로드되지 않고, Local Repository에 commit한 기록 취소.
+```
+git reset HEAD^ 
+// 가장 최신의 commit 을 취소.
+// HEAD는 연속된 ^의 shortcut -> HEAD3 = HEAD^^^
+```
+**3. git log**  
+남긴 commit들이 잘 기록되었는지 확인.
+```
+git log
+// 터미널 창 종료 방법: q 입력

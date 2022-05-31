@@ -1,0 +1,1303 @@
+---
+title: "Java 심화"
+layout: post
+date: 2022.05.31
+headerImage: false
+tag:
+- Java
+- Concept
+- Back-end
+category: study
+author: Jina Kim
+---
+
+## Enum
+
+열거형(enumerated type), 즉 서로 관련이 있는 것들을 모아서 번호를 매겨놓은 것.   
+
+### 정의  
+
+enum은 서로 연관된 상수들의 집합을 의미.   
+
+```java
+enum 열거형이름 { 상수명1, 상수명2, 상수명3, ...}
+// 예시
+enum Colors { RED, YELLOW, BLUE, GREEN }
+// 상수는 대소문자 모두 작성 가능하지만 관례적으로 대문자로 작성.
+```
+
+enum에 정의된 상수는 `열거형이름.상수명`으로 참조할 수 있다.
+
+```java
+enum Colors { RED, YELLOW, BLUE, GREEN }
+
+public class Example {
+    public static void main(String[] args) {
+        System.out.println(Colors.YELLOW); // YELLOW
+    }
+}
+
+```
+ Colors.YELLOW은 Colors타입의 변수에 할당할 수 있다.
+
+```java
+enum Colors { RED, YELLOW, BLUE, GREEN }
+
+public class Example {
+    public static void main(String[] args) {
+   	Colors phoneColor = Colors.YELLOW;
+        System.out.println(phoneColor); // YELLOW
+    }
+}
+```
+enum 예시
+```java
+enum RGB {RED, GREEN, BLUE}
+
+public class Main {
+  public static void main(String[] args) {
+    RGB colors = RGB.GREEN;
+
+    switch(colors) {
+      case RED:
+        System.out.println("Red Color");
+        break;
+      case GREEN:
+         System.out.println("Green Color");
+        break;
+      case BLUE:
+        System.out.println("Blue Color");
+        break;
+    }
+  }
+}
+```
+colors 변수에 할당된 값으로 case를 나누고, 이에 따라 출력되는 값이 달라진다.   
+열거 타입은 이렇게 경우를 나눠야 할 때 많이 사용한다.  
+
+
+**열거 객체 메소드**  
+
+|리턴 타입|메소드(매개변수)|설명
+|:----:|:----:|:-----:
+|String|name()|열거 객체가 가진 문자열을 리턴, 리턴되는 문자열은 열거타입을 정의할 때 사용한 상수 이름과 동일하다.
+|int|ordinal()|열거 객체의 순번(0부터 시작)을 리턴한다.
+|int|compareTo(비교값)|주어진 매개값과 비교해서 순번 차이를 리턴합니다.
+|열거 타입|valueOf(String name)|주어진 문자열의 열거 객체를 리턴한다.
+|열거 배열|values()|모든 열거 객체들을 배열로 리턴한다.
+
+**enum의 장점**   
+
+상수명의 중복을 피할 수 있다.  
+타입에 대한 안정성을 보장한다.  
+코드가 단순해지고 가독성이 좋아진다.  
+switch문에 사용할 수 있다.  
+
+-----
+## Annotation
+
+주석과 같은 기능을 수행.  
+
+주석 - 소스 코드를 읽는 사람에게 정보 제공.  
+애너테이션 - 프로그램에게 정보 제공.  
+
+**애너테이션의 종류**   
+
+**표준 애너테이션**: 자바에서 기본적으로 제공하는 애너테이션.  
+
+|표준 애너테이션|설명
+|:---------:|:--:
+|@Override|컴파일러에게 메서드를 오버라이딩하는 것이라고 알림
+|@Deprecated|앞으로 사용하지 않을 대상을 알릴 때 사용
+|@FunctionalInterface|함수형 인터페이스라는 것을 알림
+|@SuppressWarning|컴파일러가 경고메세지를 나타내지 않음
+
+**메타 애너테이션**: 애너테이션에 붙이는 애너테이션, 애너테이션을 정의하는 데에 사용.   
+
+|메타 애너테이션|설명
+|:-------:|:---:
+|@Target|애너테이션을 정의할 때 적용 대상을 지정하는데 사용한다.
+|@Documented|애너테이션 정보를 javadoc으로 작성된 문서에 포함시킨다.
+|@Inherited|애너테이션이 하위 클래스에 상속되도록 한다.
+|@Retention|애너테이션이 유지되는 기간을 정하는데 사용한다.
+|@Repeatable|애너테이션을 반복해서 적용할 수 있게 한다.
+
+**사용자 정의 애너테이션**: 사용자가 직접 정의하는 애너테이션.  
+
+### 표준 애너테이션
+
+**@Override**  
+
+메서드 앞에만 붙일 수 있는 애너테이션.  
+@Override가 붙어있는 메서드명과 동일한 이름의 메서드가 없다면 컴파일 에러  발생.   
+
+오버라이딩을 할 때 메서드의 이름을 잘못 작성하는 경우, 컴파일러는 새로운  메서드가 추가된 것으로 인식한다.   
+(컴파일 단계에서 에러를 발생 시키지 않는다.)   
+-> 실행 결과가 예측한 것과 다를 수 있고, 무엇이 잘못되었는지 파악하기 어렵다.  
+
+```java
+class Colors {
+	void red() {}
+}
+class RGB extends Colors {
+	@Override
+	void rde() {} // 컴파일 에러 발생, 오타를 발견할 수 있다.
+}
+```
+
+**@Deprecated**  
+
+새로운 버전의 JDK에서 어떤 기능이 추가되는 등의 이유로 더 이상 사용하지 않는 필드나 메서드가 생겼을 때,   
+해당 메서드 및 필드를 더 이상 사용하지 않음을 표시한다.  
+기존 메서드를 하위 버전 호환성 문제로 남겨두지만, 사용을 권장하지 않을 때 사용.
+
+```java
+class Old {
+	@Deprecated
+	int oldField;
+
+	@Deprecated
+	int getOldField() { return oldField; };
+}
+
+// Output
+// 위 코드를 사용시, 컴파일할 때 아래와 같은 메시지가 출력된다.
+Note: 파일명.java uses or overrides a deprecated API.
+Note: Recomplie with -Xlint:deprecation for details.
+```
+
+-> 해당 파일이 @Deprecated된 대상을 사용했으며,   
+-Xlint:deprecation 옵션을 붙여서 실행하면 자세한 내용을 확인할 수 있다.
+
+
+**@SuppressWarnings**   
+
+선언한 곳의 컴파일 경고를 나타나지 않도록 한다.   
+경고가 발생할 것을 알면서도 묵인해야 할 때 사용.  
+
+|애너테이션|설명
+|:-----:|:---:
+|@SuppressWarings(”all”)|모든 경고 억제
+|@SuppressWarings(”deprecation”)|Deprecated 메서드를 사용해 나오는 경고 억제
+|@SuppressWarings(”fallthrough”)|switch문에서 break 구문이 없을 때 경고 억제
+|@SuppressWarings(”finally”)|finally 관련 경고 억제
+|@SuppressWarings(”null”)|null 관련 경고 억제
+|@SuppressWarings(”uncheched”)|검증되지 않은 연산자 관련 경고 억제
+|@SuppressWarings(”unused”)|사용하지 않는 코드 관련 경고 억제
+
+**@FunctionalInterface**   
+
+함수형 인터페이스를 선언할 때, 올바르게 선언했는지 확인한다.   
+코드 작성과정에서 실수를 방지하기 위한 확인용 애너테이션.   
+함수형 인터페이스는 하나의 추상메서드만 있어야 하는데 2개 이상인 경우 에러 발생.  
+
+### 메타 애너테이션
+
+**@Target**  
+
+애너테이션의 적용 범위를 정할 수 있다.   
+다음 표의 값들은 열거형으로 "java.lang.annotation.ElementType"에 정의.
+
+|대상 타입|적용범위
+|:-----:|:----:
+|ANNOTATION_TYPE|애너테이션
+|CONSTRUCTOR|생성자
+|FIELD|필드(멤버변수, 열거형 상수)
+|LOCAL_VARIABLE|지역변수
+|METHOD|메서드
+|PACKAGE|패키지
+|PARAMETER|매개변수
+|TYPE|타입(클래스, 인터페이스, 열거형)
+|TYPE_PARAMETER|타입 매개변수
+|TYPE_USE|타입이 사용되는 모든 대상  
+
+
+```java
+import static java.lang.annotation.ElementType.*; 
+//import문을 이용하여 ElementType.TYPE 대신 TYPE과 같이 간단히 작성할 수 있다.
+
+@Target({FIELD, TYPE, TYPE_USE})	// 적용대상: FIELD, TYPE
+public @interface Example { }	// Example을 정의
+
+@Example	// 적용대상이 TYPE인 경우
+class Main {
+    @CustomAnnotation	// 적용대상이 FIELD인 경우
+    int a;
+}
+```
+
+**@Documented**   
+
+애너테이션에 대한 정보가 javadoc 문서에 표기.  
+@Override와 @SuppressWarnings를 제외하고 모두 @Documented가 적용.  
+
+**@Inherited**  
+
+하위 클래스가 애너테이션을 상속받도록 한다.   
+상위 클래스에 작성하면, 하위 클래스도 상위 클래스의 애너테이션들이 적용된다.  
+
+**@Retention**   
+
+@Retention 애너테이션은 속성으로 유지정책(RetentionPolicy)이 있다.  
+유지정책이란 애너테이션이 유지되는 기간을 지정하는 속성.
+
+|유지 정책|설명
+|:----:|:---:
+|SOURCE|.java 소스 파일까지는 애너테이션이 존재, 컴파일 되어 클래스 파일이 되면 사라진다.
+|CLASS|.class 파일까지는 애너테이션이 존재, 런타임에서 사라진다.
+|RUNTIME|런타임 실행시까지 애너테이션이 남아있다.  
+
+
+```java
+@Retention(RetentionPolicy.SOURCE) 
+//클래스 파일에 남길 필요 없이 컴파일시에만 확인하고 사라짐
+```
+
+**@Repeatable**   
+
+해당 애터네이션을 여러 번 작성할 수 있다.
+
+
+```java
+@Repeatable(ToDos.class) // ToDo 애너테이션을 여러 번 반복해서 쓸 수 있다.  
+@interface ToDo{  
+    String key();  
+}
+```
+
+### 사용자 정의 애너테이션
+
+직접 애너테이션을 정의해서 사용.   
+애너테이션을 정의하는 방법은 인터페이스를 정의하는 것과 비슷하다.  
+java.lang.annotation 인터페이스를 상속받기 때문에 다른 클래스나 인터페이스를 상속 받을 수 없다.  
+
+```java
+@interface 애너테이션명 { // 인터페이스 앞에 @기호만 붙이면 애너테이션을 정의할 수 있다. 
+	타입 요소명(); // 애너테이션 요소를 선언
+}
+```
+
+------
+## Lambda
+
+자바에서 함수형 프로그래밍을 위해 람다식(Lambda Expressions)을 지원하면서 기존의 코드 패턴이 많이 달라졌다.   
+자바에서 함수 지향 언어인 람다식을 수용한 이유는 람다식을 사용하면 자바 코드가 매우 간결해지고, 컬렉션의 요소를 필터링하거나 매핑해서 원하는 결과를 쉽게 집계할 수 있기 때문이다. 
+
+```java
+Colors color = new Colors() {
+	public void red() { ... }
+};
+
+Colors color = () -> { ... };  // 람다식
+```
+
+람다식은 ```(매개변수) -> {실행코드}``` 형태로 작성.
+
+### 람다식의 기본 문법
+
+```java
+// 1. 기본 작성
+	(타입 매개변수) -> { ... }
+
+// 2. 매개변수가 1개 일 때, 매개변수 () 생략가능
+	매개변수 -> { ... }
+
+// 3. 매개변수가 2개 이상이고, 리턴문만 존재할 때는 return을 생략가능
+	(매개변수1, 매개변수2) -> 리턴값;
+	(num1, num2) -> {return num1 + num2} 
+     // return문만 존재하므로 rerurn 생략 가능.(중갈호도 생략)
+	(num1, num2) -> num1 + num2 
+// 4. 매개변수가 2개 이상이고, 실행문을 실행하고 결과값을 리턴할 경우
+	(매개변수1, 매개변수2) -> { ... };
+
+```
+**1번 예시**   
+
+```(타입 매개변수)```는 오른쪽 중괄호 블록을 실행하는 데 필요한 값을 제공하는 역할을 한다.   
+매개 변수의 이름은 개발자가 자유롭게 지을 수 있다.   
+```->``` 기호는 매개변수를 이용해서 중괄호 { } 실행블록을 실행한다는 뜻으로 해석.    
+매개변수의 타입은 런타임에 대입값에 따라 자동으로 인식될 수 있어서 보통 생략한다.  
+
+**2번 예시**   
+
+( )괄호를 생략할 수 있고, 하나의 실행문만 있다면 중괄호도 생략이 가능.  
+매개변수가 없다면 람다식에서 매개변수 자리가 사라지므로 빈 괄호를 반드시 사용한다.  
+-> ```( ) -> {...}```  
+
+**3번 예시**   
+
+중괄호 안에 return 문만 있을 경우 람다식에서는 return문을 사용하지 않고 작성한다.  
+
+### 함수형 인터페이스
+
+자바에서 메서드를 사용하려면 클래스 객체를 먼저 생성 후 생성한 객체로 메서드를 호출해야 한다.   
+클래스에서 공통적으로 사용하는 기능이 있어도 클래스마다 메서드를 정의해야 한다.   
+
+이를 해결하기 위해 나온 방법이 ‘람다식’이다. 자바는 새로운 함수 문법을 정의하는 대신, 인터페이스의 문법을 활용해 람다식을 표현한다. 단 하나의 추상 메서드만을 포함하는 인터페이스를 함수형 인터페이스라고 한다.
+
+**타겟 타입과 함수형 인터페이스**  
+
+람다식이 하나의 메서드를 정의하기 때문에 두 개의 추상 메서드가 선언된 인터페이스는 람다식을 이용해서 구현 객체를 생성할 수 없다.  
+-> 하나의 추상 메서드가 선언된 인터페이스만 람다식의 타겟 타입이 될 수 있는데,  
+이러한 인터페이스를 함수형 인터페이스(functional interface)라고 한다.  
+
+@FunctionalInterface은 두 개 이상의 추상 메서드 선언시 컴파일 오류를 발생시킨다.  
+(@FunctionalInterface 애너테이션은 선택사항)   
+실수로 두 개 이상의 추상 메서드를 선언하는 것을 방지하고 싶을때 붙여주는 것이 좋다.  
+
+**매개변수와 리턴값이 없는 람다식**   
+
+```java
+@FunctionalInterface
+public interface Lambda {
+    public void accept();
+}
+// 매개변수와 리턴값이 없는 추상 메서드를 가진 함수형 인터페이스가 있다고 가정.
+
+Lambda example = () -> { ... };
+// 람다식에서 매개변수가 없는 이유는 accept()가 매개변수를 가지지 않기 때문.
+// 람다식이 대입된 인터페이스의 참조 변수는 accept()를 호출할 수 있다.
+// accept()의 호출은 람다식의 중괄호 {} 를 실행시킨다.
+```
+
+**예시**  
+
+```java
+public class Example {
+	public static void main(String[] args) throws Exception {
+		Lambda example;
+		example = () -> {
+			String str = "First";
+			System.out.println(str);
+		};
+		example.accept();
+
+		example = () -> System.out.println("Second");
+		//실행문이 하나라면 중괄호 { } 생략 가능
+		example.accept();
+	}
+}
+// Output
+First
+Second
+```
+
+**매개변수가 있는 람다식**  
+
+```java
+@FunctionalInterface
+public interface Lambda {
+    public void accept(int x);
+}
+
+Lambda example = (x) -> {...}
+// 람다식에서 매개 변수가 한 개인 이유는 accept()가 매개변수를 하나만 가지기 때문.
+```
+
+**예시**  
+
+```java
+public class Example {
+    public static void main(String[] args) throws Exception {
+        Lambda example;
+        example = (x) -> {
+            int result = x * 2;
+            System.out.println(result);
+        };
+        example.accept(2);
+
+        example = (x) -> System.out.println(x * 5);
+        example.accept(2);
+    }
+}
+// Output
+4
+10
+```
+
+**리턴값이 있는 람다식**  
+
+```java
+@FunctionalInterface
+public interface Lambda {
+    public int accept(int x, int y);
+}
+
+Lambda example = (x, y) -> {...}
+// 람다식에서 매개 변수가 두 개인 이유는 accept()가 매개변수를 두 개 가지기 때문.
+// accept()가 리턴 타입이 있기 때문에 중괄호 { }에는 return 문이 있어야 한다.
+```
+
+**예시**  
+
+```java
+public class Example {
+    public static void main(String[] args) throws Exception {
+        Lambda example;
+        example = (x, y) -> {
+            int result = x + y;
+            return result;
+        };
+
+        example = (x, y) -> { return x + y; };
+
+        example = (x, y) ->  x + y;
+        //return문 만 있을 경우, 중괄호 {}와 return문 생략가능
+      
+        example = (x, y) -> sum(x, y);
+        //return문 만 있을 경우, 중괄호 {}와 return문 생략가능
+        
+    }
+    public static int sum(int x, int y){
+        return x + y;
+    }
+}
+```
+
+### 메서드 레퍼런스
+
+메서드 레퍼런스는 람다식에서 불필요한 매개변수를 제거하는 것이 목적이다.  
+
+```java
+// Math 클래스의 max() 정적 메서드를 호출하는 람다식. 
+(left, right) -> Math.max(num1, num2);
+
+Math :: max; // 메서드 레퍼런스
+```
+메서드 레퍼런스도 람다식과 마찬가지로 인터페이스의 익명 구현 객체로 생성되므로 타겟 타입인 인터페이스의 추상 메서드가 어떤 매개 변수를 가지고, 리턴 타입이 무엇인가에 따라 달라진다.  
+
+메서드 레퍼런스는 정적 혹은 인스턴스 메서드를 참조할 수 있고 생성자 참조도 가능하다.   
+
+
+**정적 메서드와 인스턴스 메서드 레퍼런스**  
+
+정적 메서드를 참조할 경우, 클래스 이름 뒤에 ::를 붙이고 정적 메서드 이름을 기술.
+
+```java
+클래스 :: 메서드
+```
+
+인스턴스 메서드는 객체 생성 후 참조 변수 뒤에 ::를 붙이고 인스턴스 메서드 이름을 기술.
+
+```java
+참조 변수 :: 메서드
+```
+
+**매개변수의 메서드 레퍼런스**  
+
+메서드는 람다식 외부의 클래스 멤버일 수도 있고, 람다식에서 제공되는 매개변수의 멤버일 수도 있다. 
+
+```java
+(a,b) -> {a.instanceMethod(b);};
+// 람다식에서 제공되는 a 매개변수의 메서드를 호출해서 b 매개변수를 매개값으로 사용하는 경우.
+```
+
+```java
+클래스::instanceMethod // 메서드 레퍼런스
+```
+
+**생성자 참조**  
+
+메서드 레퍼런스는 생성자 참조도 포함한다. 생성자를 참조한다는 것은 객체 생성을 의미.   
+
+```java
+(a,b) -> {return new 클래스(a,b);};
+```
+
+```java
+클래스 :: new // 메서드 레퍼런스
+// 생성자가 오버로딩 되어 여러 개일 경우, 함수형 인터페이스의 추상 메서드와 동일한 매개 변수 타입과 개수를 가진 생성자를 찾아 실행. 
+// 해당 생성자가 존재하지 않으면 컴파일 오류 발생.
+```
+
+------
+## Stream
+
+배열, 컬렉션의 저장 요소를 하나씩 참조해서 람다식으로 처리할 수 있도록 해주는 반복자.   
+List, Set, Map, 배열 등 다양한 데이터 소스로부터 스트림을 만들 수 있다.  
+
+### 스트림의 특징
+
+**선언형으로 데이터 소스 처리**   
+
+스트림을 이용하면 선언형으로 데이터 소스를 처리할 수 있다.  
+
+선언형 프로그래밍이란   
+“어떻게" 수행하는지보다 “무엇을” 수행하는지에 관심을 두는 프로그래밍 패러다임이다.   
+
+```java
+import java.util.List;
+
+public class DeclarativeProgramingExample {
+    public static void main(String[] args){
+        // List에 있는 숫자들 중에서 2보다 큰 짝수의 합계 구하기
+        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6);
+
+        int sum = numbers.stream()
+                         .filter(number -> number > 2 && (number % 2 == 0))
+                         .mapToInt(number -> number)
+                         .sum();
+
+        System.out.println("스트림 사용한 값: " + sum);
+    }
+}
+```
+
+람다식 또는 메서드 참조를 이용해서 요소 처리 내용을 매개값으로 전달할 수 있다.  
+
+
+**내부 반복자를 사용해 병렬 처리가 쉬움**   
+
+외부반복자(external iterator)  
+
+: 개발자가 컬렉션의 요소를 코드로 직접 반복해서 가져오는 코드 패턴.   
+index를 사용하는 for문, Iterator를 이용하는 while문은 외부 반복자를 이용하는 형태다.   
+
+내부 반복자(internal iterator)  
+
+: 컬렉션 내부에서 요소들을 반복하고 개발자는 요소당 처리할 코드만 제공하는 코드 패턴.   
+
+![](https://velog.velcdn.com/images/wlsk124/post/1d4f3312-bc4e-4b67-97f6-6ea3899d8b9b/image.png)
+
+**내부 반복자의 이점**  
+
+컬렉션 내부에서 어떻게 요소를 반복시킬 것인가는 컬렉션에게 맡겨두고, 개발자는 요소 처리 코드에만 집중할 수 있다.   
+
+**병렬 처리**   
+
+한 가지 작업을 서브 작업으로 나누고, 서브 작업들을 분리된 스레드에서 병렬적으로 처리하는 것.
+
+
+**중간 연산과 최종 연산 가능**   
+
+스트림은 컬렉션의 요소에 대해 중간 연산과 최종 연산을 수행할 수 있다.   
+중간 연산 - 매핑, 필터링, 정렬을 수행.  
+최종 연산 - 반복, 카운팅, 평균, 총합 등의 집계를 수행.   
+
+### 파이프라인
+
+스트림은 중간 연산과 최종 연산을 파이프라인(pipelines)으로 해결한다.   
+파이프라인은 여러개의 스트림이 연결되어 있는 구조를 의미한다.   
+파이프라인에서 최종 연산을 제외하고는 모두 중간 연산 스트림이다.
+
+Stream 인터페이스에는 필터링, 매핑, 정렬 등의 많은 중간 연산 메소드가 있는데,   
+이 메소드들은 중간 연산된 스트림을 리턴하고, 다시 중간 연산 메소드를 호출해 파이프라인을 형성한다. 
+
+```java
+double count = list.stream() //오리지널 스트림
+.filter(c-> c.getOdd() == Number.ODD) //중간 연산 스트림
+.mapToInt(Number::getPrime) //중간 연산 스트림
+.sum() //최종 연산
+```
+
+### 스트림 생성, 중간 연산, 최종 연산
+
+**스트림 생성**   
+
+Collection 인터페이스에는 stream()이 정의되어 있기 때문에 스트림을 생성할 수 있다.   
+-> `stream()`을 사용하면 해당 Collection의 객체를 소스로 하는 Stream을 반환.
+
+```java
+// List로부터 스트림을 생성
+List<String> list = Arrays.asList("가", "나", "다");
+Stream<String> listStream = list.stream();
+```
+
+```java
+// 배열로부터 스트림을 생성
+Stream<String> stream = Stream.of("가", "나", "다"); //가변인자
+Stream<String> stream = Stream.of(new String[] {"가", "나", "다"});
+Stream<String> stream = Arrays.stream(new String[] {"가", "나", "다"});
+Stream<String> stream = Arrays.stream(new String[] {"가", "나", "다"}, 1); 
+//end 범위 미포함
+```
+객체를 위한 Stream 외에도 int와 long 그리고 double과 같은 원시 자료형들을 사용하기 위한 Stream(IntStream, LongStream, DoubleStream)도 사용할 수 있다.   
+
+```java
+// 5이상 10미만의 숫자를 갖는 IntStream
+//Intstream은 range()함수를 사용하여 기존의 for문을 대체할 수 있다.
+
+IntStream stream = IntStream.range(5, 10);
+```
+
+|리턴 타입|메서드(매개 변수)|소스
+|:-----:|:--------:|:-----:
+|Stream|java.util.Collection.Stream(), java.util.Collection.parallelSream( )|컬렉션
+|Stream, IntStream, LongStream, DoubleStream|	Arrays.stream(T[]), Arrays.stream(int[]), Arrays.stream(long[]), Arrays.stream(double[]), Stream.of(T[]), IntStream.of(int[]) LongStream.of(long[]), DoubleStream.of(double[])|배열
+|IntStream|IntStream.range(int, int), IntStream.rangeClosed(int, int)|int 범위
+|LongStream|LongStream.range(long, long), LongStream.rangeClosed(long, long)|long 범위
+
+**주의점**  
+
+1. 스트림은 데이터 소스로부터 데이터를 변경하지 않는다(Read-only).
+2. 스트림은 일회용이다.  
+한 번 사용하면 닫히므로, 필요하다면 새로운 스트림을 만들어야 한다.
+
+**중간 연산**   
+
+**1. 필터링(filter(), distinct())**  
+
+distinct() : 중복된 요소(데이터)가 존재하는 경우, 중복을 제거. 
+
+filter() : 조건에 맞는 데이터만 정제하여 더 작은 컬렉션을 만들어낸다.  
+매개값으로 조건(Predicate)이 주어지고, 참이 되는 요소만 필터링한다.  
+
+```java
+import java.util.Arrays;
+import java.util.List;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        List<String> fruits = Arrays.asList("딸기", "수박", "바나나", "수박");
+
+        fruits.stream()
+		.distinct() //중복제거
+		.forEach(n -> System.out.println(n));
+        System.out.println();
+
+        fruits.stream()
+		.filter(n -> n.startsWith("바")) 
+		.forEach(n -> System.out.println(n));
+        System.out.println();
+    }
+}
+// Output
+딸기
+수박
+바나나
+
+바나나
+```
+
+**2. 매핑(map())**   
+
+저장된 값을 특정한 형태로 변환하는데 사용된다.   
+Java에서는 map 함수의 인자로 함수형 인터페이스 function을 받고 있습니다.   
+-> String 요소의 Stream을 대문자 String 요소로 변환 할 때 map 이용.  
+
+```java
+List<String> fruits = Arrays.asList("strawberry", "watermelon", "banana");
+    fruits.stream()
+	.map(s -> s.toUpperCase())
+	.forEach(n -> System.out.println(n));
+// Output
+STRAWBERRY
+WATERMELON
+BANANA
+```
+**map()이외에도 mapToInt(), mapToLong(), mapToDouble() 등의 메서드가 있다.**  
+
+원시 객체는 mapToObject를 통해 일반적인 Stream 객체로 바꿀 수 있다.  
+
+flatMap(): 요소를 대체하는 복수 개의 요소들로 구성된 새로운 스트림을 리턴.  
+
+**3. 정렬(sorted())**  
+
+Stream의 요소들을 정렬하기 위해 사용.   
+
+파라미터로 Comparator를 넘길 수도 있다.  
+-> Comparator 없이 호출할 경우, 오름차순 정렬.  
+-> 내림차순으로 정렬하기 위해서는 Comparator의 reverseOrder를 이용.  
+```java
+List<String> list = Arrays.asList("나", "가", "아", "니", "다");
+
+        list.stream()
+            .sorted()
+            .forEach(n -> System.out.println(n));
+        System.out.println();
+
+// Output
+가, 나, 니, 다, 아
+
+        list.stream()
+            .sorted(Comparator.reverseOrder())
+            .forEach(n -> System.out.println(n));
+
+// Output
+아, 다, 니, 나, 가
+```
+
+**4. 연산 결과 확인(peek())**  
+
+peek(), forEach()는 요소를 하나씩 돌면서 출력하는 기능이다.  
+
+peek: 중간 연산 메서드  
+forEach: 최종 연산 메서드  
+
+peek()은 주로 연산 중간에 결과를 확인하여 디버깅하고자 할 때 사용한다.
+
+```java
+intStream
+	.filter(a -> a % 2 != 0)
+	.peek(n-> System.out.println(n))
+	.sum();
+```
+  
+**최종 연산**   
+  
+**1. 연산 결과 확인(forEach())**   
+
+값을 출력할 때, 이메일 발송과 스케줄링 등 리턴 값이 없는 작업에서도 사용한다.   
+
+**2. 매칭(match())**  
+
+Stream의 요소들이 특정한 조건을 충족하는지 검사하고 싶은 경우 사용.   
+match() 메서드는 함수형 인터페이스 Predicate를 받아서 해당 조건을 만족하는지 검사하고, 검사 결과를 boolean으로 반환한다.   
+
+allMatch() : 모든 요소들이 주어진 Predicate의 조건을 만족하는지 조사  
+anyMatch() : 최소한 한 개의 요소가 주어진 Predicate의 조건을 만족하는지 조사  
+
+noneMatch() : 모든 요소들이 주어진 Predicate의 조건을 만족하지 않는지 조사  
+
+**3. 기본 집계(sum(), count(), average(), max(), min())**  
+
+집계는 최종 연산 기능으로 요소들을 카운팅, 합계, 평균값, 최대값, 최소값 등으로 연산하여 하나의 값으로 산출하는 것을 의미.
+
+```java
+import java.util.Arrays;
+
+public class Example {
+    public static void main(String[] args) throws Exception {
+        int[] intArr = {10,20,30,40,50};
+
+        long count = Arrays.stream(intArr).count();
+        System.out.println("전체 요소 개수 " + count);
+
+        long sum = Arrays.stream(intArr).sum();
+        System.out.println("전체 요소 합 " + sum);
+
+        double avg = Arrays.stream(intArr).average().getAsDouble();
+        System.out.println("전체 요소의 평균값 " + avg);
+
+        int max = Arrays.stream(intArr).max().getAsInt();
+        System.out.println("최대값 " + max);
+
+        int min = Arrays.stream(intArr).min().getAsInt();
+        System.out.println("최소값 " + min);
+
+        int first = Arrays.stream(intArr).findFirst().getAsInt();
+        System.out.println("배열의 첫번째 요소 " + first);
+
+    }
+}
+
+//
+intArr의 전체 요소 개수 5
+intArr의 전체 요소 합 150
+전체 요소의 평균값 30.0
+최대값 50
+최소값 10
+배열의 첫번째 요소 10
+```
+
+**4. Reduce**  
+
+앞의 두 요소의 연산 결과를 바탕으로 다음 요소와 연산한다.
+reduce 메서드는 최대 3개의 매개변수를 받을 수 있다.
+
+Accumulator: 각 요소를 계산한 중간 결과를 생성하기 위해 사용  
+
+Identity: 계산을 수행하기 위한 초기값  
+
+Combiner: 병렬 스트림(Parlallel Stream)에서 나누어 계산된 결과를 하나로 합치기 위한 로직  
+
+**5. Collect()**  
+
+Stream의 요소들을 List나 Set, Map, 등 다른 종류의 결과로 수집할 때 사용.   
+
+```java
+public class Example {
+    public static void main(String[] args) throws Exception {
+        List<Student> list = Arrays.asList(
+            new Card("가", 5, Card.Color.Red),
+            new Card("나", 6, Card.Color.Red),
+            new Card("다", 3, Card.Color.Blue)
+        );
+
+        List<Card> redList = list.stream()
+        .filter(s -> s.getColor() == Card.Color.Red)
+        .collect(Collectors.toList());
+
+        redList.stream().forEach(n->System.out.println(n.getName()));
+    }
+}
+```
+
+### Optional &#60;T&#62;
+
+Optional 클래스는 모든 타입의 객체를 담을 수 있는 래퍼(Wrapper) 클래스  
+
+NullPointerException(NPE), 즉 null 값으로 인해 발생하는 에러 현상을 객체 차원에서 효율적으로 방지하고자 도입되었다.
+
+연산 결과를 Optional에 담아서 반환하면, 조건문을 작성하지 않아도 NPE가 발생하지 않도록 코드를 작성할 수 있다.  
+
+```java
+public final class Optional<T> {
+	private final T value; // T타입의 참조변수
+}
+```
+
+```java
+// Optional 객체를 생성하려면 of() 또는 ofNullable()을 사용. 
+//참조변수의 값이 null일 가능성이 있다면, ofNullable()을 사용.
+
+Optional<String> opt1 = Optional.ofNullable(null);
+Optional<String> opt2 = Optional.ofNullable("123");
+System.out.println(opt1.isPresent()); //Optional 객체의 값이 null인지 여부 리턴.
+System.out.println(opt2.isPresent());
+```
+
+```java
+// Optional 타입의 참조변수를 기본값으로 초기화하려면 empty() 메서드 사용
+Optional<String> opt3 = Optional.<String>empty();
+```
+
+```java
+// Optional 객체에 객체에 저장된 값을 가져오려면 get() 사용
+Optional<String> opt4 = Optional.of("jina");
+System.out.println(opt4);
+System.out.println(opt4.get());
+//참조변수의 값이 null이면, orElse()메서드를 사용해 디폴트 값을 지정할 수 있다.
+String nullName = null;
+String name = Optional.ofNullable(nullName).orElse("jina");
+System.out.println(name);
+```
+
+### 컬렉션과 스트림 비교하기
+
+||Collection|Stream
+|:--:|:----:|:----:
+|기본컨셉|특정 자료구조로 데이터를 저장하는 것이 주 목적|데이터 가공 처리가 주 목적
+|데이터 수정 여부|데이터 추가/삭제 가능|데이터 추가/삭제 불가능, Read-only
+|Iteration 형태|for문 같은 걸로 외부 반복|operation 메서드 내부에서 보이지 않게 반복
+|탐색 횟수|여러번 탐색 가능|한번만 탐색 가능
+|데이터 처리 방식|Eager|Lazy, Short-circuit
+
+Eager와 Lazy의 차이점   
+Eager는 메모리에 전체를 한 번에 올려서 처리  
+Lazy는 필요할 때에만 조금씩 올리면서 처리  
+-> Lazy는 대용량 데이터를 처리할 때 성능적인 측면에서 뚜렷한 이점이 있다.  
+
+Short-circuit(단락 평가)   
+무한 스트림을 유한하게 연산할 수 있도록 해주는 제어 방식   
+
+```java
+//예시
+IntStream intStream = new Random().ints(); //무한 스트림
+intStream.limit(5).forEach(System.out::println); // 5개의 요소만 출력
+```
+limit(5) 메서드는 무한 스트림인 intStream의 요소를 5개로 제한 한다.  
+단락 평가는 스트림이 5개 이상 연산하지 않도록 해주는 평가 전략.  
+
+------
+## Input/Output(I/O)
+### InputStream, OutputStream
+
+바이트 기반 스트림.   
+바이트 기반은 입출력 단위가 1byte.  
+
+**FileInputStream**
+
+터미널에 아래 명령어를 입력하면, code라는 문자열이 입력된 test.txt라는 파일을 생성   
+(실습할 코드와 같은 디렉토리에서 입력)
+
+```
+echo code >> test.txt
+```
+
+```java
+import java.io.FileInputStream;
+  
+public class Example {
+    public static void main(String args[]){
+        try {
+            FileInputStream input = new FileInputStream("test.txt");
+            int i = 0;
+            while ((i = input.read()) != -1) { //input.read()의 리턴값을 i에 저장한 후, 값이 -1인지 확인합니다.
+                System.out.print((char)i);
+            }
+            input.close();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+```
+
+**FileOutputStream**  
+
+```java
+import java.io.FileOutputStream;
+  
+public class Example {
+    public static void main(String args[]) {
+        try {
+            FileOutputStream output = new FileOutputStream("test.txt");
+            String word = "code";
+
+            byte b[] = word.getBytes();
+            output.write(b);
+            output.close();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+```
+
+### FileReader / FileWriter
+
+문자 기반 스트림.  
+여러 종류의 인코딩(encoding)과 유니코드(UTF-16)간의 변환을 자동 처리한다.  
+
+FileReader - 인코딩을 유니코드로 변환  
+FileWriter - 유니코드를 인코딩으로 변환  
+
+**FileReader**  
+
+```java
+public class Example {
+    public static void main(String args[]) {
+        try {
+            String fileName = "test.txt";
+            FileReader reader = new FileReader(fileName);
+
+            int data = 0;
+
+            while((data=reader.read()) != -1) {
+                System.out.print((char)data);
+            }
+            reader.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+**FileWriter**  
+
+```java
+public class Example {
+    public static void main(String args[]) {
+        try {
+            String fileName = "test.txt";
+            FileWriter writer = new FileWriter(fileName);
+
+            String str = "ME!";
+            writer.write(str);
+            writer.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+------
+## Thread
+
+하나의 스레드 - 하나의 코드 실행 흐름.  
+
+**멀티 스레드(Multi-Thread)**  
+![](https://velog.velcdn.com/images/wlsk124/post/42292419-08a2-4bf3-8e84-b5c7e85c9856/image.png)
+
+멀티 태스킹
+두 가지 이상의 작업을 동시에 처리하는 것.   
+운영체제는 CPU 및 메모리 자원을 프로세스마다 적절히 할당해주고, 병렬로 실행을 시킨다.   
+ex) 워드로 문서작업을 하면서 동시에 youtube에서 음악을 들을 수 있다.   
+
+멀티 태스킹은 꼭 멀티 프로세스를 의미하는 것은 아니다.   
+한 프로세스  에서 멀티 태스킹을 할 수 있도록 만들어진 애플리케이션들도 있다.   
+
+멀티 스레드는 애플리케이션 내부에서의 멀티 태스킹이라고 할 수 있다.  
+멀티 스레드는 대용량 데이터의 처리시간을 줄이기 위해 데이터를 분할해서 병렬 처리하는 곳에 사용되기도하고, UI를 가지고 있는 애플리케이션에서 네트워크 통신을 하기 위해 사용되기도 한다. 또한 다수 클라이언트의 요청을 처리하는 서버를 개발할 때도 사용된다.
+
+
+
+**메인 스레드(main thread)**  
+
+모든 자바 애플리케이션은 메인스레드(main thread)가 `main()` 메서드를 실행하면서 시작된다.   
+메인 스레드는 main()의 첫 코드부터 순차적으로 실행하고, 마지막 코드를 실행하거나 return 문을 만나면 실행을 종료한다.  
+
+메인 스레드는 필요에 따라 작업 스레드를 만들어 동시에 코드를 실행할 수 있다.   
+-> 멀티 태스킹   
+
+멀티 스레드는 실행 중인 스레드가 하나라도 있다면 프로세스는 종료 되지 않는다.   
+메인 스레드가 종료되더라도 작업 스레드가 계속 실행 중이면 프로세스는 종료되지 않는다.  
+
+### Thread 생성과 실행
+
+**작업 스레드 생성과 실행**   
+
+자바에서는 작업 스레드도 객체로 생성되기 때문에 클래스가 필요하다.  
+
+**1. Thread 클래스로부터 직접 생성**  
+
+java.lang.Thread 클래스로부터 작업 스레드 객체를 직접 생성.  
+
+```java
+// Runnable을 매개변수로 갖는 생성자를 호출
+Thread thread = new Thread(Runnable target);
+```
+Runnable은 작업 스레드가 실행할 수 있는 코드를 가지고 있는 객체라는 뜻.  
+Runnable은 인터페이스 타입으로 구현 객체를 만들어 대입해야 한다.  
+구현 클래스는 run()메서드를 재정의해서 작업 스레드가 실행할 코드를 작성해야 한다.   
+
+```java
+// 다중상속이 불가능 한 자바에서 implements로 Runnable을 받아 구현할 수 있다.
+class Task implements Runnable {
+	public void run() {
+		작업 스레드가 실행할 코드;
+	}
+}
+```
+
+Runnable은 작업 내용을 가지고 있는 객체이지 실제 스레드는 아니다.  
+-> 구현 객체 생성 후, Thread 생성자를 호출해 작업 스레드를 생성해야한다.  
+
+```java
+Runnable task = new Task(); // Runnable 구현 객체 생성
+Thread thread = new Thread(task); // Thread 생성자를 호출, 작업 스레드 생성
+```
+
+코드 절약 - Thread 생성자를 호출할 때 Runnable 익명 객체를 매개변수로 사용 가능.   
+
+```java
+Thread thread = new Thread(new Runnable() {
+	public void run() {
+		작업 스레드가 실행할 코드;
+	}
+});
+```
+
+Runnable 인터페이스는 함수형 인터페이스.   
+-> 람다식 사용 가능
+
+```java
+Thread thread = new Thread( ()-> {
+	스레드가 실행할 코드;
+});
+```
+작업 스레드 실행
+
+```java
+// start() 메서드가 호출되면, 작업 스레드는 run()을 실행하면서 작업을 처리한다.
+thread.start();
+```
+
+**2. Thread 하위 클래스로부터 생성**   
+
+Thread 하위 클래스로 작업 스레드를 정의하면서 작업 내용을 포함시킬 수 있다.   
+작업 스레드 클래스로부터 객체를 생성하는 방법은 일반적인 객체 생성 방법과 동일.
+
+```java
+public class Example extends Thread {
+	@Override
+	public void run() {
+		//스레드가 실행할 코드
+	}
+}
+Thread thread = new Example();
+```
+
+코드 절약 - Thread 익명 객체로 작업 스레드 객체를 생성 가능.
+
+```java
+Thread thread = new Thread(){
+	public void run(){
+		스레드가 실행할 코드;
+	}
+}
+```
+작업 스레드 실행
+```java
+thread.start();
+```
+
+**스레드의 이름**   
+
+Thread의 인스턴스 메서드인 setName()과 getName()은 스레드 객체의 참조가 필요.  
+
+```java
+thread.setName("스레드 이름");
+thread.getName();
+```
+스레드 객체의 참조를 가졌다면, Thread의 정적 메서드인 currentThread()로 코드를 실행하는 현재 스레드의 참조를 얻을 수도 있다.  
+```java
+Thread thread = Thread.currentThread();
+```
+### Thread 동기화 및 상태
+
+**동기화 메서드와 동기화 블록**  
+
+싱글 스레드 프로그램에서는 한 개의 스레드가 객체를 독차지해서 사용하면 되지만,   
+멀티 스레드 프로그램에서는 스레드들이 객체를 공유해서 작업해야 하는 경우가 있다.   
+이때, 스레드가 사용 중인 객체를 다른 스레드가 변경 못 하게 잠금을 걸어야 한다.   
+
+멀티 스레드 프로그램에서 단 하나의 스레드만 실행 가능한 코드 영역이 `임계 영역`이다.   
+자바는 임계 영역을 지정하기 위해서 동기화 메서드와 동기화 블록을 제공한다.  
+
+동기화 메서드를 만드는 방법  
+메서드 선언에 `synchronized` 키워드를 붙이면 된다.   
+(이 키워드는 인스턴스와 정적 메서드 어디든 붙일 수 있다.)  
+
+**스레드의 상태**  
+
+스레드 객체를 생성하고, start() 메서드를 호출하면 실행 대기 상태가 된다.  
+실행 대기 상태에 있는 스레드 중에서 스레드 스케줄링으로 선택된 스레드가 CPU를 점유하고 run( ) 메서드를 실행한다.   
+이 때를 실행(Running) 상태라고 한다.  
+
+\* 실행 대기 상태   
+아직 스케줄링이 되지 않아서 실행을 기다리고 있는 상태.  
+
+실행 상태의 스레드는 run( )메서드를 모두 실행하기 전에 스레드 스케줄링에 의해 다시 실행 대기 상태로 돌아갈 수 있다.   
+-> 스레드는 실행 대기 상태와 실행 상태를 번갈아 가면서 실행할 수 있다.  
+
+실행 상태에서 run() 메서드가 종료되면, 더 이상 실행할 코드가 없기 때문에 멈추게 된다.  
+-> 종료 상태  
+
+실행 상태에서 일시 정지 상태로 가기도 한다.  
+일시 정지 상태는 스레드가 실행할 수 없는 상태다.  
+이 때 다시 실행 상태로 가기 위해서는 일시 정지 상태에서 실행 대기 상태로 가야만 한다.   
+-> 스레드의 상태를 확인 하기 위해서 `getState()` 메서드를 사용한다.   
+
+```java
+// 스레드의 상태 출력 코드
+public class StatePrintThread extends Thread{
+    private Thread target;
+
+    public StatePrintThread(Thread target){
+        this.target = target;
+    }
+    public void run(){
+        while(true){
+            Thread.State state = target.getState();
+            System.out.println("스레드 상태 : " + state);
+
+            if(state == Thread.State.NEW){
+                target.start();
+            } if(state == Thread.State.TERMINATED){
+                break;
+            }
+            try{
+                Thread.sleep(500);
+            } catch(Exception e){}
+        }
+    }
+}
+//TargetThread.java
+public class Target extends Thread {
+    public void run(){
+        for (long i=0; i<1000000000; i++){}//10억번 반복, RUNNABLE 상태 유지
+        try {
+            Thread.sleep(1500); //1.5초간 TIME_WAITING 상태 유지
+        } catch(Exception e){}
+        for(long i =0; i<1000000000; i++){}//10억번 반복, RUNNABLE 상태 유지
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        StatePrintThread statePrintThread = new StatePrintThread(new Target());
+        statePrintThread.start();
+    }
+}
+
+/*
+스레드 상태 : NEW
+스레드 상태 : RUNNABLE
+스레드 상태 : TIMED_WAITING
+스레드 상태 : TIMED_WAITING
+스레드 상태 : RUNNABLE
+스레드 상태 : TERMINATED
+*/
+
+```
+
+**스레드 상태 제어**  
+
+실행 중인 스레드의 상태를 변경 하는 것.  
+
+상태 변화를 가져오는 메서드
+
+|메서드|설명
+|:---:|:---:
+|interrupt|일시 정지 상태의 스레드에서 InterruptedException 예외를 발생시켜, 예외 처리 코드(catch)에서 실행 대기 상태로 가거나 종료 상태로 갈 수 있도록 한다.
+|wait() / wait(long milis) / wait(long millis, int nanos)|동기화(synchronized) 블록 내에서 스레드를 일시 정지 상태로 만든다. 매개값으로 주어진 시간이 지나면 자동적으로 실행 대기 상태가 된다. 시간이 주어지지 않으면 notify(), notifyAll() 메서드에 의해 실행 대기 상태로 갈 수 있다. (스레드 간 협업에 사용된다.) 동기화 메서드 또는 동기화 블록 내에서만 사용 가능.
+|notify(), notifyAll()|wait() 메서드에 의해 일시 정지 상태에 있는 스레드를 실행 대기 상태로 만든다. (스레드 간 협업에 사용된다.) 동기화 메서드 또는 동기화 블록 내에서만 사용 가능.
+|sleep(long millis) / sleep(long millis, int nanos)|주어진 시간 동안 스레드를 일시 정지 상태로 만든다. 주어진 시간이 지나면 자동으로 실행 대기 상태가 된다. (밀리세컨드 (1/1000) 단위)
+|join() / join(long millis) / join(long millis, int nanos)	join()|메서드를 호출한 스레드는 join() 메서드를 멤버로 가지는 스레드가 종료되거나, 매개값으로 주어진 시간이 지날 때까지 일시 정지 상태가 된다.
+|yield|실행 중에 우선순위가 동일한 다른 스레드에게 실행을 양보하고 실행 대기 상태가 된다.  
+
+wait(), notify(), notifyAll()은 Object 클래스의 메서드이고,   
+그 외의 메서드는 Thread 클래스의 메서드다.
+
+### Thread Pool
+   
+스레드의 무분별한 증가를 방지하기 위해 스레드 풀을 사용한다.   
+스레드 풀은 작업 처리에 사용되는 스레드의 수를 정해 놓고, 큐에 작업이 들어오면 스레드풀 안에 스레드가 하나씩 맡아서 처리한다.   
+
+![](https://velog.velcdn.com/images/wlsk124/post/38220e35-fb0a-44aa-a607-dd1284a5a18f/image.png)
+
+**스레드 풀 생성**  
+
+ExecutorService(스레드 풀) 구현객체는 Executors 클래스 메서드로 생성 가능.  
+
+|메서드|초기 스레드 수|코어 스레드 수|최대 스레드 수
+|:---:|:-------:|:----------:|:---------:
+|newCachedThreadPool()|0|0|Integer.MAX_VALUE
+|newFixedThreadPool(int num)|0|num|num
+
+**스레드 풀 종료**  
+
+애플리케이션을 종료하기 위해서는 스레드 풀을 종료해야 한다.
+
+|메서드|리턴타입|설명
+|:---:|:----:|:---:
+|shutdown()|void|작업 큐에 남아있는 모든 작업을 처리한 뒤 종료
+|shutdownNow()|List|작업 큐에 남아있는 작업과 상관없이 종료, 처리 못한 작업(Runnable) 목록을 리턴
+|awaitTermination(long timeout, TimeUnit unit)|boolean|shotdown() 메소드 호출 후, 모든 작업 처리를 timeout 시간안에 처리하면 true, 처리 못하면 작업 스레드들을 interrupt()하고 false 리턴   
+	
+-----
+## Java Virtual Machine
+
+**JVM(Java Virtual Machine)**   
+
+자바 프로그램을 실행시키는 도구.   
+자바로 작성한 소스 코드를 해석해 실행하는 별도의 프로그램이다.  
+
+자바의 독립성은 JVM을 통해 구현된다.  
+JVM은 각 운영체제에 적합한 버전이 존재하고, JVM은 자바 소스 코드를 운영 체제에 맞게 변환해 실행시켜준다.   
+이것이 자바가 운영체제로부터 독립적으로 동작할 수 있는 이유다.   
+
+### JVM 구조
+
+**JVM 메모리 구조**  
+
+![](https://velog.velcdn.com/images/wlsk124/post/65e3785e-2818-4bc3-b19e-e02074d10161/image.png)
+
+**Runtime Data Area**  
+
+Java 프로그램이 로드되어 실행될때 특정 값이나 데이터의 정보를 담는 메모리 영역.   
+
+### Garbage Collection
+
+자바의 메모리를 자동으로 관리하는 프로세스.  
+프로그램에서 더이상 사용하지 않는 객체를 삭제, 제거하여 메모리를 확보하는 일을 한다.   
+
+```java
+Colors red = new Colors();
+red.setName("적색");
+red = null; //기존에 red가 가리키던 인스턴스와 참조변수 red 간의 연결이 끊어짐
+// Garbage 발생
+red = new Colors(); 
+red.setName("빨강");
+```
+
+아무한테도 참조되고 있지 않은 객체 및 변수들을 검색해 메모리에서 점유를 해제한다.   
+-> 메모리 공간을 확보하여 효율적으로 메모리를 사용할 수 있게 해준다.  
+

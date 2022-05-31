@@ -1,0 +1,133 @@
+---
+title: "Linux"
+layout: post
+date: 2022.05.13
+headerImage: false
+tag:
+- Concept
+- Back-end
+category: study
+author: Jina Kim
+---
+
+## Linux
+
+>CLI, GUI 차이
+CLI(Command-Line Interface): 터미널 사용, 높은 안전성, 빠른 속도, 자원 절감
+GUI(Graphic User Interface): 마우스 사용, 친숙하고 편함
+
+\* 프롬프트(Prompt): 터미널에서 키보드의 입력을 확인하고 편집할 수 있는 한 줄의 공간.
+### CLI 기본 명령어
+- pwd(print working directory) - 현재 폴더가 위치한 경로
+- mkdir(make directories) - 새로운 폴더 생성
+	-> CLI에서 명령어와 폴더 이름은 공백으로 구분
+- ls(list) - 특정 폴더에 포함된 파일이나 하위 폴더의 리스트를 출력
+	-> ls -l(list-long) - 폴더나 파일의 자세한 내용 출력
+    -> ls -a(list-all) - 숨어 있는 폴더 포함, 모든 폴더를 출력
+    -> ls -al, ls-la(중복가능) - 옵션(dash,-)의 순서는 기능에 영향을 미치지 않음
+- open .(open) - 터미널의 현재 위치를 GUI로 열람
+- cd(change directory) - 다른 폴더에 진입
+- touch(touch) - 파일 생성하기
+- cat(concaternate) - 파일 내용을 터미널에 출력
+	-> touch hi.txt (touch 명령어를 입력해 'hi'파일 생성)
+    -> hi.txt 파일에 내용 입력
+    -> cat hi.txt (cat 명령어를 통해 파일 내용을 터미널에서 확인)
+- rm(remove) - 파일 또는 폴더 삭제 (영구적으로 삭제, 휴지통을 거치지 않음)
+	-> rm -r(remove-recursive) - 폴더를 지울 때
+    -> rm -f(remove-force) - 질문 없이 무조건 지울 때
+    -> rm -rf
+- mv(move) - (폴더,파일) 위치 이동, 이름 변경
+	-> mv 현재이름 도착폴더이름 (위치이동)
+    -> mv  변경할이름 변경한이름 (이름변경)
+- cp(copy) - 복사 - cp 원본파일이름 복사할파일이름
+	-> rm -r(move-recursive) - 폴더를 옮길 때
+    -> rm -f(move-force) - 질문 없이 무조건 옮길 때
+    -> rm -rf
+- sudo(superuser do) - 관리자 권한(root) 일시적으로 획득
+- nano(nano editor) - 텍스트 에디터 실행
+
+-----
+> 패키지: 여러 파일이 담겨있는 하나의 상자. ex) 알집, 반디집 등 (압축 파일)   
+패키지 매니저: 패키지의 설치, 변경, 삭제 등 관리를 편리하게 해주는 도구  
+모든 패키지의 저장소 위치를 저장  
+설치된 모든 프로그램의 업데이트를 확인하거나, 필요 없는 프로그램을 제거
+
+### 패키지 관련 명령어
+- brew update: 패키지의 업데이트 여부 확인
+- brew outdated: 업데이트 필요한 파일 조회
+- brew upgrade: 프로그램 업그레이드
+- brew info: 프로그램의 정보 확인
+- brew install: 프로그램 설치
+- brew list: 설치된 프로그램 목록 보기
+- brew uninstall: 프로그램 삭제
+
+-----
+### 사용권한
+![](https://velog.velcdn.com/images/wlsk124/post/a75327ab-84f5-453f-bd06-d5bf703e20aa/image.png)
+
+![](https://velog.velcdn.com/images/wlsk124/post/96636ef5-a5cd-4520-a990-85bfb13a459b/image.png)
+> 용어 정리
+- user: 파일의 소유자 = 파일을 만든 사람
+- group: 여러 user 포함, 많은 사람이 프로젝트가 있을 때,   
+	모든 user를 group에 추가하고, 파일에 group 권한 할당
+- other: 파일을 만들지 않은 다른 모든 user를 의미 = global 권한 설정
+>
+\* chmod: 권한을 변경하는 명령어
+폴더나 파일의 읽기, 쓰기, 실행 권한을 변경
+OS에 로그인 사용자 = 폴더나 파일의 소유자 경우, 명령어 chmod 변경 가능 OS에 로그인한 사용자 ≠ 폴더나 파일의 소유자 경우, 명령어 sudo 이용
+
+### 권한을 변경하는 방식
+
+**1. Symbolic method: 더하기(+), 빼기(-), 할당(=)과 액세서 유형을 표기**
+
+| Access class | Operator | Access Type
+|:------------|:----------:|:----------
+| u (user)	| + (add access) | r (read)
+| g (group)	| - (remove access) | w (write)
+| o (other)	| = (set exact access) | x (execute)
+| a (all: u, g, o)|		|
+
+명령어 chmod 뒤에 변경할 권한을 입력합니다. 액세스 클래스의 u, g, o, a를 변경할 조건에 따라 조합하여 입력하고,  
+연산자와 액세스 타입을 순서대로 입력합니다. 다음은 명령어 chmod 를 입력한 예시와 결과입니다.
+
+```
+chmod g-r file # removes read permission from group
+chmod g+w file # adds write permission to group
+chmod g-x file # removes execute permission from group
+chmod g+x file # adds execute permission to group
+chmod o+r file # adds read permission to other
+chmod o-w file # removes write permission from other
+chmod o+x file # adds execute permission to other
+chmod u+x file # adds execute permission to user
+```
+
+```
+chmod a=rw file  # -rw-rw-rw-
+chmod u= file    # ----rw-rw-
+chmod a+rx file  # -r-xrwxrwx
+chmod go-wx file # -r-xr--r--
+chmod a= file    # ----------
+chmod u+rwx file # -rwx------
+```
+
+**2. Absolute form: rwx를 3 bit로 해석, 숫자 3자리로 권한을 표기**
+
+숫자의 합을 user, group, other 순으로 입력하여 사용합니다.
+
+```
+Read (r) - 4
+Write (w) - 2
+Execute (x) - 1 
+```
+
+
+|#	|Sum	|rwx	|Permission|
+|:--:|:----:|:------:|:--------:|
+|7|	4(r) + 2(w) + 1(x)|	rwx | read, write, execute|
+|6|	4(r) + 2(w) + 0(-)|	rw- |read, write|
+|5|	4(r) + 0(-) + 1(x)|	r-x	|read and execute|
+|4|	4(r) + 0(-) + 0(-)|	r—	|read only|
+|3|	0(-) + 2(w) + 1(x)|	-wx	|write, execute|
+|2|	0(-) + 2(w) + 0(-)|	-w-	|write only|
+|1|	0(-) + 0(-) + 1(x)|	—x	|execute only|
+|0|	0(-) + 0(-) + 0(-)|	—-	|none|

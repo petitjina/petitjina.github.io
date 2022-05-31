@@ -1,0 +1,117 @@
+---
+title: "컴퓨터와 프로그래밍"
+layout: post
+date: 2022.05.12
+headerImage: false
+tag:
+- Concept
+- Back-end
+category: study
+author: Jina Kim
+---
+
+## Computer
+### 컴퓨터의 이해
+세계 2차대전을 배경으로 한 영화 '이미테이션 게임'에서 앨런 튜링이 독일군의 암호를 풀기 위해 튜링머신을 발명.  
+**\* 튜링머신**
+암호를 입력하면 일정한 계산을 통해 해독된 암호를 출력  
+(현대 컴퓨터의 시초)
+
+>#### 컴퓨터란?
+입력받은 데이터를 정해진 규칙대로 처리해서 결과를 저장하고 출력하는 전자 장치.
+
+### 컴퓨터의 구성요소
+**- 소프트웨어(Software)**  
+	: 물리적 형태가 존재하지 않는 컴퓨터의 구성요소  
+	하드웨어가 어떻게 동작해야 하는지 규정해놓은 명령어의 집합  
+
+**1. 시스템 소프트웨어(Sysstem Software)**  
+    : 응용 소프트웨어를 실행하기 위한 플랫폼 역할. 하드웨어와 직접적 소통.  
+    Ex) Mac, Window, 키보드 드라이버, USB 드라이버 등  
+
+**2. 응용 소프트웨어(Application Software)**  
+    : 시스템 소프트웨어를 제외한 모든 소프트웨어. 어플리케이션, 앱, 프로그램  
+
+**- 하드웨어(Hardware)**  
+	: 컴퓨터를 구성하는 기계적 장치  
+	손으로 만질 수 있는 물리적인 장치  
+
+**1. 중앙 처리 장치(Central Processing Unit, CPU)**   
+    : 프로그램의 실행과 데이터 처리 담당  
+    	
+     제어장치  
+     1) CPU의 모든 동작과 데이터 흐름을 통제, 관리  
+     2) 운영체제와 소통하며 컴퓨터의 자원관리  
+     연산장치  
+     1) 프로그램에 기술되어있는 명령어 수행  
+     2) 코드를 실질적으로 수행시키는 장치  
+     레지스터  
+     1) CPU 내에 존재하는 작고 빠른 기억장치  
+     2) 연산장치와 공작에 필요한 데이터들을 임시적으로 보관, 제공  
+
+**2. 기억 장치(Memory Device)**    
+	: CPU 동작에 필요한 데이터를 장기적 또는 단기적으로 보관  
+
+![](https://velog.velcdn.com/images/wlsk124/post/0b8ae41a-9430-4c60-858d-0a1dce1dc101/image.png)
+	
+    보조 기억장치  
+    : 컴퓨터에게 필요한 정보를 반영구적으로 저장.  
+    큰 용량의 데이터 저장 가능, 하지만 데이터를 읽고 쓰는 속도가 느리다.  
+    ex) SSD(Solid State Drive), HDD(Hard Disk Drive)  
+     주 기억장치  
+    : 프로그램을 수행하는 동안 필요한 모든 데이터 저장  
+    작은 용량의 데이터 저장 가능, 하지만 데이터를 읽고 쓰는 속도가 빠르다.  
+    ex) RAM(Random Access Memory), ROM(Read Only Memory)  
+	
+    + 캐시 메모리(Cache Memory)  
+    : CPU가 사용한 관련된 데이터 중 재사용 가능성이 높은 데이터를 미리 불러오는 역할  
+    ex) 데이터=현금, 주기억장치=ATM, 캐시 메모리=지갑
+
+
+**3. 입력장치(Input Device)**    
+	: 사용자로부터 컴퓨터 내부로 데이터를 입력받는 장치  
+ex) 키보드, 마우스, 트릭패드 등   
+
+**4. 출력장치(Output Device)**    
+	: 컴퓨터 내부로부터 사용자에게 알아들을 수 있는 형태로 데이터를 출력하는 장치  
+ex) 모니터, 스피커, 프린터 등  
+
+**5. 시스템 버스(System Bus)**    
+	: CPU를 포함한 각 하드웨어 장치 간의 통로, 장치를 물리적으로 연결한 전선  
+
+-----
+
+## Programming  
+
+### 프로그래밍의 이해  
+: 프로그램을 만드는 과정.  
+특정 목적을 달성하기 위해 설계된 알고리즘을 프로그래밍 언어를 사용하여 코드를 작성하는 과정  
+--> 컴퓨터와 커뮤니케이션  
+### 프로그램  
+: 프로그래밍 결과로 만들어진 것, 컴퓨터 명령문의 집합체.  
+### 프로그래밍 언어  
+: 기계어와 사람이 이해할 수 있는 언어를 매개해 주는 언어.  
+(컴퓨터는 사람이 이해 못하는 기계어를 사용한다.)  
+	 
+    - 컴파일(Compile)  
+    : 프로그래밍 언어로 작성된 소스 코드를 기계어 코드로 변역하는 과정.  
+    - 빌드(Build)  
+    : 작성된 소스 코드를 실행할 수 있는 산출물로 변환 시키는 과정.  
+    컴파일을 마친 코드는 컴퓨터가 이해 할 수 있을 뿐 실행을 못한다.   
+    -> .exe 또는 .msi 확장자를 가진 실행파일로 만들어주는 빌드과정 필요.  
+    (빌드완성=프로그램 실행 완성, 컴파일이 빌드 과정에 속해 있음)  
+	
+### 통합 개발 환경(Intergrated Development Environment, IDE)  
+: IDE는 코드 작성시 사용하는 프로그램.  
+모든 작업을 하나의 프로그램에서 처리 가능(코드 작성, 디버깅, 빌드 등)  
+ex) IntelliJ, Eclipse, Visual Studio Code  
+
+### Client-Server Architecture(2-Teir Architecture)  
+![](https://velog.velcdn.com/images/wlsk124/post/f12852b9-d2ea-424f-93a8-fd45ff94fdfa/image.webp)
+
+### 3-Teir Architecture  
+![](https://velog.velcdn.com/images/wlsk124/post/97e776b3-d628-47b5-a880-d0d65d2e7400/image.webp)
+
+[그림 출처](https://www.guru99.com/dbms-architecture.html)  
+\* Client 화면에 관련: 프론트 엔드(Front-end)  
+	Server 또는 Database 관련: 백 엔드(Back-end)  

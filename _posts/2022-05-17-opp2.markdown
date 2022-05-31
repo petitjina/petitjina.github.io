@@ -1,0 +1,781 @@
+---
+title: "OPP 심화"
+layout: post
+date: 2022.05.17
+headerImage: false
+tag:
+- OPP
+- Concept
+- Back-end
+category: study
+author: Jina Kim
+---
+
+
+## Inheritance
+### 상속(Inheritance)
+
+기존의 클래스를 다른 클래스에 재사용하는 것.  
+상위 클래스의 멤버(필드, 메서드, 이너 클래스)를 하위 클래스에게 재사용(상속).  
+
+-> 하위 클래스의 멤버수는 상위 클래스와 비교시 같거나 많다.  
+
+**상속을 사용하는 이유**  
+코드를 재사용하여 코드의 중복을 제거  
+다형적 표현이 가능하다는 장점이 있습니다.  
+ex) 포도는 포도이다, 포도는 과일이다 - 두가지 표현이 모두 사실이다.  
+
+*** 다양성**  
+하나의 객체가 여러 모양으로 표현될 수 있다는 것
+
+클래스를 상속할 때에는 클래스명 다음에 `extends` 상위 클래스명을 사용  
+
+```java
+class Fruit {
+    String color;
+
+    void juice(){
+        System.out.println("과육을 만들다");
+    };
+    void eat(){
+        System.out.println("먹는다");
+    };
+}
+
+class Grape extends Fruit { // 상속 
+    int numberOfgrapes;
+
+    void wine(){
+        System.out.println("숙성을 시킵니다");
+    };
+}
+
+public class HelloJava {
+    public static void main(String[] args){
+
+        //Fruit 객체 생성
+        Fruit f = new Fruit();
+        f.color = "red";
+        f.juice();
+        f.eat();
+        System.out.println(f.color);
+
+        //Grape 객체 생성
+        Grape g = new Grape();
+        g.color = "purple";
+        g.eat(); // Fruit 클래스에서 상속받아 사용
+        g.wine(); // Grape 개별 기능
+        System.out.println(g.color);
+
+    }
+}
+
+//Output
+과육을 만들다
+먹는다
+red
+먹는다
+숙성을 시킵니다
+purple
+```
+
+**자바의 객체지향 프로그래밍에서는 단일 상속(single inheritance)만 허용**  
+
+### 포함(Composite)
+
+클래스의 멤버로 다른 클래스 타입의 참조변수를 선언하여 재사용하는 것.  
+
+```java
+public class Fruit {
+    int count;
+    String name;
+    Origin origin;
+
+    public Fruit(int count, String name, Origin origin) { //포함관계(재사용)
+        this.count = count;
+        this.name = name;
+        this.origin = origin;
+    }
+    
+class Origin {
+    String city, country;
+
+    public Origin(String city, String country) {
+        this.city = city;
+        this.country = country;
+    }
+}
+
+    void showInfo() {
+        System.out.println(name + " " + count + "개");
+        System.out.println(origin.city+ " " + origin.country);
+    }
+
+    public static void main(String[] args) {
+        Origin origin1 = new Origin("경상북도", "한국");
+        Origin origin2 = new Origin("웰링턴", "뉴질랜드");
+
+        Fruit fruit1 = new Fruit("참외", 5, origin1);
+        Fruit fruit2 = new Fruit("키위", 3, origin2);
+
+        fruit1.showInfo();
+        fruit2.showInfo();
+    }
+}
+
+//Output
+참외 5개
+경상북도 한국
+키위 3개
+웰링턴 뉴질랜드
+```
+
+**상속관계 vs. 포함관계**  
+
+클래스 간의 관계에 따라 구분
+
+상속관계 = ~은 ~이다(IS-A)  
+포함관계 = ~은 ~을 가지고 있다(HAS-A)  
+
+### 매서드 오버라이딩(Method Overriding)
+
+상위 클래스로부터 상속받은 메서드와 동일한 이름의 메서드를 재정의하는 것.  
+
+```java
+class Beverage {
+    void drink() {
+        System.out.println("Have a drink");
+    }
+}
+
+public class Smoothie extends Beverage { 
+    void drink() {
+        System.out.println("Drink a smoothie"); // 메서드 오버라이딩
+    }
+
+    public static void main(String[] args) {
+        Smoothie smoothie = new Smoothie();
+        smoothie.drink();
+    }
+}
+
+//Output
+Drink a smoothie
+```
+
+**메서드 오버라이딩의 조건**   
+
+메서드의 선언부가 상위클래스의 선언부와 일치해야 한다.    
+접근 제어자의 범위가 상위 클래스의 메서드보다 넓거나 같아야 한다.  
+상위 클래스의 메서드보다 많이 선언할 수 없다.
+
+**오버라이딩 사용 이유**
+
+모든 객체를 상위 클래스 하나로 선언하면 배열로 간편하게 관리 가능(편리성)    
+
+```java
+// 배열로 관리
+Beverage[] beverage = new Beverage[] {new Coke(), new Tea(), new Smoothie()};
+for (Beverage beverage : beverages) {
+		beverage.drink();
+}
+
+//Output
+Drink a coke
+Drink a tea
+Drink a smoothie
+```
+### super 키워드와 super()
+
+super 키워드는 상위 클래스의 객체를 의미.  
+super()는 상위 클래스의 생성자를 의미.  
+상위 클래스의 존재를 상정하며 상속 관계를 전제로 한다.  
+
+**super 키워드**  
+
+```java
+public class Super {
+    public static void main(String[] args) {
+        Male n = new Male();
+        n.Number();
+    }
+}
+
+class Female {
+    int num = 2; // super.num
+}
+
+class Male extends Female {
+    int num = 1; // this.num
+
+    void Number() {
+        System.out.println("num = " + num);
+        System.out.println("this.num = " + this.num);
+        System.out.println("super.num = " + super.num);
+    }
+}
+
+//Output
+count = 1
+count = 1
+count = 2
+```
+ 
+하위 클래스가 상위 클래스에서 상속 받을 때 두 개의 같은 이름의 변수를 구분하기 위해 `super`을 사용한다. 만약 super 키워드를 붙이지 않는다면, 자바 컴파일러는 자신이 속한 인스턴스 객체의 멤버를 먼저 참조한다.  
+
+상위 클래스의 변수를 참조해야할 경우, super 키워드를 사용.  
+상위 클래스의 멤버와 자신의 멤버를 구별하는 데 사용된다는 점을 제외하면 this와 super는 기본적으로 같다.  
+
+**super() 메서드**  
+
+```java
+public class SuperMethod {
+    public static void main(String[] args) {
+        Female f = new Female();
+    }
+}
+
+class Male {
+    Male() {
+        System.out.println("남자 클래스 생성자");
+    }
+}
+
+class Female extends Male { 
+    Female() {    
+        super(); // 상위 클래스의 생성자 호출
+        System.out.println("여자 클래스 생성자");
+    }
+}
+
+//Output
+남자 클래스 생성자
+여자 클래스 생성자
+```
+
+`super() 메서드` 또한 this()와 마찬가지로 생성자 안에서만 사용가능.  
+super()가 없는 경우, 컴파일러가 자동으로 super()를 삽입하고, super()는 무조건 첫 줄에 와야 한다.  
+이때 상위클래스에 기본생성자가 없으면 에러가 발생.  
+
+### Object 클래스
+
+자바의 클래스 상속계층도에서 최상위에 위치한 상위클래스.  
+-> 자바의 모든 클래스는 Object 클래스를 상속받는다.  
+
+자바 컴파일러가 아무런 상속을 받지 않는 클래스에 자동으로 `extends Object`를 추가  
+
+**Object 클래스의 메서드**   
+
+|메서드명|반환 타입|주요 내용|
+|:----:|:----:|:----:|
+|toString()|String|객체 정보를 문자열로 출력|
+|equals(Object obj)|boolean|등가 비교 연산(==)과 동일하게 스택 메모리값을 비교|
+|hashCode()|int|객체의 위치정보 관련, Hashtable 또는 HashMap에서 동일 객체여부 판단
+|wait()|void|현재 쓰레드 일시정지|
+|notify()|void|일시정지 중인 쓰레드 재동작|
+
+-----
+
+## Encapsulation
+
+### 캡슐화(Encapsulation)
+
+특정 객체 안에 관련된 속성과 기능의 데이터를 외부로부터 보호하는 것.  
+
+**캡슐화의 목적**  
+데이터 보호   
+내부적으로만 사용되는 데이터에 대한 불필요한 외부 노출을 방지  
+-> **정보 은닉(Data Hiding)**  
+
+### 패키지(Package)
+
+특정한 목적을 공유하는 클래스와 인터페이스의 묶음을 의미.    
+클래스들을 그룹 단위로 묶어 효과적으로 관리하기 위한 목적.  
+-> 하나의 디렉토리, 디렉토리는 하나의 계층구조를 가지고 있다.  
+계층 구조간 구분은 점(.)으로 표현.  
+
+소스 코드의 첫 번째 줄에 반드시 `package 패키지명` 표시   
+패키지 선언이 없으면 이름없는 패키지에 속한다.  
+
+**자바에 기본적으로 포함되어있는 대표적인 패키지**   
+1. 기본 클래스들을 모아 놓은 `java.lang`  
+2. 확장 클래스를 묶어 놓은 `java.util`  
+3. 자바의 입출력과 관련된 클래스를 묶어놓은 `java.io`와 `java.nio`  
+
+ex) String 클래스의 실제 이름 = `java.lang.String`  
+java.lang = 패키지명, 점(.)을 사용하여 디렉토리의 계층구조 표시.  
+
+**Import문**  
+다른 패키지 내의 클래스를 사용하기 위해 사용.  
+패키지 구문과 클래스문 사이에 작성.  
+
+```java
+package packageexample.test1; //패키지 생성, 구문 포함. 패키지가 없으면 구문 필요 X
+
+public class ImportExample {
+		public int num = 5;
+		public void print() {
+			System.out.println("Import문 테스트")
+}
+```
+
+**import문을 사용하지 않는 경우**  
+패키지명을 모두 포함시켜서 클래스의 패키지에 대한 정보를 제공해야한다.  
+
+```java
+// import문을 사용하지 않는 경우
+package packageexample.test2; // 다른 패키지 클래스 사용방법
+
+public class PackageImport {
+		public static void main(String[] args) {
+			packageexample.test1.ImportExample example = new packageexample.test1.ImportExample();
+		}
+}
+```
+
+**import문을 사용하는 경우**  
+`import 키워드 + 패키지명과 사용할 클래스명` 을 입력.  
+같은 패키지에서 여러 클래스를 사용할 때는 `import 패키지명.*` 을 입력.  
+-> 해당 패키지의 모든 클래스를 패키지명 없이 사용가능
+
+```java
+// import문을 사용하는 경우
+package packageexample.test3; 
+
+import packageexample.test1.ImportExample // import문 작성
+
+public class PackageImport {
+		public static void main(String[] args) {
+			ImportExample x = new ImportExample();
+		}
+}
+```
+
+### 접근 제어자(Access Modifier)
+
+**제어자(Modifier)**  
+클래스, 필드, 메서드, 생성자 등에 부가적인 의미를 부여하는 키워드를 의미.  
+
+|접근 제어자|public, protected, (default), private|
+|:-------:|:-------:|
+|기타 제어자	|static, final, abstract, native, transient, synchronized|
+
+**각 대상에 대해서 접근 제어자는 단 한번만 사용할 수 있다.**  
+
+**접근 제어자(Access Modifier)**  
+
+클래스 외부로의 불필요한 데이터 노출을 방지(data hiding).  
+외부로부터 데이터가 변경되지 않도록 방어.  
+-> 데이터 보호  
+
+|접근 제어자|접근 제한 범위|
+|:----:|:----:|
+|private|동일 클래스에서만 접근 가능|
+|default|동일 패키지에서만 접근 가능|
+|protected|동일 패키지와 다른 패키지의 하위 클래스에서 접근 가능|
+|public|접근 제한 없음|
+
+**public > protected > default > private**   
+변수명 앞에 아무런 접근제어자가 없을 경우, 자동으로 default로 처리.  
+
+```java
+package accesstest1; 
+
+class Test1 { // Test1 클래스의 접근 제어자는 default 
+    public static void main(String[] args) {
+        Fruit f = new Fruit();
+
+		System.out.println(f.a); // 동일 클래스가 아니기 때문에 에러발생!
+        System.out.println(f.b);
+        System.out.println(f.c);
+        System.out.println(f.d);
+    }
+}
+
+public class Apple { // Apple 클래스의 접근 제어자는 public
+    private int a = 1; 
+            int b = 2;
+    protected int c = 3;
+    public int d = 4;
+// a,b,c,d에 각각 private, default, protected, public 접근제어자 지정
+
+		public void printEach() { // 동일 클래스이기 때문에 에러발생하지 않음 
+        System.out.println(a);
+        System.out.println(b);
+        System.out.println(c);
+        System.out.println(d);
+    }
+}
+
+//Output
+2
+3
+4
+```
+**Apple 클래스**  
+-> a,b,c,d 모두 접근 가능.  
+동일한 패키지의 동일한 클래스 내에 있기 때문에 private도 접근 가능.  
+**Test1 클래스**  
+-> private 접근제어자가 있는 a는 접근이 불가. (에러가 발생)
+
+```java
+// 다른 패키지에 있는 경우
+package accesstest2; 
+
+import accesstest1.Apple;
+
+public class Red extends accesstest1.Apple { // Apple 클래스를 상속
+    public void printEach() {
+        System.out.println(a); // 에러 발생
+        System.out.println(b); // 에러 발생
+        System.out.println(c); // 다른 패키지의 하위 클래스
+        System.out.println(d);
+    }
+}
+
+class Test2 {
+    public static void main(String[] args) {
+        Apple apple = new Apple();
+        System.out.println(apple.a); // 에러 발생
+        System.out.println(apple.b); // 에러 발생
+        System.out.println(apple.c); // 에러 발생
+        System.out.println(apple.d);
+    }
+}
+
+//Output
+4
+```
+
+
+### getter와 setter 메서드
+
+객체지향의 캡슐화의 목적을 달성하면서도 데이터의 변경이 필요한 경우 사용.  
+(private 제어자가 포함된 객체의 변수의 데이터 값을 추가, 수정하고 싶을 경우)  
+
+**사용방법**  
+`setter 메서드`   
+외부에서 메서드에 접근하여 조건에 맞을 경우 데이터 값을 변경 가능하게 해줌.  
+일반적으로 메서드명에 set-을 붙여서 정의.  
+`getter 메서드`   
+특정 데이터를 읽어오는 데 사용하는 메서드입니다.   
+get-을 메서드명 앞에 붙여서 사용합니다.  
+
+ ```java
+public class GetterSetter {
+    public static void main(String[] args) {
+        coffee c = new Coffee();
+        c.setmenu("라떼");
+        c.setshot(2);
+
+        String menu = c.getMenu();
+        System.out.println("메뉴명은 " + name);
+        int shot = c.getShot();
+        System.out.println(shot + "샷 추가");
+    }
+}
+
+class Coffee {
+    private String menu; // 외부로부터 접근 불가
+    private int shot;
+
+    public String getMenu() { //멤버변수의 값 
+        return menu;
+    }
+
+    public void setMenu(String menu) { // 멤버변수의 값 변경
+        this.menu = menu;
+    }
+
+    public int getShot() {
+        return shot;
+    }
+
+    public void setShot(int shot) {
+        if(shot < 0) return;
+        this.shot = shot;
+    }
+}
+
+//Output
+메뉴명은 라떼
+2샷 추가
+```
+
+-----
+## Polymorphism
+
+### 다형성(Polymorphism)
+한 타입의 참조변수를 통해 여러 타입의 객체를 참조할 수 있도록 만든 것.  
+상위 클래스 타입의 참조변수를 통해 하위 클래스의 객체를 참조할 수 있도록 허용한 것.   
+
+```java
+//참조변수의 다형성 예시
+class Fruit {
+    public void fruitInfo() {
+        System.out.println("과일입니다");
+    }
+}
+
+class Apple extends Fruit {
+    
+    public void fruitInfo() {
+        System.out.println("사과입니다");
+    }
+}
+
+public class Polymorphismtstest {
+
+    public static void main(String[] args) {
+        Fruit fruit = new Fruit(); // 객체 타입과 참조변수 타입의 일치
+        Fruit apple = new Apple(); // 객체 타입과 참조변수 타입의 불일치
+        Apple apple1 = new Fruit(); // 에러 발생
+
+        fruit.fruitInfo();
+        apple.fruitInfo();
+    }
+}
+
+//Output
+과일입니다
+사과입니다
+```
+
+상위 클래스의 타입(Fruit)으로 하위 클래스 타입(Apple)의 객체를 참조 가능.  
+하지만 반대는 성립되지 않는다.  
+-> 실제 객체인 Fruit의 멤버 개수보다 참조변수 apple1이 사용할 수 있는 멤버 개수가 더 많기 때문    
+
+**다양성의 장점**  
+
+1. 코드의 중복을 줄여준다.  
+-> 메서드 오버라이딩과 메서드 오버로딩 또한 다형성의 예시   
+2. 매번 다른 이름의 메서드명을 만드는 데 걸리는 시간을 절약   
+3. 보일러플레이트 코드(Boilerplate code, 반복적으로 사용하는 비슷한 코드) 최소화   
+
+### 참조변수의 타입 변환
+
+**타입변환 조건**  
+
+상속관계에 있는 상위 클래스 - 하위 클래스 사이에만 타입 변환이 가능  
+하위 클래스에서 상위 클래스 타입 변환(업캐스팅)은 형변환 연산자'()' 생략 가능.  
+상위 클래스에서 하위 클래스 타입 변환(다운캐스팅)은 형변환 연산자'()' 명시.  
+
+```java
+//참조변수의 타입변환 예시
+class Fruit {
+    public void Eat() {
+        System.out.println("먹을 수 있습니다");
+    }
+}
+class Apple extends Fruit {
+    
+    public void Color() {
+        System.out.println("빨간색 입니다");
+    }
+}
+class Banana extends Fruit {
+    
+    public void Taste() {
+        System.out.println("달달합니다");
+    }
+}
+public class Test {
+    public static void main(String[] args) {
+    	Apple apple = new Apple();
+        Fruit fruit = Vehicle apple; // ()생략 가능
+        Apple apple1 = (Apple) fruit; // ()생략 불가능
+        Banana banana = (Banana) apple; // 에러 발생 
+        // -> banana와 apple은 상속관계가 아니다.
+    }
+}
+```
+
+### instanceof 연산자
+
+참조변수의 타입 변환이 가능한 지 boolean 타입으로 확인하는 자바의 문법요소.  
+프로젝트 규모가 크면, 각각의 클래스 정보를 확인하는 게 어렵다.  
+-> 이를 해결하기 위해 `instanceof` 연산자를 사용.  
+
+**사용법**  
+```
+참조변수 instanceOf 타입
+```
+
+```java
+public class InstanceOfExample {
+    public static void main(String[] args) {
+        Animal animal = new Animal();
+        System.out.println(animal instanceof Object); //true
+        System.out.println(animal instanceof Animal); //true
+        System.out.println(animal instanceof Dog); //false
+
+        Animal cat = new Cat();
+        System.out.println(cat instanceof Object); //true
+        System.out.println(cat instanceof Animal); //true
+        System.out.println(cat instanceof Cat); //true
+        System.out.println(cat instanceof Dog); //false
+    }
+}
+
+class Animal {};
+class Dog extends Animal{};
+class Cat extends Animal{};
+```
+
+
+-----
+## Abstraction
+### 추상화(Abstraction)
+
+객체의 공통적인 속성과 기능을 추출하여 정의하는 것.   
+
+공통적인 속성과 기능을 정의하고 하위 클래스를 생성할 수 있고, 반대로 하위 클래스들의 공통성을 모아 상위 클래스를 정의할 수 있다.
+
+### abstract 제어자
+
+`abstract 제어자` - 기타 제어자
+
+주로 클래스와 메서드를 형용하는 키워드로 사용.  
+메서드 앞에 붙은 경우 - 추상 메서드(abstract method)  
+클래스 앞에 붙은 경우 - 추상 클래스(abstract class)  
+
+**추상 메서드가 존재하는 해당 클래스는 자동으로 추상 클래스가 된다.**  
+
+```
+abstract class Example { // 추상 메서드가 포함된 추상 클래스
+	abstract void start(); // 메서드 바디가 없는 추상 메서드
+}
+```
+
+**abstract의 가장 핵심적인 개념은 ‘미완성'**  
+
+추상 메서드는 메서드의 시그니처만 있고 바디가 없는 메서드를 의미.  
+
+### 추상 클래스(Abstract class)
+
+**미완성 클래스(추상 클래스)를 만드는 이유**  
+상속 관계에 있어 새로운 클래스를 작성하는데 매우 유용  
+-> 메서드의 내용이 상속을 받는 클래스에 따라 달라지기 때문에 상위 클래스에서 선언부만 작성하고, 구체적인 내용은 하위 클래스에서 구현(오버라이딩)하도록 비워두면 유연하게 대응할 수 있다.  
+
+```java
+public abstract class Food {
+	public int kcal;
+	public abstract void kind();
+}
+
+class Sandwich extends food {
+	public Sandwich() {
+		this.kcal = 423;
+	}
+
+	public void kind() { // 메서드 오버라이딩 
+		System.out.println("bread");
+	}
+}
+
+class SandwichEx {       
+    public static void main(String[] args) throws Exception {
+       Food sandwich = new Sandwich();
+       sandwich.kind();
+    }
+ }
+
+//Output
+bread
+```
+
+Food 클래스 -> abstract 키워드를 사용한 kind() 메서드(추상 메서드) 선언  
+-> Food 클래스 = 추상 클래스   
+
+### final 키워드
+
+필드, 지역 변수, 클래스 앞에 위치할 수 있고, 위치에 따라 의미가 조금씩 다르다.  
+
+|위치|의미|
+|:----:|:---:|
+|클래스|변경 또는 확장 불가능한 클래스, 상속 불가|
+|메서드|오버라이딩 불가|
+|변수|값 변경이 불가한 상수|
+
+```java
+final class Example { // 확장/상속 불가능한 클래스
+	final int num = 1; // 변경되지 않는 상수
+
+	final void getNum() { // 오버라이딩 불가한 메서드
+		final int localVar = a; // 상수
+		return a;
+	}
+}
+```
+
+### 인터페이스(Interface)
+
+두 대상 간의 연결 및 소통을 돕는 중간 다리 역할을 수행  
+
+인터페이스는 추상 메서드와 상수만 멤버로 가질 수 있다.  
+-> 다른 요소는 포함될 수 없다.  
+
+**인터페이스 작성 특징**  
+class 키워드 대신 interface 키워드를 사용.  
+내부의 모든 필드가 public static final로 정의.  
+-> static과 default 메서드 외 모든 메서드가 public abstract로 정의.  
+
+```java
+public interface Example {
+    public static final int num1 =  1; // 인터페이스 인스턴스 변수 정의
+    final int num2 = 2; // public static 생략 가능
+    static int num3 = 3; // public & final 생략 가능
+
+    public abstract String getNum();
+		void call() //public abstract 생략 가능
+}
+```
+
+**인터페이스의 구현**  
+인터페이스가 가진 모든 추상 메서드를 해당 클래스 내에서 모두 오버라이딩 하는 것.  
+`implements 키워드` 사용  
+
+```java
+class ExampleClass implements Examplee { ... }
+```
+클래스 간의 상속은 단 하나만 가능 하지만 인터페이스는 다중적 구현이 가능하다.  
+
+```java
+interface Example1 {public abstract void exone();} // 인터페이스 선언. public abstract 생략 가능.
+interface Example2 {void extwo();}
+abstract class Example3 {public abstract void exthree();} // 추상 클래스
+
+class One implements Example1, Example2 { // 인터페이스 다중 구현
+    public void exone(){ //메서드 오버라이딩
+        System.out.println("예시1 입니다"); 
+    }
+    public void extwo(){ //메서드 오버라이딩
+        System.out.println("예시2 입니다");
+    }
+}
+class Two extends Example3 implements Example2 { // 인터페이스 다중 구현
+    public void extwo(){ //메서드 오버라이딩
+        System.out.println("예시2 입니다"); 
+    }
+    public void exthree(){ //메서드 오버라이딩
+        System.out.println("예시3 입니다");
+    }
+}
+public class MultiExample {
+    public static void main(String[] args) {
+        One one = new One();
+        Two two = new Two();
+
+        one.exone();
+        one.extwo();
+        two.extwo();
+        two.exthree();
+    }
+}
+
+//Output
+예시1 입니다
+예시2 입니다
+예시2 입니다
+예시3 입니다
+```

@@ -1,0 +1,218 @@
+---
+title: "반복문"
+layout: post
+date: 2022.06.01
+tag:
+- Java
+- Algorithm
+- Back-end
+headerImage: true
+projects: true
+hidden: true 
+category: project
+author: Jina Kim
+externalLink: false
+---
+
+## 홀수 구분
+### 문제  
+- 수를 입력받아 홀수인지 여부를 리턴  
+
+### 풀이  
+```java
+public class Blogging {
+	public boolean Odd(int num) {
+    if(num < 0){
+   	 num = -num;
+   	 }
+    while(num > 0){
+     if(num == 1) {
+    	return true;
+     } 
+     num -= 2;
+    }
+    return false;
+   }
+ }
+```
+num이 양수면 반복문은 계속 돌아간다.  
+짝수가 들어왔을 때, `num - 2`를 계속 반복하면 0이 되고 반복문은 종료되며 false를 반환   
+홀수가 들어왔을 때, `num - 2`를 계속 반복하면 1이 되고 if문을 통해 true를 리턴  
+
+-----
+## 홀수로 구성된 문자열
+### 문제  
+- 1을 포함하여 입력받은 num개의 홀수로 구성된 문자열 리턴  
+
+### 풀이  
+```java
+public class Blogging {
+	public String oddString(int num) {
+    String result = "";
+    int odd = 1; // 홀수를 나타내기 위한 변수
+    
+    int i = 0;
+	while (i < num) {
+		result += odd;
+		odd += 2;
+		i++;
+	}
+	return result;
+    }
+ }
+```
+**나의 오답**  
+```
+int i = 0;
+while (i < num) {
+	odd += 2;
+	result += odd;
+	i++;
+}
+```  
+문제점
+반복문 안에서 `odd += 2`를 먼저 해서 result에 숫자 1이 담기지 못 했다.   
+처음 `int i = 0`으로 선언해서 반복문이 1번 더 돌았다.  
+
+-----
+## 3의 배수
+### 문제  
+- 1부터 입력받은 수까지의 수 중 3의 배수 린턴  
+(String 타입 리턴, 값이 없을 경우 빈 문자열 리턴)  
+
+### 풀이  
+```java
+public class Blogging {
+	public String multipleString(int num) {
+    String result = "";
+    for(int i = 3; i <=num; i+=3){
+      result += i;
+    }
+    return result;
+    }
+ }
+```
+**나의 오답**   
+```
+if(num % 3 != 0)  return "";
+
+int multiple = 3;
+for(int i = 0; i < num; i++){
+	result += multiple;
+    multiple += 3;
+}
+```
+문제점  
+3의 배수가 없을 경우 빈문자열을 리턴하는 과정에서 문제 이해가 부족했다.  
+-> num은 입력받은 수 이므로 3의 배수가 num이 아니라 1~num 사이다. 
+반복문 작성에서 문제가 있었다.  
+-> 1~num 사이의 3의 배수가 아닌 3의 배수를 num번 출력했다.
+
+-----
+## 두 문자 사이 2의 배수의 개수
+### 문제  
+- 두개의 수를 입력받아 두 수를 포함한 사이의 수 중 2의 배수의 개수 리턴
+(0은 2의 배수가 아니고 num1과 num2의 크기는 알 수 없다)
+
+### 풀이  
+```java
+public class Blogging {
+	public int multipleString(int num1, int num2) {
+    int result = 0;
+	int start = num1;
+	int end = num2;
+        
+	if (num1 > num2) {
+		start = num2;
+		end = num1;
+ 	} if (start == 0) {
+		start = 1;
+	}
+    for (int i = start; i <= end; i++) {
+	if (i % 2 == 0) {
+		result += 1;
+	 }
+	}
+     return result;
+    }
+ }
+```
+num1과 num2 사이의 관계를 설정(숫자 크기)  
+int 타입의 start는 num1과 num2 중 더 작은 수이고 end는 큰 수이다.  
+0은 짝수가 아니라고 가정했기에 start가 0일 경우, start에 1을 대입한다.   
+
+-----
+## 문자A -> 문자B
+### 문제  
+- 입력받은 문자열에 특정문자(from)가 다른 문자(to)로 바뀐 문자열 리턴  
+
+
+### 풀이  
+```java
+public class Blogging {
+	public String changeChar(String str, char from, char to) {
+    String result = "";
+    for(int i = 0; i < str.length(); i++){
+     if(str.charAt(i) == from){
+     	result += to;
+     } else {
+     	result += str. charAt(i);
+      }
+     }
+     return result;
+    }
+ }
+```
+**나의 오답**  
+
+else문을 작성 하지 않아서 바뀐 문자만 입력되었다.  
+ex) "hello", 'l', 'k' -> 리턴 된 값(오답) "kk" / 리턴해야 하는 값 "hekko"
+
+-----
+## Double for loof
+### 문제  
+- 입력받은 문자열의 문자를 가지고 만들 수 있는 길이 2의 문자열 리턴
+(빈 문자열을 입력받은 경우 빈 문자열을 리턴, 문자열 사이의 구분은 `,`한다.)  
+- 입력받은 문자열을 처음부터 한 글자를 추가할 때마다 부분적으로 완성된 문자열 이어붙인 문자열을 리턴 (빈 문자열을 입력받은 경우 빈 문자열을 리턴)  
+**예시 )**  
+입력받은 문자열 "abc" -> 출력 "aababc"  
+설명: "a" + "ab" + "abc"
+
+### 풀이 1  
+```java
+public class Blogging {
+	public String makeLengthTwo(String str) {
+    String result = "";
+    if(str. isEmpty()){
+   		return "";
+    }
+    for(int i = 0; i < str.length(); i++){
+     for(int j = 0; j < str.length(); j++){
+     	result = result + str.charAt(i) + str.charAt(j) + ",";
+     }
+    }
+    return result.substring(0,result.length() - 1);
+   }
+ }
+```
+`substring() 메서드` 는 문자열을 자르는 메서드이다. 
+-> 변수명.substring(index): 입력한 index부터 index 끝까지 자르기  
+-> 변수명.substring(index1, index2): index1부터 index2 전까지 자르기   
+
+마지막 `,`를 지워주기 위해 문자열 자르기를 선택  
+
+### 풀이 2  
+```java
+public class Blogging {
+	public String combine(String str) {
+    String result = "";
+    for(int i =0; i < str.length(); i++){
+    	for(int j = 0; j <= i; j++) {
+          result += str.charAt(j);
+        }
+    }
+    return result;
+   }
+ }
+```
+이중 반복문을 사용해서 문자를 하나씩 추가  

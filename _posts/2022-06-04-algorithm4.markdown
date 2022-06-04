@@ -1,0 +1,172 @@
+---
+title: "[알고리즘] 배열"
+layout: post
+date: 2022.06.04
+tag:
+- Java
+- Algorithm
+- Back-end
+headerImage: true
+projects: true
+hidden: true 
+category: project
+author: Jina Kim
+externalLink: false
+---
+
+
+## 배열의 가장 큰 요소
+### 문제  
+- 입력받은 배열 중 가장 큰 요소를 리턴   
+
+### 풀이  
+```java
+public class Blogging {
+	public int largestElement(int[] arr) {
+    int result = arr[0];
+    for(int i = 0; i < arr.length; i++){
+    	if(arr[i] > result){
+        	result = arr[i];
+        }
+    }
+    return result;
+   }
+ }
+```
+arr[]을 인덱스 0부터 끝까지 값을 비교해 result에 담는다.  
+arr[i]가 result보다 크면 arr[i] 값을 result에 담고 비교하는 걸 반복한다.  
+
+
+-----
+## 짝수 요소 배열
+### 문제  
+- 입력받은 배열 중 짝수만 요소로 갖는 배열을 리턴  
+
+### 풀이  
+```java
+public class Blogging {
+	public int[] evenArray(int[] arr) {
+    int[] result = new int[]{};
+    for(int i = 0; i < arr.length; i++){
+    	if(arr[i] % 2 == 0){
+        	result  = Arrays.copyOf(result, result.length + 1);
+            result[result.length - 1] = arr[i];
+        }
+    }
+    return result;
+   }
+ }
+```
+배열을 복사해 주는 인덱스 -> `Arrays.copyOf(원본배열, 복사할 길이)`    
+
+배열을 인덱스에 하나 더 추가 할 만큼 복사 후, 추가 된 공간에 arr[i]를 담는다.   
+
+**나의 오답**   
+```
+if(arr[i] % 2 == 0){
+	result = new int[]{arr[i]};
+}
+```
+문제점  
+메서드의 사용을 몰랐다.   
+선언에 대한 지식이 부족했다.   
+-> `new int[]{arr[i]}`는 result 배열의 길이가 1인 배열로 고정된 상태이다.  
+
+-----
+## System.arraycopy()
+### 문제  
+- 입력받은 배열에 입력받은 요소를 맨 앞에 추가하고 해당 배열을 리턴  
+
+### 풀이  
+```java
+public class Blogging {
+	public int[] front(int[] arr, int el) {
+    int[] result = new int[arr.length + 1];
+    result[0] = el;
+    System.arraycopy(arr, 0, result, 1, arr.length);
+    
+    return result;
+    }
+ }
+```
+배열을 복사하기 위한 메서드   
+-> `System.arraycopy(src,srcPos,dest,destPos,length)`  
+src- : 복사하고자 하는 원본 소스   
+-Pos : 사용할 인덱스 위치 (읽어올 위치 또는 받을 위치)    
+dest- : 복사하려는 대상 소스  
+length : 원본에서 복사본까지 읽어올 길이    
+
+-----
+## 전화번호
+### 문제  
+- 전화번호를 배열로 입력받아 전화번호 형식으로 리턴  
+(배열의 길이가 8일 경우, 앞에 `[0,1,0]`이 있다고 가정)  
+(전화번호 형식 -  (010)1234-5678)  
+
+### 풀이  
+```java
+public class Blogging {
+	public String phoneNumber(int[] arr) {
+    String head = "010";
+    String bodyArr = Arrays.toString(Arrays.copyOfRange(arr, arr.length - 8, arr.length - 4));
+    String body = bodyArr
+            .replaceAll(" ", "")
+            .replaceAll(",", "")
+            .replace("[", "")
+            .replace("]", "");
+    String tailArr = Arrays.toString(Arrays.copyOfRange(arr, arr.length - 4, arr.length));
+    String tail = tailArr
+            .replaceAll(" ", "")
+            .replaceAll(",", "")
+            .replace("[", "")
+            .replace("]", "");
+
+    if (len == 11) {
+      String headArr = Arrays.toString(Arrays.copyOfRange(arr, 0, 3));
+      head = headArr
+              .replaceAll(" ", "")
+              .replaceAll(",", "")
+              .replace("[", "")
+              .replace("]", "");
+    }
+    return String.format("(%s)%s-%s", head, body, tail);
+    }
+ }
+```
+문자열을 치환하는 메서드 -> `변수명.replace(기존문자, 대체문자)`,  
+`replaceAll(정규식 또는 기존문자, 대체문자)`   
+문자열 형식을 지정하는 메서드 -> `String.format()` `%` 문자와 함께 사용   
+배열을 문자열 형태로 만드는 메서드 -> `Arrays.toString`   
+
+입력 받은 배열을 나눠 각 부분을 문자열로 변환 해준다.   
+변환 된 문자열을 전화번호 형식으로 만들어 주기 위해 raplace메서드를 사용.   
+나눠 준 부분을 하나로 합쳐준 후 리턴.  
+
+-----
+## 피보나치
+### 문제  
+- 입력받은 num번째까지 총 `num + 1`개의 피보나치 수열을 리턴   
+(피보나치 수열은 0번부터 시작)  
+
+### 풀이  
+```java
+public class Blogging {
+	public int[] fibonacci(int num) {
+    int[] result = new int[num + 1];
+    for(int i = 0; i <= num; i++){
+    	if(i <= 1) {
+    		result[i] = i;
+    	} else {
+        	result[i] = result[i-1] + result[i-2];
+        }
+    }
+    return result;
+   }
+ }
+```
+리턴해야 할 배열은 `num + 1`이기 때문에 result배열 길이를 `num + 1`로 선언   
+반복문을 돌려 피보나치 수를 정의해 준다.  
+피보나치 수열 정의 : `num - 2`+`num - 1` = `num`  
+ 
+
+ 

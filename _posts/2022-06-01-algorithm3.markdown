@@ -1,5 +1,5 @@
 ---
-title: "반복문"
+title: "[알고리즘] 반복문"
 layout: post
 date: 2022.06.01
 tag:

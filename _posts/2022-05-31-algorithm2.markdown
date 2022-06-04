@@ -1,5 +1,5 @@
 ---
-title: "조건문"
+title: "[알고리즘] 조건문"
 layout: post
 date: 2022.05.31
 tag:

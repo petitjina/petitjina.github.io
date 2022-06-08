@@ -1,0 +1,99 @@
+
+## Deep Copy(깊은 복사)
+### 문제  
+- 입력받은 ArrayList의 마지막 요소가 제거된 새로운 ArrayList을 리턴   
+(빈 문자열을 입력받은 경우 null 리턴)
+
+### 풀이  
+```java
+public class Blogging {
+	public ArrayList<Integer> removeElement(ArrayList<Integer> arrayList) {
+
+   }
+ }
+``` 
+
+
+-----
+## 요소의 합
+### 문제  
+- 입력받은 ArrayList의 모든 요소를 더한 값을 리턴   
+(빈 ArrayList를 입력받은 경우 0을 리턴, Iterator로 요소를 순회하기)  
+
+### 풀이  
+```java
+public class Blogging {
+	public int sumAll(ArrayList<Integer> arrayList) {
+   
+   }
+ }
+```
+   
+
+**나의 오답**   
+
+
+문제점  
+
+-----
+## 요소 중 짝수의 합
+### 문제  
+- 입력받은 HashMap의 모든 짝수 값(Value)을 더한 값을 리턴  
+
+### 풀이  
+```java
+public class Blogging {
+	public int evenSum(HashMap<Character, Integer> hashMap) {
+   
+   }
+ }
+```
+   
+
+**나의 오답**   
+
+
+문제점  
+
+-----
+## HashMap 요소가 List일 경우
+### 문제  
+- 입력받은 HashMap과 키에 해당하는 값이 List인 경우, 인덱스에 해당 요소를 리턴   
+(index가 List의 범위를 벗어나거나 key가 존재하지 않을 경우 null 리턴)     
+
+### 풀이  
+```java
+public class Blogging {
+	public String elementOfList(HashMap<String, List<String>> hashMap, String key, int index) {
+   
+   }
+ }
+```
+   
+
+**나의 오답**   
+
+
+문제점  
+
+-----
+## 문자의 개수
+### 문제  
+- 입력받은 문자열을 구성하는 각 문자를 키로 갖는 HashMap을 리턴  
+(키의 값은 해당 문자가 문자열에서 등장하는 횟수를 의미하는 int 타입의 값)  
+(빈 문자열을 입력받은 경우 null 리턴)  
+
+### 풀이  
+```java
+public class Blogging {
+	public HashMap<Character, Integer> characterCount(String str) {
+   
+   }
+ }
+```
+   
+
+**나의 오답**   
+
+
+문제점  

@@ -1,0 +1,157 @@
+---
+title: "[알고리즘] 컬렉션"
+layout: post
+date: 2022.06.10
+tag:
+- Java
+- Algorithm
+- Back-end
+headerImage: true
+projects: true
+hidden: true 
+category: project
+author: Jina Kim
+externalLink: false
+---
+
+## Deep Copy(깊은 복사)
+### 문제  
+- 입력받은 ArrayList의 마지막 요소가 제거된 새로운 ArrayList을 리턴   
+(빈 문자열을 입력받은 경우 null 리턴, 깊은 복사가 이루어져야 한다.)  
+
+### 풀이  
+```java
+public class Blogging {
+	public ArrayList<Integer> removeElement(ArrayList<Integer> arrayList) {
+    if(arrayList.size == 0) return null;
+    ArrayList<Integer> result = new ArrayList<>(arrayList);
+    result.remove(result.size() - 1);
+    return result;
+   }
+ }
+``` 
+깊은 복사(Deep copy)는 '실제 값'을 새로운 메모리 공간에 복사하는 것.  
+얕은 복사(Shallow copy)는 '주소 값'을 복사 - 참조하고 있는 실제 값은 같다.   
+-> 얕은 복사 = 복사된 배열이나 원본 배열이 변경될 때, 함께 변경 된다.  
+-> 깊은 복사 = 복사된 배열이나 원본 배열이 변경될 때, 서로 영향을 끼치지 않는다.  
+**나의 오답**   
+```
+ArrayList<Integer> result = new ArrayList<>(arrayList);
+result = arrayList;
+```
+문제점  
+대입 연산자인 연산자 `=`는 얕은 복사를 수행한다는 사실을 몰랐다.  
+깊은 복사와 얕은 복사에 대한 이해 부족.  
+
+-----
+## 요소의 합
+### 문제  
+- 입력받은 ArrayList의 모든 요소를 더한 값을 리턴   
+(빈 ArrayList를 입력받은 경우 0을 리턴, Iterator로 요소를 순회하기)  
+
+### 풀이  
+```java
+public class Blogging {
+	public int sumAll(ArrayList<Integer> arrayList) {
+   if(arrayList.size == 0) return null;
+   Iterator<Integer> iterator = arrayList.iterator();
+   int sum = 0;
+   while(iterator.hasNext()){
+   	int a = iterator.next();
+    sum += a;
+    }
+    return sum;
+  }
+ }
+```
+`Iterator` = 컬렉션에 저장된 요소를 읽어오는 방법.  
+`hasNext()` 메서드는 가져올 객체가 있으면 true, 없으면 false을 리턴한다.  
+`next()` 메서드는 다음 객체를 하나 가져온다.  
+가져온 객체들을 sum으로 반복해서 하나씩 더해준다.  
+-> `for each문`으로도 풀 수 있다.  
+
+-----
+## 요소 중 짝수의 합
+### 문제  
+- 입력받은 HashMap의 모든 짝수 값(Value)을 더한 값을 리턴  
+
+### 풀이  
+```java
+public class Blogging {
+	public int evenSum(HashMap<Character, Integer> hashMap) {
+   int result = 0;
+   for (Character key : hashMap.keySet()) {
+   	Integer value = hashMap.get(key);
+    if (value % 2 == 0) {
+    	result += value;
+      }
+    }
+    return result;
+  }
+ }
+```
+`for each`문을 사용 -> `keySet()` 메서드는 모든 키를 set 객체에 담은 것.  
+hashMap에서 Integer 타입의 값을 넣어 값이 2의 배수일 경우 result에 더한다.  
+
+-----
+## HashMap 요소가 List일 경우
+### 문제  
+- 입력받은 HashMap과 키에 해당하는 값이 List인 경우, 인덱스에 해당 요소를 리턴   
+(index가 List의 범위를 벗어나거나 key가 존재하지 않을 경우 null 리턴)     
+
+### 풀이  
+```java
+public class Blogging {
+	public String elementOfList(HashMap<String, List<String>> hashMap, String key, int index) {
+   if (!hashMap.containsKey(key)) {
+      return null;
+    }
+    List<String> result = hashMap.get(key);
+    if (index < 0 || index >= result.size()) {
+      return null;
+    }
+    return result.get(index);
+   }
+ }
+```
+   
+**나의 오답**   
+```
+List<String> result = new List<>();
+result.add(hashMap.get(key));
+```
+
+문제점  
+List는 클래스가 아닌 인터페이스로 추상적이기 때문에 객체 생성이 안된다.  
+따라서 `new` 생성자를 사용할 수 없다.  
+
+-----
+## 문자의 개수
+### 문제  
+- 입력받은 문자열을 구성하는 각 문자를 키로 갖는 HashMap을 리턴  
+(키의 값은 해당 문자가 문자열에서 등장하는 횟수를 의미하는 int 타입의 값)  
+(빈 문자열을 입력받은 경우 null 리턴)  
+
+### 풀이  
+```java
+public class Blogging {
+	public HashMap<Character, Integer> characterCount(String str) {
+   HashMap<Character, Integer> result = new HashMap<>();
+   if(str.length() == 0) return null;
+
+   for (int i = 0; i < str.length(); i++) {
+   	if (result.containsKey(str.charAt(i))) {
+    	int value = result.get(str.charAt(i));
+        result.put(str.charAt(i), value + 1); 
+   } else {
+    	result.put(str.charAt(i), 1);
+       }
+     }
+   return result;
+  }
+ }
+```
+결과 값을 담을 HashMap result를 생성한다.  
+반복문을 돌려 `str.charAt(i)`가 result의 key(키)로 존재한다면, `get()`메서드를 사용해 value(값)을 불러오고 `int value`에 대입한다.  
+`put(key, value)` 메서드를 통해 result에 키와 값을 추가한다.  
+-> `value+1`는 `value+=1`과 같다.

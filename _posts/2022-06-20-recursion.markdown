@@ -47,7 +47,7 @@ public int arrSum(int[] arr) {
 	return head + arrSum(tail)
 }
 ```
-```
+```java
 arrSum([7, 5, 4, 2]) = 7 + arrSum([5, 4, 2]);
 arrSum([5, 4, 2]) = 5 + arrSum([4, 2]);
 arrSum([4, 2]) = 4 + arrSum([2]);

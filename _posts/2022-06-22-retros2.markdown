@@ -1,7 +1,7 @@
 ---
-title: "  "
+title: "[Back-end Bootcamp] Section. 2"
 layout: post
-date: 2022.06.01
+date: 2022.06.22
 tag:
 - blog
 - Retrospect

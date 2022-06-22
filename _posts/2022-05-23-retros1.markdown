@@ -4,7 +4,7 @@ layout: post
 date: 2022.05.23
 tag:
 - blog
-- Retrospective
+- Retrospect
 headerImage: true
 blog: true
 hidden: true 

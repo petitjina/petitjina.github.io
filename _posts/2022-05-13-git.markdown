@@ -85,7 +85,7 @@ id_rsa - 공개되면 안 되는 개인키(Private Key), 비밀키(Secret Key)
 ```
 cat ~/.ssh/id_rsa.pub
 ```
-![](https://velog.velcdn.com/images/wlsk124/post/a525009e-2696-45c2-b14b-78dbad8b617d/image.png)
+![](https://velog.velcdn.com/images/wlsk124/post/38fe19d2-8688-4b59-bb67-69aed4ab2b84/image.png)
 
 **3. Github에 공개키 등록**    
 Github -> Setting -> SSH and GPC keys -> new SSH key -> 복사한 키 입력   

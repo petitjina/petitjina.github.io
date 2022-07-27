@@ -1,3 +1,16 @@
+---
+title: "Data Structure 기초"
+layout: post
+date: 2022.07.26
+headerImage: false
+tag:
+- Java
+- Concept
+- Back-end
+category: study
+author: Jina Kim
+---
+
 ## 자료구조의 이해
 > **자료구조란?**
 여러 데이터의 묶음을 저장하고, 사용하는 방법을 정의한 것.

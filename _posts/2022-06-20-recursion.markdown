@@ -1,5 +1,5 @@
 ---
-title: "Recursion"
+title: "재귀"
 layout: post
 date: 2022.06.20
 headerImage: false

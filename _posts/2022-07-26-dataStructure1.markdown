@@ -1,5 +1,5 @@
 ---
-title: "Data Structure 기초"
+title: "자료구조 기초"
 layout: post
 date: 2022.07.26
 headerImage: false

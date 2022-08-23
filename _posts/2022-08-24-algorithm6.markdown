@@ -1,0 +1,136 @@
+## 홀수 구분  
+### 문제  
+- 수를 입력받아 홀수인지 여부를 리턴   
+
+### 풀이  
+```java
+public class Blogging {
+	public boolean odd(int num) {
+    	if(num == 0) return false;
+        if(num == 1) return true;
+        if(num < 0) return odd(-num);
+        return odd(num - 2);
+    }
+ }
+``` 
+  
+**나의 오답**   
+```
+if(num % 2 == 0) return false;
+if(num % 2 != 0) return true;
+return odd(num);
+```
+문제점  
+
+
+-----
+## 배열의 길이  
+### 문제  
+- 입력받은 배열의 길이를 리턴   
+
+### 풀이  
+```java
+public class Blogging {
+	public int length(int[] arr){
+    	if(arr.length == 0) return 0;
+        int head = 1; //arr[0].length
+        int tail = Arrays.copyOfRange(arr, 1, arr.length);
+        return head + arrLength(tail);
+	}
+ }
+```
+
+**나의 오답**   
+```
+if(arr.length == 0) return 0;
+return length(arr[0]) + arr.length - 1;
+```
+문제점 
+
+-----
+## 요소의 제거와 포함
+### 문제  
+- 입력받은 배열에 입력받은 수(num)개의 요소가 제거된 새로운 배열 리턴  
+- 입력받은 배열에 입력받은 수(num)개의 요소만 포함된 새로운 배열 리턴
+
+### 풀이 1  
+```java
+public class Blogging {
+	public int[] drop(int num, int[] arr){
+    	if(arr.length == 0 || num == 0) return arr;
+        int head = num - 1;
+        int[] tail = Arrays.copyOfRange(arr, 1, arr.length);
+        return drop(head, tail);
+	}
+ }
+```
+
+**나의 오답**   
+```
+if(arr.length == 0) return new int[]{};
+int head = 0;
+```
+문제점 
+
+
+### 풀이 2  
+```java
+public class Blogging {
+	public int[] take(int num, int[] arr){
+    	if(num == 0 || arr.length == 0) return new int[]{};
+        if(num >= arr.length) return arr;
+        
+        int count = 0;
+        if(count == num) {
+        	return arr;
+		}
+        int[] tail = Arrays.copyOfRange(arr, 0, arr.length - 1);
+        count++;
+        return take(num, tail);
+	}
+ }
+```
+
+
+-----
+## 논리곱(and)
+### 문제  
+- 입력받은 배열의 모든 요소의 논리곱을 리턴  
+(빈 배열의 논리곱은 `true`이다.)  
+
+### 풀이  
+```java
+public class Blogging {
+	public boolean and(boolean[] arr){
+    	if(arr.length == 0) return ture;
+        boolean head = arr[0];
+        boolean tail = and(Arrays.copyOfRange(arr, 1, arr.length));
+        
+        if(!head || !tail) return false;
+        
+        return true;
+	}
+ }
+```
+
+-----
+## 배열 뒤집기
+### 문제  
+- 입력받은 배열의 순서가 뒤집힌 배열을 리턴  
+
+### 풀이  
+```java
+public class Blogging {
+	public int[] reverse(int[] arr){
+    	if(arr.length == 0) return arr;
+        int[] head = Arrays.copyOfRange(arr, arr.length - 1, arr.length);
+        int[] tail = reverse(Arrays.copyOfRange(arr, 0, arr.length - 1));
+        int[] result = new int[head.length + tail.length];
+        
+        System.arraycopy(head, 0, result, 0, head.length);
+        System.arraycopy(tail, 0, result, 1, tail.length);
+        
+        return result;
+	} 
+ }
+```

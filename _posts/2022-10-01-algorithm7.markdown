@@ -1,0 +1,397 @@
+---
+title: "[알고리즘] 자료구조"
+layout: post
+date: 2022.10.01
+tag:
+- Java
+- Algorithm
+- Back-end
+headerImage: true
+projects: true
+hidden: true 
+category: project
+author: Jina Kim
+externalLink: false
+---
+
+## 브라우저 이동(Stack)  
+### 문제   
+- 브라우저에서 행동한 순서가 들어있는 배열 actions와 시작 페이지 start가 주어질 때 마지막에 접속해 있는 페이지와 방문했던 페이지들이 담긴 스택을 반환하는 기능 구현   
+(새로운 페이지 접속은 알파벳 대문자로 표기)    
+(반환되는 출력값 ArrayList의 첫 번째 요소는 prev 스택, 두번째 요소 current 스택, 세 번째 요소 next 스택을 사용해야 한다)   
+
+**조건**   
+
+새로운 페이지에 접속할 경우, prev 스택에 원래 있던 페이지를 넣고 next 스택을 비운다.  
+
+뒤로 가기 버튼`-1`을 누를 경우, 원래 있던 페이지를 next 스택에 넣고 prev 스택의 top에 있는 페이지로 이동한 뒤 prev 스택의 값을 pop 한다.  
+
+앞으로 가기 버튼`1`을 누를 경우, 원래 있던 페이지를 prev 스택에 넣고 next 스택의 top에 있는 페이지로 이동한 뒤 next 스택의 값을 pop 한다.  
+
+### 풀이  
+```java
+public class Blogging {
+	public ArrayList<Stack> browser(String[] actions, String start) {
+    Stack<String> prevStack = new Stack<>();
+    Stack<String> nextStack = new Stack<>();
+    Stack<String> current = new Stack<>();
+    ArrayList<Stack> result = new ArrayList<>();
+		
+    current.add(start);
+    for(int i = 0; i < actions.length; i++) {
+      if(actions[i].equals("-1") && !prevStack.empty()) { //-1이 들어왔을때
+      nextStack.push(current.pop());
+      current.push(prevStack.pop());
+      }
+
+      if(actions[i].equals("1") && !nextStack.empty()) { //1이 들어왔을때
+      prevStack.push(current.pop());
+      current.push(nextStack.pop());
+      }
+
+      if(Character.isUpperCase(actions[i].charAt(0))) {//Character.isUpperCase()메서드는 boolean 값을 리턴한다. ()안이 대문자일 경우 true를 리턴
+      prevStack.push(current.pop());
+      nextStack.clear();
+      current.push(actions[i]);
+      }
+    }
+
+      result.add(prevStack);
+      result.add(current);
+      result.add(nextStack);
+
+      return result;
+	} 
+ }
+``` 
+
+**push() vs add() 차이**   
+push()는 stack에서 제공, add()는 List에서 제공하는 메서드.  
+push()의 리턴값은 `<E>`이고, add()의 리턴값은 `boolean`이다.  
+  
+stack을 써서 코드를 짜고 있다면 push() 메서드를 사용.  
+-> stack을 써서 구현했다는걸 명확하게 알 수 있기 때문이다.  
+
+
+-----
+## 박스 포장(Queue)  
+### 문제  
+- 박스를 포장하는 데 한 줄로 서 있어야 하고, 들어온 순서대로 한 명씩 나가야 한다. 인원에 맞게 포장할 수 있는 기구들이 놓여 있어, 모두가 포장을 할 수 있다. 뒷사람이 포장을 전부 끝냈어도 앞사람이 끝내지 못하면 기다려야 하고, 앞사람이 포장을 끝내면, 포장을 마친 뒷사람들과 함께 한 번에 나간다. 한번에 나갈 수 있는 최대 인원을 구현    
+
+**예시**   
+
+[5, 1, 4, 6]이라는 배열이 왔다.   
+
+5개의 박스를 포장하는 동안 1, 4개의 박스는 포장을 끝내고 기다린다.  
+
+6개의 박스는 포장이 진행 중이기 때문에, 5, 1, 4 세 개가 같이 나간다.   
+
+그리고 6은 따로 나가게 된다.   
+
+-> 최대 3명이 같이 나간다.   
+
+### 풀이  
+```java
+public class Blogging {
+	public int box(Integer[] boxes) {
+	Queue<Integer> que = new LinkedList<>();
+
+	for(int i = 0; i < boxes.length; i++){
+		que.add(boxes[i]);
+	}
+
+	int result = 0; // Math.max를 사용하기 위한 비굣값
+	while(!que.isEmpty()){
+		int num = que.poll(); //가장 앞에 데이터 삭제, 리턴
+		int count = 1;
+        
+		while(!que.isEmpty() && num >= que.peek()){ //가장 먼저 추가된 데이터 리턴
+			que.poll();
+			count++;
+		}
+		result = Math.max(result, count); 
+	} // 두 숫자 중 더 큰 숫자를 반환하는 메서드
+		return result;	
+	}
+}
+```
+
+
+-----
+## 프린터(Queue)  
+### 문제   
+- 프린터의 인쇄 작업 목록의 크기(bufferSize)와 최대 용량(capacities)을 가정하고 각기 다른 용량의 문서를 차례대로 인쇄하여 모든 문서가 인쇄되는데 최소 몇 초가 걸리는지 구현    
+(인쇄 작업 목록은 칸으로 이루어져 있고, 한 칸에 한 개의 문서만 위치)    
+(문서는 1초에 한 칸만 이동할 수 있다)  
+
+**예시**   
+
+bufferSize = 2, capacities = 10Kib일 경우, 크기가 [7, 4, 5, 6] Kib인 문서들이 최단 시간 안에 순서대로 모두 인쇄되는 과정.   
+
+1초가 지나면 인쇄 작업 목록에는 7Kib 크기의 문서가 추가.   
+
+2초일 때, 최대 용량이 10Kib이기 때문에 4Kib 문서는 작업 목록에 들어갈 수 없다. 동시에 7Kib 문서는 1칸 앞으로 이동.   
+
+3초일 때 7Kib 문서는 인쇄 작업 목록에서 나와 프린터가 인쇄한다. 동시에 4Kib 문서는 인쇄 작업 목록에 추가.   
+
+4초일 때 4Kib 문서는 인쇄 작업 목록에서 1칸 앞으로 이동한다. 동시에 5Kib 문서는 인쇄 작업 목록에 추가.    
+
+5초일 때 4Kib 문서는 인쇄 작업 목록에서 나와 프린터가 인쇄한다. 동시에 5Kib 문서는 인쇄 작업 목록에서 1칸 앞으로 이동.   
+
+6초일 때 5Kib 문서는 인쇄 작업 목록에서 나와 프린터가 인쇄한다. 동시에 6Kib 문서가 인쇄 작업 목록에 추가.   
+
+7초일 때 6Kib 문서는 인쇄 작업 목록에서 1칸 앞으로 이동.   
+
+8초일 때 6Kib 문서가 마지막으로 인쇄.   
+
+-> 최소 시간 8초  
+
+### 풀이   
+```java
+public class Blogging {
+	public int printer(int bufferSize, int capacities, int[] documents) {
+    int count = 0;
+	int sum = 0;
+	int size = 0;
+	int index = 0;
+    
+    Queue<Integer> queue = new LinkedList<>();
+
+    for(int i = 0; i < bufferSize; i++) {
+      queue.add(0); // 큐 안에 모든 값을 0으로 넣는다.
+    }
+		
+	while(documents.length > index){
+		int num = queue.poll();
+		count++;
+		if(num != 0){
+			sum -= num;
+			size--;
+		}
+		if(sum + documents[index] <= capacities && size + 1 <= bufferSize) {
+			queue.add(documents[index]);
+			sum += documents[index];
+			index++;
+		} else {
+			queue.add(0);
+		}
+	}
+	return count + bufferSize;
+	}
+ }
+```
+
+
+-----
+## 길찾기(Grape)  
+### 문제  
+- 주어진 인접행렬에서 한 정점에서 다른 정점으로 이어진 길의 존재 여부를 반환     
+
+### 풀이  
+```java
+public class Blogging {
+	public boolean directions(int[][] matrix, int from, int to){
+    Queue <Integer> q = new LinkedList <>();
+    q.add(from);
+    boolean[] visit = new boolean[matrix.length];
+    while(!q.isEmpty()){
+      int num = q.poll();
+      if(num == to) return true;
+      visit[num] = true;
+      for(int i =0; i < matrix.length; i++){
+        if(matrix[num][i] == 1 && visit[i] == false){
+          q.add(i);
+        }
+      }
+    }
+    return false;
+    }
+ }
+```
+
+-----
+## 인접행렬 생성(Grape)  
+### 문제  
+- 방향이 있는 간선과, 없는 간선들의 목록들을 받아 2차원 배열의 인접행렬 반환.   
+
+### 풀이  
+```java
+public class Blogging {
+	public String matrix(int[][] edges) {
+	int max = 0;
+    int a = 0;
+    for(int i = 0; i < edges.length; i++){
+       for(int j = 0; j < edges[i].length; j++){
+      if (edges[i][j] > max) {
+					max = edges[i][j];
+				}
+    		}	
+    }
+    // 그래프 생성(행렬의 최대값을 구해 크기에 맞는 그래프 생성 - 인덱스로 표현하기때문에 max+1), 초기값 0으로 세팅
+     int [][] matrix = new int [max + 1][max + 1];
+
+    // 반복문으로 edges를 순회하며 무향인 곳에 각각 1로 바꾸고, 방향이 있는 간선엔 해당 간선만 1로 바꾼다.
+    for(int i = 0; i < edges.length; i++){
+      if(edges[i][2] == 0){
+        matrix[edges[i][0]][edges[i][1]] = 1;
+      }else{
+        matrix[edges[i][0]][edges[i][1]] = 1;
+        matrix[edges[i][1]][edges[i][0]] = 1;
+      }
+    } 
+    return matrix;
+    }
+ }
+ ```
+
+
+-----
+## 연결된 정점들(DFS/BFS)  
+### 문제   
+- 방향이 없는 간선들의 목록이 주어질 때, 연결된 정점의 컴포넌트가 몇 개인지 반환하는 함수를 작성.   
+(주어진 간선은 무향)  
+
+### 풀이   
+```java
+public class Blogging {
+	public int connection(int[][] edges) {
+    final int[] bigger = {0};
+
+	// 행렬의 최대 크기를 찾아 그래프를 만들어준다.(그래프 생성)
+    Arrays.stream(edges).forEach(data -> {
+      int currentBigger = Arrays.stream(data)
+              .boxed()
+              .max(Comparator.comparing(i -> i))
+              .orElse(0);
+      if(bigger[0] < currentBigger) bigger[0] = currentBigger;
+    });
+
+    int[][] adjArray = new int[bigger[0] + 1][bigger[0] + 1];
+
+	// 반복문으로 edges를 순회, 쌍방으로 간선을 연결(무향)
+    for(int i = 0; i < edges.length; i++) {
+      int from = edges[i][0];
+      int to = edges[i][1];
+      adjArray[from][to] = 1;
+      adjArray[to][from] = 1;
+    }
+
+	// 방문한 버텍스를 담을 배열을 선언  
+    boolean[] visited = new boolean[bigger[0] + 1];
+	// 컴포넌트가 몇 개인지 카운트할 변수를 선언합니다.
+    int count = 0;
+
+	// 방문 여부를 체크한 배열을 모두 순회  
+    for(int vertex = 0; vertex < visited.length; vertex++) {
+	// 만약 방문하지 않았다면 컴포넌트를 늘려주기.
+      if(!visited[vertex]) {
+        count++;
+	// 그래프와 버텍스, 방문했는지 확인할 visited를 bfs 혹은 dfs를 사용하여 변수에 담기.
+        visited = bfs_array(adjArray, vertex, visited);
+     // visited = dfs_array(adjArray, vertex, visited);
+      }
+    }
+    return count;
+  }
+
+	public boolean[] bfs_array(int[][] adjArray, int vertex ,boolean[] visited) {
+	// bfs의 경우 큐를 사용.
+    Queue<Integer> queue = new LinkedList<>();
+	// 시작지점을 큐에 넣고, 해당 버택스의 방문 여부를 변경.
+    queue.add(vertex);
+    visited[vertex] = true;
+	// 큐에 더이상 방문할 요소가 없을 경우까지 반복.
+    while (!queue.isEmpty()) {
+	//현재 위치를 큐에서 꺼내온 후, 전체 배열에서 현재 버택스의 행만 확인
+      int cur = queue.poll();
+      for (int i = 0; i < adjArray[cur].length; i++) {
+		//길이 존재하고, 아직 방문하지 않았을 경우, 큐에 해당 버택스의 위치를 넣어준 이후 방문여부를 체크
+        if(adjArray[cur][i] == 1 && !visited[i]) {
+          queue.add(i);
+          visited[i] = true;
+        }
+      }
+    }
+    return visited;
+  }
+	public boolean[] dfs_array(int[][] adjArray, int vertex ,boolean[] visited) {
+	// 현재 버택스의 방문여부를 체크.
+    visited[vertex] = true;
+	// 해당 버택스의 행을 순회.
+    for(int i = 0; i < adjArray.length; i++) {
+	// 길이 존재하고, 방문하지 않았다면, 재귀를 사용하여 이어진 길부터 탐색을 다시 시작
+      if(adjArray[vertex][i] == 1 && !visited[i]) {
+        dfs_array(adjArray, i ,visited);
+      }
+    }
+    return visited;
+    }
+}
+```
+
+-----
+## 바코드(DFS)  
+### 문제   
+- `1, 2, 3`으로만 이루어진 수열 바코드를 만들어야 한다.     
+이때, 주어진 길이 len의 바코드 중 가장 작은 수를 반환하는 함수를 작성.   
+
+**조건**     
+
+바코드에서 인접한 두 개의 부분 수열(주어진 수열에서 연속된 모든 구간)이 동일하면 제작할 수 없다.   
+수열 123의 부분 수열: `1, 2, 3, 12, 23, 123`   
+인접한 두 부분 수열: 첫번째 부분 수열과 두번째 부분 수열이 연속된 경우.   
+
+**만들 수 없는 바코드**   
+
+**11**2   
+12**3131**2   
+**2323**12   
+인접한 두 개의 부분 수열이 동일하기 때문에 만들 수 없다.   
+ 
+### 풀이  
+```java
+public class Blogging {
+	public String barcode(int len) {
+    
+    	return aux("", len);
+  }
+  
+	public String aux(String str, int len) {
+        String chr = "123";
+		// 유효성 검사를 한 후, 길이가 len일때, str을 리턴.
+        if(str.length() == len) return str;
+		// 가장 작은 수를 찾기위해, 1, 2, 3 순서대로 검토.
+        for(int i = 0; i < chr.length(); i++) {
+            String currentStr = str + chr.charAt(i);
+            if(isValid(currentStr)) {
+                String founded = aux(currentStr, len);
+                if(founded != null) return founded;
+            }
+        }
+		// 유효한 문자열을 만들 수 없는 경우
+        return null;
+    }
+
+    public boolean isValid(String str) {
+	// index 관리를 편하게 하기 위해 string reverse
+        StringBuffer sb = new StringBuffer(str);
+        String reverse = sb.reverse().toString();
+	// 인접한 두 개의 부분 수열이 동일한지 확인.
+    // 최대 절반 길이만큼만 두 개의 부분 수열이 가능하다.
+        int halfLen = (int)Math.floor((double) str.length() / 2);
+
+        for(int i = 1; i <= halfLen; i++) {
+            if(reverse.substring(0, i).equals(reverse.substring(i, i + i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+ }
+```
+
+String 클래스의 인스턴스는 한 번 생성되면 값을 읽기만 할 수 있고, 변경할 수 없다.   
+-> StringBuffer 클래스의 인스턴스는 그 값을 변경할 수도 있고, 추가할 수도 있다.   
+
+**StringBuilder 클래스의 메서드**   
+reverse() : 문자열 뒤집기  

@@ -1,7 +1,7 @@
 ---
 title: "자료구조 기초"
 layout: post
-date: 2022.07.26
+date: 2022.06.22
 headerImage: false
 tag:
 - Java

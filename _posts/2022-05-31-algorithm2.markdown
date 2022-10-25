@@ -20,6 +20,8 @@ externalLink: false
 (정해지지 않은 기호는 0 리턴)  
 
 ### 풀이
+
+<!--{%raw%}-->
 ```java
 public class Blogging {
 	public int calculatorTest(int num1, int num2, char operator) {
@@ -39,6 +41,8 @@ public class Blogging {
   }
 }
 ```
+<!--{%endraw%}-->
+
 **나의 오답**   
 ```
 if('+'){
@@ -58,6 +62,8 @@ if절 사용 미숙
 등급의 최저 점수보다 8점 이상 = "+"리턴 (F등급은 +,- 없음)   
 
 ### 풀이  
+
+<!--{%raw%}-->
 ```java
 public class Blogging {
 	public String gradeWithpm(int score) {
@@ -89,6 +95,8 @@ public class Blogging {
   }
 }
 ```
+<!--{%endraw%}-->
+
 점수에 +와 -를 담아주기 위해서 새로운 문자열 grade를 선언    
 연산자 !는 아니다를 의미 -> !grade.equals("F") = grade가 F와 다를때   
 점수의 최고 점수 = n9점, 최저 점수 = n0  
@@ -131,6 +139,8 @@ public class Blogging {
 (1초 뒤에 "hour"시 "min"분 "sec"초 입니다.)  
 
 ### 풀이
+
+<!--{%raw%}-->
 ```java
 public class Blogging {
 	public String clockTest(int hour, int min, int sec) {
@@ -148,5 +158,6 @@ public class Blogging {
   }
 }
 ```
+<!--{%endraw%}-->
 
 **주의할 점: 59초에서 1분으로 넘어가고 60분에서 1시간으로 넘어간다.**  

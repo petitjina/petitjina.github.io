@@ -97,7 +97,10 @@ return count;
 
 획득한 숫자를 합산하여 숫자가 제일 큰 사람이 이긴다.   
 
-### 풀이  
+### 풀이 
+
+<!--{%raw%}-->
+
 ```java
 public class Blogging {
 	public Integer boardGame(int[][] board, String operation) {
@@ -134,6 +137,8 @@ public class Blogging {
     }
  }
 ```
+<!--{%endraw%}-->
+
 **HashMap**  
 
 해시 함수를 통해 키와 값이 저장되는 위치를 결정, 삽입되는 순서와 위치는 관계 없다.  

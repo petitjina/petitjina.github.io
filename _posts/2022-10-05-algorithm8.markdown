@@ -1,0 +1,434 @@
+---
+title: "[알고리즘] 알고리즘"
+layout: post
+date: 2022.10.05
+tag:
+- Java
+- Algorithm
+- Back-end
+headerImage: true
+projects: true
+hidden: true 
+category: project
+author: Jina Kim
+externalLink: false
+---
+
+## 짐 나르기(Greedy)
+### 문제  
+- 사무실 이사를 위해 짐을 넣을 박스를 사왔다. 그런데 각 이사짐의 무게는 들쭉날쭉한 반면, 박스는 너무 작아서 한번에 최대 2개의 짐 밖에 넣을 수 없었고 무게 제한도 있었다. 박스를 최대한 적게 사용하여 모든 짐을 옮기려고 한다. 짐의 무게를 담은 배열 stuff와 박스의 무게 제한 limit가 매개변수로 주어질 때, 모든 짐을 옮기기 위해 필요한 박스 개수의 최소값 구현  
+
+**예시**  
+
+짐의 무게가 [70kg, 50kg, 80kg, 50kg]이고 박스의 무게 제한이 100kg이다.    
+
+2번째 짐과 4번째 짐을 같이 넣을 수 있다.   
+
+1번째 짐과 3번째 짐의 무게의 합은 150kg이므로 무게를 초과해 같이 넣을 수 없다.   
+
+-> 총 3개의 박스를 사용하게 된다.  
+
+### 풀이  
+```java
+public class Blogging {
+	public int move(int[] stuff, int limit) {
+    int count = 0;
+    Arrays.sort(stuff);
+    
+    int lightIdx = 0;
+    int heavyIdx = stuff.length - 1;
+    while(lightIdx < heavyIdx) {
+      if(stuff[lightIdx] + stuff[heavyIdx] <= limit) {
+        lightIdx++; // 사용한 인덱스는 또 못 사용, +1을 해서 다음 인덱스로 이동
+        heavyIdx--; // 사용한 인덱스는 또 못 사용, -1을 해서 다음 인덱스로 이동
+        count++; // 한번에 2개 옮길 수 있는 개수를 +1 한다.
+      } else {
+        heavyIdx--;
+      }
+    }
+    return stuff.length - count;
+    }
+ }
+``` 
+  
+**나의 오답**   
+
+```
+int count = 0;
+Arrays.sort(stuff);
+boolean[] visit = new boolean[stuff.length];
+int max = 0;
+for(int i = 0; i < stuff.length; i++){
+while(max <= limit && visit[i] == false){
+max += stuff[i];
+visit[i] = true;
+count++;
+} 
+}
+return count;
+```
+가장 가벼운 짐의 인덱스 = 정렬순 제일 왼쪽  
+가장 무거운 짐의 인덱스 = 정렬순 제일 오른쪽  
+
+반복문을 사용해 가장 가벼운 짐과 무거운 짐의 합이 limit 이하면 2개를 한번에 나른다.  
+조건에 맞지 않으면, 가장 무거운 짐 1개만 나르도록 구현한다.   
+-> 전체 짐의 개수에서 `한번에 2개 나르는 경우`를 빼면 총 필요한 박스의 개수이다.  
+     
+-----
+## 보드게임(구현)
+### 문제  
+- N * N의 크기를 가진 보드판 위에서 게임을 하려고 한다. 보드판이 담긴 board와 조작하려고 하는 문자열 operation이 주어질 때, 말이 해당 칸을 지나가면서 획득한 숫자의 합을 구하기    
+(조작의 기회는 딱 한 번 이다)  
+(좌표 왼쪽 상단(0, 0)은 항상 0이다)  
+
+**게임 룰**  
+
+좌표 왼쪽 상단(0, 0)에 말을 놓는다.  
+
+말은 상, 하, 좌, 우로 이동할 수 있고, 플레이어가 조작할 수 있다.  
+
+조작할 때 U, D, L, R은 각각 상, 하, 좌, 우를 의미하며 한 줄에 띄어쓰기 없이 써야 한다.  
+`예시: UDDLLRRDRR, RRRRR`  
+
+한 번 움직일 때마다 한 칸씩 움직이게 되며, 그 칸 안의 요소인 숫자를 획득할 수 있다.  
+(칸 안의 숫자는 0 또는 1)  
+
+방문한 곳을 또 방문해도 숫자를 획득할 수 있고, 보드 밖을 나간 말은 OUT 이다.   
+
+획득한 숫자를 합산하여 숫자가 제일 큰 사람이 이긴다.   
+
+### 풀이  
+```java
+public class Blogging {
+	public Integer boardGame(int[][] board, String operation) {
+    HashMap<String, int[]> DIR = new HashMap<String, int[]>(){{
+      put("U", new int[]{-1, 0});
+      put("D", new int[]{1, 0});
+      put("L", new int[]{0, -1});
+      put("R", new int[]{0, 1});
+    }};
+
+    int Y = 0;
+    int X = 0;
+    int score = 0;
+
+	// 입력받은 operation을 char배열로 변환.
+    char[] chars = operation.toCharArray();
+
+    for(int i = 0; i < chars.length; i++) {
+      int dY = DIR.get(String.valueOf(chars[i]))[0];
+      int dX = DIR.get(String.valueOf(chars[i]))[1];
+      Y += dY;
+      X += dX;
+	// 이동이 불가능한 경우, null을 반환.
+      if (!isValid(Y, X, board.length)) return null;
+	//이동이 가능한 경우, 해당 보드의 값만큼 전체 점수에 더한다.
+      score += board[Y][X];
+    }
+    return score;
+  }
+
+  public boolean isValid(int y, int x, int len) {
+	//최소값과, 최대값을 벗어나면 false, 가능하다면 true를 반환합니다.
+    return 0 <= y && y < len && 0 <= x && x < len;
+    }
+ }
+```
+**HashMap**  
+
+해시 함수를 통해 키와 값이 저장되는 위치를 결정, 삽입되는 순서와 위치는 관계 없다.  
+
+-----
+## 금고 털기(DP)
+### 문제  
+- 카지노 지하에 있는 금고를 털기위해 알고리즘을 이용해 target 금액을 훔칠 수 있는 방법의 경우의 수를 계산하려고 한다. 훔치고 싶은 target 금액과 금고에 있는 돈의 종류 type을 입력받아, target을 훔칠 수 있는 방법의 수를 구하기.  
+
+**예시**   
+
+$50 을 훔칠 때, $10, $20, $50 이 있다면 4 가지 방법으로 $50을 훔칠 수 있다.  
+
+1. $50 한 장을 훔친다.  
+2. $20 두 장, $10 한 장을 훔친다.  
+3. $20 한 장, $10 세 장을 훔친다.  
+4. $10 다섯 장을 훔친다.   
+
+### 풀이  
+```java
+public class Blogging {
+	public long safe(int target, int[] type) {
+    // 인덱스 0은 초기값 1이기 때문에 인덱스 길이는 target+1
+    long[] bag = new long[target + 1];
+    // 경우의 수를 저장하기 위해 초기값은 모두 0으로 만들어 준다
+    bag[0] = 1;
+    // 돈의 종류가 담겨있는 배열을 순차적으로 탐색
+    for(int i = 0; i < type.length; i++) {
+      for(int j = 1; j <= target; j++)
+        if(type[i] <= j)
+          bag[j] += bag[j-type[i]];
+    }
+    return bag[target];
+    }
+ }
+```
+**배열 bag**   
+
+- 금액을 만들 수 있는 경우의 수를 기록.  
+- bag의 각 인덱스는 만드려는 금액을 의미한다.  
+
+**ex)** `target = 5, type = [1, 2, 5]`   
+bag[0] = 1  -> 0을 만드는 경우의 수 : 선택 X(초기값 설정)  
+bag[3] = 2  -> 3을 만드는 경우의 수 : `1*3`, `1+2` 
+bag[4] = 3  -> 4를 만드는 경우의 수 : `1*4`, `1*2+2`, `2*2`  
+bag[5] = 4  -> 5를 만드는 경우의 수 : `1*5`, `1*3+2`, `1+2*2`, `5*1`   
+
+-----
+## 가위 바위 보(중복순열)
+### 문제  
+- 가위바위보 게임을 하려고 한다. 세 판의 가위바위보 게임을 할 경우, 한 사람은 세 번의 선택(가위, 가위, 보)을 할 수 있다. 입력받은 rounds만큼의 선택으로 가능한 모든 경우의 수를 구하는 함수를 구현.  
+
+### 풀이  
+```java
+public class Blogging {
+	public ArrayList<String[]> rockScissorsPaper(int rounds) {
+    ArrayList<String[]> result = new ArrayList<>();
+    return method(result, rounds, new String[]{});
+  }
+
+  public ArrayList<String[]> method(ArrayList<String[]> result, int exrounds, String[] played){
+     String[] game = {"rock", "paper", "scissors"};
+    if(exrounds == 0){
+      result.add(played);
+      return result;
+    }
+    for(int i = 0; i < game.length; i++) {
+      String currentPlay = game[i];
+      String[] concatArray = Arrays.copyOf(played, played.length+1);
+      concatArray[concatArray.length-1] = currentPlay;
+      result = method(result, exrounds-1, concatArray);
+    }
+    return result;
+    }
+ }
+```
+
+-----
+## 소스 레시피(순열)
+### 문제  
+- 5대째 내려오는 '비밀의 소스 비율 레시피'는 70억 인구 중 사장님만 알고 있다. 최근, 누리꾼 사이에서 이 레시피의 일부분을 발췌했다는 소문을 듣게 되었다. 소문을 참고하여 '비밀 소스'가 될 수 있는 경우의 수를 모두 구하기.   
+
+**레시피 소문**  
+
+N 가지의 재료 중에 단 M 가지만을 사용하여 조합한 모든 경우의 수 중 하나이다.  
+
+재료는 0과 1로만 이루어진 숫자로 암호화 되어 있고, 항상 1로 시작한다.  
+(복호화는 불가능하다)   
+
+0이 3개 이상인 재료는 상한 재료이기 때문에 제외한다.  
+
+재료의 순서에 따라 맛이 달라지기 때문에, 재료를 넣는 순서가 정확해야 한다.  
+
+### 풀이  
+```java
+public class Blogging {
+	public ArrayList<Integer[]> sauceRecipe(int[] stuffArr, int choiceNum) {
+    // 신선한 재료만 선택
+    ArrayList<Integer> freshArr = new ArrayList<>();
+    for (int i = 0; i < stuffArr.length; i++){
+    	String strStuff = Integer.toString(stuffArr[i]);
+    	int cnt = 0;
+    	for(int j = 0; j < strStuff.length(); j++){
+        	if(strStuff.charAt(j) =='0'){ cnt++; }
+      }
+    	if (cnt < 3){
+        	freshArr.add(Integer.valueOf(strStuff));
+        }
+    }
+    Collections.sort(freshArr);  // 오름차순 정렬
+    
+    boolean[] visit = new boolean[freshArr.size()];
+    ArrayList<Integer[]> result = new ArrayList<>();
+    // freshArr의 크기가 choiceNum보다 작을 경우, 또는 신선한 재료가 없는 경우 --> 빈 ArrayList 리턴
+    if(freshArr.size() < choiceNum || freshArr.size()==0){ return null; }
+
+    return permutation(freshArr, new Integer[]{}, visit, choiceNum, result);
+    } 
+
+  //순열 메서드 구현
+  public ArrayList<Integer[]> permutation(ArrayList<Integer> freshArr, Integer[] arr, boolean[] visit, int num, ArrayList<Integer[]> result){
+  	if (num == 0){
+    	result.add(arr);
+    	return result;
+    }
+    for (int i = 0; i < freshArr.size(); i++){
+    	if(visit[i] == false){
+    	int stuff = freshArr.get(i);
+    	visit[i] = true;
+    	// arr 복사해서 새로운 arr 생성후 freshArr[i] 맨 끝에 저장.
+    	Integer[] copyArr = Arrays.copyOf(arr,arr.length+1);
+    	copyArr[copyArr.length-1] = stuff;
+    	// 재귀: num-1 해서 재귀함수 호출 --> result에 add
+    	result=permutation(freshArr, copyArr, visit, num-1, result);
+    	visit[i] = false;
+      }
+    }
+    return result;
+    }
+ }
+```
+
+-----
+## 블랙잭(조합)
+### 문제  
+- 일반 블랙잭 게임에서 게임룰을 변형하여 새로운 카드 놀이를 하기로 했다. 게임을 진행하기 전에 게임의 룰을 따르는 함수를 만들기로 했다. 여러 장의 카드 중 세 장씩 조합해 소수가 되는 경우의 수를 리턴하는 함수를 구하기.  
+
+**새로운 블랙잭**  
+
+1. 숫자로 이루어진 카드를 여러 장 받는다.  
+2. 3장씩 카드를 고르고, 3장에 적힌 숫자들의 합이 소수인지 확인한다.  
+3. 받아든 카드로 만들 수 있는 소수의 개수가 많은 사람이 이긴다.  
+
+**예시**  
+
+[1, 2, 3, 4]라는 카드를 받았을 때 만들 수 있는 숫자는 6, 7, 8, 9이다.   
+
+소수는 7 하나이기 때문에 가지고 있는 소수의 개수는 1개이다.  
+
+### 풀이  
+```java
+public class Blogging {
+	public int blackjack(int[] cards) {
+    ArrayList<Integer[]> result = new ArrayList<>();
+    int count = 0;
+    for(int i = 0; i < cards.length; i++) {
+      for(int j = i + 1; j < cards.length; j++) {
+        for(int k = j + 1; k < cards.length; k++) {
+          if(prime(cards[i]+cards[j]+cards[k])){
+            count++;
+          }
+        }
+      }
+    }
+    return count;
+	} 
+  public boolean prime(int sum){
+  	if(sum < 2) return false;
+    else if(sum == 2) return true;
+    else {
+      for(int i = 2; i < sum; i++){
+        if(sum % i == 0) return false;
+      }
+      return true;
+    }
+    }
+ }
+```
+
+-----
+## 빼빼로 데이(GCD)
+### 문제  
+- 출근길에 아몬드 빼빼로 M개와 누드 빼빼로 N개를 구매했다. 먼저 출근해 있는 직원들에게 구매한 빼빼로를 전부 나누어 주려고 한다. 하지만 회사에 도착하기 전이라 몇 명의 직원들이 있는지 모른다. 직원 수에 따라 빼빼로를 나누어 주는 방법을 구하기.  
+(모든 직원들에게 공평하게 빼빼로를 나누어 준다)  
+(각각의 빼빼로를 같은 개수만큼 받아야 하고, 쪼개서 줄 수 없다)  
+
+**예시**  
+
+아몬드 빼빼로를 4개, 누드 빼빼로를 8개를 구매 했다면, 세 가지 방법이 있다.  
+
+1. 출근한 직원이 1명이라면 아몬드 빼빼로 4개와 누드 빼빼로 8개를 줄 수 있다.  
+2. 출근한 직원이 2명이라면 아몬드 빼빼로 2개와 누드 빼빼로 4개를 각각 줄 수 있다.  
+3. 출근한 직원이 3명이라면 빼빼로를 남기지 않고 공평하게 주는 방법은 없다.  
+4. 출근한 직원이 4명이라면 아몬드 빼빼로 1개와 누드 빼빼로 2개를 각각 줄 수 있다.  
+
+   
+### 풀이  
+```java
+public class Blogging {
+	public ArrayList<Integer[]> pepero(int M, int N) {
+    ArrayList<Integer[]> result = new ArrayList<>();
+
+    // 최대공약수를 구하기(M, N 순서는 상관 없음)
+    int gcdNum = gcd(M, N);
+    int sqrt = (int)Math.floor(Math.sqrt(gcdNum));
+
+    for(int left = 1; left <= sqrt; left++) {
+      if(gcdNum % left == 0) {
+        // 최대공약수의 약수인 경우 중, 제곱근 보다 작은 약수의 경우
+        result.add(new Integer[]{left, M / left, N / left});
+        if(left * left < gcdNum) {
+          // 제곱근이 아닌 경우(제곱근 보다 작은)
+          int right = gcdNum / left;
+          result.add(new Integer[]{right, M / right, N / right});
+        }
+      }
+    }
+    // '빼빼로를 받게 되는 직원의 수'를 기준으로 오름차순으로 정렬
+    Collections.sort(result, new Comparator<Integer[]>(){
+    
+      @Override
+      public int compare(Integer[] o1, Integer[] o2) {
+        return o1[0].compareTo(o2[0]);
+        
+      }
+    });
+
+    return result;
+  }
+
+  // 최대 공약수 구현(유클리드 호제법: Euclidean algorithm)
+  public int gcd(int m, int n) {
+    if (m % n == 0) return n;
+    return gcd(n, m % n);
+    }
+ }
+```
+**약수**    
+:약수는 대칭적이므로 제곱근까지만 반복해도 된다.  
+
+예) 36의 약수는 `1, 2, 3, 4, 6, 9, 12, 18, 36`이다.  
+제곱근을 기준으로 양쪽의 값 하나씩 곱했을 때 36이 되기 때문에 제곱근 보다 큰 약수는 제곱근보다 작은 약수에서 구할 수 있다.   
+
+-> 최대 공약수를 제곱근이 아닌 수로 나누면 제곱근 보다 큰 약수를 구할 수 있다.  
+
+
+-----
+## 집밥(멱집합)
+### 문제  
+- 오랜만에 보는 얼굴에 반가웠던 부모님은 상다리가 부러질 정도로 음식을 만들었다. 최대한 많은 방법으로 다양하게 먹고 싶었기 때문에 무엇부터 먹어야 될지 고민에 빠졌다. 밥은 한 가지이며 반찬은 다수일 때, 밥과 함께 먹을 수 있는 반찬의 모든 경우의 수를 배열에 담아 구하기.
+
+   
+### 풀이  
+```java
+public class Blogging {
+	public ArrayList<String[]> houseMeal(String[] sideDishes) {
+    ArrayList<String[]> result = new ArrayList<>();
+    Arrays.sort(sideDishes);
+    
+    //search 함수에서 사용할 빈 스택.
+    Stack<String> stack = new Stack<>();
+    result = search(stack, 0, sideDishes, result);
+
+    result.sort((o1, o2) -> Arrays.toString(o1).compareTo(Arrays.toString(o2)));
+    return result;
+  }
+
+  // 모든 조합을 검사하는 재귀 함수 
+  public ArrayList<String[]> search(Stack<String> stack, int index, String[] sideDishes, ArrayList<String[]> result) {
+    // Base Case
+    if (index >= sideDishes.length) {
+      String[] arr = stack.toArray(new String[0]);
+      result.add(arr);
+      return result;
+    } 
+    // Recursive Case
+    else {
+      // index가 부분집합에 포함된 경우
+      stack.push(sideDishes[index]);
+      search(stack, index + 1, sideDishes, result);
+      // index가 부분집합에 포함되지 않은 경우
+      stack.pop();
+      search(stack, index + 1, sideDishes, result);
+    }
+    return result;
+    }
+ }
+```

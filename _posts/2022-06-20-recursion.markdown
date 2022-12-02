@@ -4,7 +4,7 @@ layout: post
 date: 2022.06.20
 headerImage: false
 tag:
-- Java
+- data structure
 - Concept
 - Back-end
 category: study

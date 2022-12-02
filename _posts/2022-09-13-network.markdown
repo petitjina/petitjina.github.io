@@ -1,0 +1,1156 @@
+---
+title: "네트워크"
+layout: post
+date: 2022.09.13
+headerImage: false
+tag:
+- network
+- Concept
+- Back-end
+category: study
+author: Jina Kim
+---
+
+## 네트워크를 만드는 기술
+### TCP/IP 기본
+
+**LAN과 WAN**   
+
+웹 어플리케이션에 대해 알기전에 웹 어플리케이션이 작동하는 기반이라고 할 수 있는 네트워크에 대한 이해가 필요하다.  
+
+인터넷 연결은 인터넷 라우터를 통해 연결되어 있다.  
+라우터에 연결이 되어있지 않다면 인터넷을 사용할 수 없다.  
+
+>**LAN(Local Area Network)**    
+: 좁은 범위에서 연결된 네트워크   
+LAN을 연결하는 선을 LAN 케이블 이라고 부른다.   
+>
+**WAN(Wide Area Network)**    
+: 수많은 LAN들이 모인 세계의 네트워크 구성   
+
+작은 거점의 네트워크 구성인 LAN 이 WAN 으로 확장하기 위해서는 각 거점을 연결하는 통신회선 서비스를 이용해야 한다. KT 나 LGU+, SKT 등의 통신 사업자가 이러한 회선 서비스를 구성하고 고객에게 서비스를 제공한다. 우리가 사용하는 인터넷은 통신 사업자의 설비를 빌려야 회선 서비스를 이용한 WAN에 접속이 가능하기 때문에, 그들에게 비용을 지불하게 된다.    
+
+**인터네트워킹(internetworking)**  
+
+인터넷은 네트워크끼리 연결하는 네트워크라는 의미의 인터네트워크에서 왔다.   
+여러 네트워크를 연결하는 것을 인터네트워킹이라고 합니다.  
+
+**- 인터네트워크(internetwork)의 장점**    
+
+1. 네트워크의 일부에서 고장이 나도 영향이 광범위하게 퍼지지 않는다.    
+2. 불필요한 통신이 네트워크 전체로 확산하지 않는다.   
+3. 개별 네트워크를 각각의 방침에 따라 관리가 가능하다.   
+
+**- 네트워크를 확장하는 방식**  
+ 
+1. 한 네트워크를 확장하는 방법.  
+2. 네트워크와 네트워크를 연결하는 방법. 
+
+
+**프로토콜(protocol)**  
+
+인터넷에 연결되어 있는 멀리 떨어진 컴퓨터들끼리 서로 소통을 하려면 약속이 필요하다. 그 공통된 약속을 프로토콜이라고 한다.   
+ex) TCP/IP 프로토콜   
+
+어느 컴퓨터든 일관되게 네트워크를 사용할 수 있게 하는 공통언어가 바로 프로토콜이다.  
+
+
+**TCP / IP**  
+
+인터넷 통신 스위트(Internet Protocol Suite)  
+: 인터넷에서 컴퓨터들이 서로 정보를 주고받는데 쓰이는 통신규약의 모음.  
+
+이 모음은 다른 컴퓨터나, 다른 운영체제, 다른 회선간의 통신이 가능하게 해준다.   
+
+인터넷 생긴 시기에 정의되어 현재까지 표준으로 사용하고 있는 TCP(Transmission Control Protocol)와 IP(Internet Protocol)에서 가져와 TCP/IP 라고 부른다.    
+
+**- TCP/IP 4계층 모델**   
+![](https://velog.velcdn.com/images/wlsk124/post/64782f62-f4ae-4cbe-b721-d4ba7c309390/image.png)  
+
+|TCP/IP 4계층 모델|주요 프로토콜|
+|:---:|:---:|
+|Application Layer|HTTP, DNS, FTP ...|
+|Transport Layer|TCP, UDP ...|
+|Internet Layer|IP, ICMP, ARP, RARP ...|
+|NetWork Layer|Ethernet, wifi ...|
+
+**TCP, UDP**    
+
+TCP와 UDP는 TCP/IP 4계층 모델을 기준으로 IP 프로토콜의 계층인 인터넷 계층의 상위에서 동작을 한다. 전송계층에 속하는 TCP와 UDP는 2계층(IP)과 4계층(애플리케이션, http 등)을 중개하는 역할을 한다.   
+
+
+
+|특징|Transmission Control Protocol(TCP)|User Datagram Protocol(UDP)|
+|:---:|:---:|:---:|
+|서비스 타입|연결 지향적 프로토콜|데이타그램 지향적 프로토콜|
+|신뢰성|데이터 전송 표적 기기까지 전송 보장|데이터 전송 표적 기기까지 전송 보장 안됨|
+|순서보장|전송하는 패킷들의 순서 보장|패킷들의 순서 보장 안됨(4계층에서 관리)|
+|속도|UDP에 비해 느리다|빠르고 단순하며 더 효율적인 속도|
+
+데이터의 신뢰성이 필요한 애플리케이션은 **TCP**   
+빠른 속도나 실시간 통신이 중요한 애플리케이션은 **UDP**   
+
+***** HTTP의 경우, 모든 데이터를 제대로 송수신이 가능해야 하는 특성상, TCP를 사용한다.   
+
+**- TCP 3-way handshake**   
+
+양 끝단의 기기의 신뢰성 있는 데이터 통신을 위해, TCP 연결을 설정하는 방식.   
+
+![](https://velog.velcdn.com/images/wlsk124/post/3a90e5ba-e94a-4b34-89fc-5a3adc28d108/image.png)  
+
+**Step 1 (SYN)**    
+sender는 receiver와 연결 설정을 위해, segment를 랜덤으로 설정된 SYN(Synchronize Sequence Number)와 함께 보낸다. 이 요청은 receiver에게 sender가 통신 시작을 알린다.    
+
+**Step 2(SYN / ACK)**  
+receiver 는 받은 요청을 바탕으로 SYN/ACK 신호 세트를 응답한다.   Acknowledgement(ACK) 응답으로 보내는 segment가 유효한 SYN요청을 받았는지를 의미한다.   
+
+**Step 3(ACK)**    
+sender는 받은 ACK를 receiver에게 전송을 하면서, 신뢰성 있는 연결이 성립되었다는 사실을 sender와 receiver 양쪽에서 알 수 있고, 실제 데이터 전송이 시작되게 된다.  
+
+**UDP**  
+
+>**UDP 사용 이유**  
+1. 온라인 게임을 플레이하는 중, 결정적 순간에 기술을 사용해야 하는데 항상 조금 지연시간이 있다. 근데 지연시간이 매번 달라서 타이밍 잡기가 힘들다.  
+2. 카카오톡으로 보이스 톡을 하는데, 내가 말하고 상대방이 말 할 때마다 지연시간이 조금씩 발생하면서 싱크가 안 맞는다.  
+
+**- UDP 장점**   
+
+**1. 애플리케이션의 정교한 제어 가능** - TCP의 경우 receiver가 전송 받을 준비가 될 때까지 세그먼트를 반복적으로 재전송한다. 실시간 전송에 대한 요구가 큰 애플리케이션 들은 높은 latency를 지양하므로 약간의 데이터 손실을 감수한다. 대신 이를 보완하기 위해 애플리케이션에 추가 기능을 구현할 수 있다.   
+
+**2. 연결설정에 무관하다** - TCP 3-way handshake가 없는 UDP는 예비과정 없이 바로 전송을 시작한다. 설정단계에서 발생하는 지연이 없는 만큼, 반응속도가 빠르고, TCP는 신뢰성을 위해 많은 파라미터와 정보 전달이 필요하지만 UDP는 연결설정 관리를 하지 않기 때문에 어떠한 파라미터도 기록하지 않는다. 그래서 서버에서도 TCP와 비교에 더 많은 클라이언트를 수용할 수 있다.  
+
+**주소(address)**  
+
+네트워크에 연결된 특정 PC의 주소를 나타내는 체계를 IP 주소(Internet Protocol address)라고 한다.  
+
+**- IP주소**  
+
+IP 주소는 TCP/IP 구조에서 컴퓨터를 식별하기 위해 사용되는 주소이다.    
+컴퓨터나 휴대전화, 서버, 인터넷 라우터 등 네트워크 장비에 각각의 IP 주소가 할당된다.  
+```IP 주소 예시) 192.xxx.xxx.xxx```   
+
+IP 주소에는 private 주소와 public 주소가 있다.  
+
+Private IP 주소 - LAN 네트워크 내부에서 사용되는 것.  
+Public IP주소 - 인터넷에서 사용되는 것.  
+
+공유기를 설치하고 비밀번호를 설정하려면, 공유기 관리 페이지에 접속해야 한다.  
+브라우저에 .으로 구분된 네 덩이의 숫자를 입력하면, 관리 페이지로 접속할 수 있다.  
+이때 사용되는 네 덩이의 숫자를 IP 주소라고 한다.  
+
+인터넷에 연결된 모든 PC는 IP 주소체계를 따라 네 덩이의 숫자로 구분된다.  
+이 IP 주소체계를 IPv4(Internet Protocol version 4)라고 한다.   
+
+터미널에서 간단한 명령어로 IPv4 주소를 확인할 수 있다.  
+터미널을 열고, ```nslookup 도메인``` 을 입력하면 해당 도메인의 IP를 알 수 있다.  
+
+```bash
+$ nslookup google.com
+
+Server:         192.168.152.2
+Address:        192.168.152.2#53
+Non-authoritative answer:
+Name:   google.com
+Address: 58.229.92.103
+Name:   google.com
+Address: 58.229.92.88
+```
+**- 특정 IPv4 주소**  
+localhost, 127.0.0.1 : 현재 사용 중인 로컬 PC  
+0.0.0.0, 255.255.255.255 : broadcast address, 로컬 네트워크에 접속된 모든 장치와 소통하는 주소. 서버에서 접근 가능 IP 주소를 broadcast address 로 지정하면, 모든 기기에서 서버에 접근할 수 있다.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/772124f7-972e-4ef5-ad85-693fffde4b2c/image.jpeg)  
+
+인터넷 보급률이 낮았던 초기에는 IPv4로 네트워크에 연결된 PC에 주소를 할당하는 일이 가능했지만, 개인 PC의 보급으로 전 세계의 누구나 PC를 이용해 인터넷에 접속하고, 각종 서비스를 위해 서버를 생산하면서 IPv4로 할당할 수 있는 PC가 한계를 넘어섰다. 그래서 IPv6(IP version 6)가 나왔다. IPv6는 2^(128)개의 IP 주소를 표현할 수 있다.    
+
+하지만 아직 IPv4가 사용할 만 하기 때문에 IPv6가 등장하고 시간이 지났음에도 이를 메인으로 사용하지 않는다.  
+
+**- IP 주소 구조, 서브넷 마스크(subnet mask)**
+
+IPv4 주소는 OOO.OOO.OOO.OOO 의 형식으로 되어 있다.  
+
+10진수로 표기되어 있지만, 실제는 마침표로 구분된 4개의 8비트 필드로 되어있다. 각 8비트 필드는 IPv4 주소에서 1바이트를 나타낸다. IPv4 주소의 바이트를 나타내는 이러한 형식을 점으로 구분된 십진수 형식이라고도 한다.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/0f27cf44-fdf6-4d6f-a5ef-8f930bade40f/image.png)  
+
+IP 주소는 network part와 host part로 나뉜다. network part는 어떤 네트워크인지를 알 수 있는 정보이고, host part는 그 네트워크 안의 특정 컴퓨터를 지칭하는 정보이다.  
+
+IPv4 주소에서 network part가 어디까지인지 나타내는게 서브넷 마스크이다.  
+
+```
+IP 주소: 192.168.1.1
+서브넷 마스크: 255.255.255.0
+네트워크 주소: 192.168.1.0
+브로드캐스트 주소: 192.168.1.255
+```
+
+8자리의 2진수 묶음을 옥텟이라 하고, IPv4 주소는 4개의 옥텟으로 이루어져 있다.   
+각각 1옥텟, 2옥텟, 3옥텟, 4옥텟이라고 부른다.  
+
+**- IP주소의 할당과 관리**   
+
+![](https://velog.velcdn.com/images/wlsk124/post/2b26808f-4816-4480-8227-65e65cf44d16/image.png)  
+
+MAC 주소와 달리, IP주소는 호스트 파트를 변경해서 IP 할당이 이루어진다.  
+
+호스트 파트는 8자리로 이루어진 2진수로, 할당할 수 없는 시작(0)과 끝(255)을 제외한 번호로 할당이 가능하다. 호스트 파트가 0으로 만 이루어진 것을 네트워크 주소로 그 네트워크를 의미하고, 1로만 이루어진 것은 브로드캐스트 주소로 ARP와 같은 기능을 사용하기 위해 사용한다.  
+
+따라서 시작(0)과 끝(255)를 제외한 254개의 주소만 할당이 가능하다.  
+
+**- IP프로토콜의 한계**  
+
+1. 비연결성 - 패킷을 받을 대상이 없거나 특정한 이유로 서비스 불능 상태에 빠져도 데이터를 받을 상대의 상태 파악이 불가능하기 때문에 패켓을 그대로 전송하는 비연결성 문제가 있다.  
+
+2. 비신뢰성 - 중간에 패킷이 사라지더라도 보내는 기기 측에서는 알 수 있는 방법이 없다. 또한, 서로 다른노드를 거쳐서 전송되는 특성상, 보내는 기기측에서 의도한 순서대로 데이터가 도착하지 않을 수 있다.  
+
+이러한 한계들을 극복하기 위해 TCP 와 UDP가 사용되고 있다.  
+
+>**나의 네트워크 접속 정보**  
+>
+[ip주소 정보](https://ko.infobyip.com/)  
+
+**- MAC 주소**  
+
+IP address만 가지고 네트워크 상에서 송수신이 가능하진 않다. 각 네트워크 기기는 처음부터 제조사에서 할당하는 고유 시리얼인 MAC주소를 IP주소와 조합해야 네트워크를 통한 통신이 가능하다.   
+
+[이더넷](https://ko.wikipedia.org/wiki/%EC%9D%B4%EB%8D%94%EB%84%B7)에서는 네트워크상의 송수신 상대를 특정하고자 MAC 주소를 사용하고, TCP/IP 에서는 IP address를 사용하기 때문이다.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/1289bd61-f901-4548-b06a-c34372ea5cac/image.png)  
+
+같은 LAN에 속한 기기끼리 통신 할때, 우선 상대방의 MAC 주소를 파악한다.   
+이때 사용하는 것이 ARP(address resolution protocol)이다.  
+MAC 주소를 파악하기 위해 네트워크 전체에 브로드캐스트를 통해 패킷을 보내고, 해당 IP를 가지고 있는 컴퓨터가 자신의 MAC주소를 Response함으로써 통신할 수 있게 해주는 프로토콜이다.   
+
+**- 패킷**  
+
+기기끼리의 통신에는 회선 교환(Circuit Switching)방식과 패킷 교환(Packet Switching)방식이 있다.  
+
+
+>**회선 교환 방식**  
+: 통신 회선을 설명하여 데이터 교환, 주로 음성전화 시스템에 사용된다.  
+일대일로 데이터를 교환하고, 전화간 통화 중에는 다른 상대와 전화통화가 불가능.   
+**But,** 컴퓨터 네트워크는 여러 상대와 통신 해야하기 때문에 효율적이지 않다.  
+>
+**패킷 교환 방식**  
+: 원본 데이터를 패킷(packet)이라고 하는 작은 단위로 나누고, 여러 회선을 공용해 통신을 주고 받는다. 하나의 패킷은 헤더와 페이로드로 구성되어 있고, 헤더에는 어떤 데이터의 몇번째 데이터인지의 정보와 보내는 곳이나 최종 목적지에 대한 정보 등이 들어있다.  
+
+###  PORT  
+
+TCP와 UDP는 포트번호를 사용한다.  
+
+IP프로토콜만 가지고는 한 IP에서 여러 애플리케이션이 동작할 때 특정 애플리케이션만 특정해 통신할 수 없다.  
+-> 포트번호가 필요   
+
+***** 포트번호: 대상 IP 기기의 특정 어플리케이션(connection endpoint)을 특정하는 번호.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/bc451405-eb43-4ae1-8b24-3798a6e37281/image.png)  
+
+한 서버 인스턴스에서 웹서버와 메일서버를 동시에 실행 중이라고 가정할 때, IP주소만으로는 어느 서버로 요청을 보내는지 알 수 없다. 이러한 경우를 위해, 포트 번호를 사용해 receiver를 특정해 어느 서버로 보내는 요청인지 구분할 수 있다.   
+
+로컬 환경에서 Spring을 실행하면 화면에는, ```Tomcat started on port(s): 8080```과 같은 숫자가 나타난다. 이 숫자는 IP 주소가 가리키는 PC에 접속할 수 있는 통로(채널)을 의미한다. 로컬에서 실행했을때에는 로컬 PC의 IP 주소 127.0.0.1(localhost) 로 접근하여, 8080번이 통로를 통해 실행중인 서버를 확인할 수 있다. 이미 사용중인 포트는 중복해서 사용할 수 없다.   
+
+포트 번호는 0~65,535까지 사용할 수 있고, 0~1023번 까지의 포트 번호는 주요 통신을 위한 규약에 따라 이미 정해져 있다.  
+
+**[- 자주 사용되는 Well-known port](https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers)**  
+
+|port no|protocol name|transport protocol|description
+|:----:|:---:|:----:|:----:
+|80|HTTP|TCP|웹서버 접속
+|443|HTTPS|TCP|웹서버 접속(SSL)
+|110|POP3|TCP|메일 읽기
+|25|SMTP|TCP|메일서버간 메일 전송
+|22|SSH|TCP|컴퓨터 원격 로그인
+|53|DNS|UDP|DNS 질의
+|123|NTP|TCP|시간 동기화
+
+이미 정해진 포트 번호라도, 필요에 따라 자유롭게 사용할 수 있다. 잘 알려진 포트의 경우 URI 등에 명시하지 않지만, 그 외의 잘 알려지지 않은 포트(:8080과 같은 임시 포트)는 반드시 포함해야 한다.  
+
+
+###  URL, DNS
+
+**URL(Uniform Resource Locator)**  
+
+: 웹에 게시된 어떤 자원을 찾기 위한 브라우저에서 사용되는 메카니즘이다. 네트워크 상에서 웹 페이지, 이미지, 동영상 등의 파일이 위치한 정보를 나타낸다.  
+
+브라우저의 주소창에 입력한 URL은 서버가 제공되는 환경에 존재하는 파일의 위치를 나타낸다. 예를 들어 `https://google.com:443`는 google.com 주소가 가리키는 서버의 기본 폴더를 뜻한다. CLI 환경에서 폴더와 파일의 위치를 찾아 이동하듯이, 슬래시(/)를 이용해 서버의 폴더에 진입하거나 파일을 요청한다. 그러나 기본적인 보안의 일환으로 외부에서 직접 접근이 가능한 경우는 거의 없다.  
+
+macOS 기준으로 크롬 브라우저에 `file://127.0.0.1/Users/사용자이름/Desktop/` 을 입력하면, 브라우저로 PC의 폴더와 파일을 탐색할 수 있다.   
+
+**- URL 구조**  
+
+scheme, hosts, url-path로 구분할 수 있다.  
+
+```
+file://127.0.0.1/Users/사용자이름/Desktop/
+-> scheme - file://
+-> hosts - 127.0.0.1
+-> url-path - /Users/사용자이름/Desktop/
+```
+- scheme  
+통신 방식(프로토콜)을 결정한다.   
+일반적인 웹 브라우저에서는 http(s)를 사용한다.   
+
+- hosts  
+웹 서버의 이름이나 도메인, IP를 사용하며 주소를 나타낸다.   
+
+- url-path  
+웹 서버에서 지정한 루트 디렉토리부터 웹 페이지, 이미지, 동영상 등이 위치한 경로와 파일명을 나타낸다.  
+
+**URI(Uniform Resource Identifier)**  
+: 브라우저의 검색창을 클릭하면 나타나는 주소.  
+URI는 URL을 포함한 상위개념으로, 'URL은 URI다.'는 참, 'URI는 URL이다.'는 거짓이다.  
+
+**- URI 구조**  
+URL의 기본 요소인 scheme, hosts, url-path에 더해 query, bookmark를 포함한다.  
+```
+https://google.com:443/search?q=Java
+-> scheme - https://
+-> hosts - google.com:443
+-> url-path - /search
+-> query - ?q=Java
+```
+- query  
+웹 서버에 보내는 추가적인 질문이다.  
+
+**Domain name**  
+
+웹사이트의 주소를 `https://142.250.207.78/weather/index.html` 처럼 IP 주소로만 작성해서 이용한다면 기억하기 어렵다. 그래서 호스트 이름과 도메인 이름으로 바꾸어 기억하기 쉬운 이름을 사용할 수 있다.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/3dae03b7-4f6c-4dcf-a752-4a6c17e8d73f/image.png)  
+
+특정 사이트에 진입을 할 때, IP 주소 대신에 사용하는 주소가 도메인 이름이다.   
+도메인 이름을 이용하면, 한눈에 파악하기 힘든 IP 주소를 분명하게 나타낼 수 있다.  
+
+터미널에서 도메인 이름을 통해 IP 주소를 확인할 수 있다.  
+명령어 `nslookup`으로 google.com 의 IP 주소를 확인할 수 있다.  
+![](https://velog.velcdn.com/images/wlsk124/post/476c1cd1-401f-49a3-b71d-e35f813fe07b/image.png)  
+
+여기서 IP 주소는 142.250.206.238 이고, 도메인 이름은 google.com이다.  
+주소창에 IP 주소(142.250.206.238)를 입력하면, google.com으로 이동한다.  
+
+**- 도메인 관리**  
+
+![](https://velog.velcdn.com/images/wlsk124/post/eed1b239-0d05-43f4-b4a1-0259e81fc397/image.png)  
+
+현재 4억개에 달하는 도메인을 관리하는 곳은 `ICANN`이라는 비영리 단체다.  
+![](https://velog.velcdn.com/images/wlsk124/post/2e9540c4-c7f4-4602-85a1-6f6a36fdca5d/image.png)  
+
+
+그 밖의 조직으로 REGISTRY와 REGISTRAR가 있다.  
+
+>**Registry**  
+도메인 관리 기관. 각 도메인 정보의 데이터베이스를 관리한다.  
+registry에 따라 도메인 종류가 달라진다.  
+>
+**Registrar**   
+중개 등록업체. Registry의 데이터베이스에 직접 도메인 정보를 등록 가능하다.  
+
+**도메인 종류**  
+
+**1. gTLD(generic Top Level Domain)**  
+전세계에서 등록이 가능한 .com, .net, .org, .edu, .gov, .int, .mil 입곱 가지로 시작해 현재까지 .biz, .name, .info 등이 추가되었다.  
+
+**2. ccTLD(country code Top Level Domain)**  
+VERISIGN 등의 회사가 registrar이고, 국내 ICANN 인증 registrar 는 가비아, 후이즈 등이 있다.  
+
+ccTLD의 경우 .kr, .us, .jp 등 200개 이상이 있다. 각국 네트워크 정보센터에서 위임받아 관리하며 .kr의 경우 한국인터넷진흥원이 registry로, 그리고 registrar는 가비아, 후이즈 등이 있다.   
+
+**[DNS(Domain Name System)](https://ko.wikipedia.org/wiki/%EB%8F%84%EB%A9%94%EC%9D%B8_%EB%84%A4%EC%9E%84_%EC%8B%9C%EC%8A%A4%ED%85%9C)**  
+
+네트워크 상에 존재하는 모든 PC는 IP 주소가 있다.  
+그러나 모든 IP 주소가 도메인 이름을 가지는 것은 아니다. 로컬 PC를 나타내는 `127.0.0.1`은 `localhost`로 사용할 수 있지만, 그 외의 모든 도메인 이름은 일정 기간 동안 대여 해야한다.  
+
+> **대여한 도메인 이름과 IP 주소는 어떻게 매칭할까?**  
+>
+브라우저의 검색창에 도메인 이름을 입력하여 해당 사이트로 이동하기 위해서는, 해당 도메인 이름과 매칭된 IP 주소를 확인하는 작업이 반드시 필요하다.
+네트워크에는 이것을 위한 서버가 별도로 있다.  
+-> **DNS를 이용**  
+
+DNS는 호스트의 도메인 이름을 IP 주소로 변환하거나 반대의 경우를 수행할 수 있도록 개발된 데이터베이스 시스템이다.  
+
+브라우저의 검색창에 naver.com을 입력하면, DNS에서 IP 주소(125.209.222.142)를 찾고, 이 IP 주소에 해당하는 웹 서버로 요청을 전달해서 클라이언트와 서버가 통신할 수 있도록 한다.  
+
+시스템 작업이나 서버 교체 등 IP주소가 변경되는 경우는 많이 있다.  
+
+
+**How DNS works**  
+
+**- Domain Name**  
+
+최상위 도메인(Root Domain)과 여러 개의 도메인으로 구성되어 있다.  
+
+- 탑 레벨 도메인(Top Level Domain, TLD)  
+`.com, .kr, .net 등` 도메인의 가장 오른쪽에 위치하는 도메인.  
+kr, us와 같은 국가 코드를 사용하는 도메인은 co, ac와 같은 2단계 도메인과 함께 사용되기도 한다.  
+
+- 서브도메인(Sub Domain)  
+일반적으로 `www, m`와 같은 제일 왼쪽에 위치한 도메인.  
+호스트 이름으로 불리기도 하는 서브도메인은 웹 사이트의 특정 부분을 나눠서 보여줘야 하는 경우 사용한다.  
+`m(모바일)`, `www(기본)`, `store(스토어)`등의 도메인에 따라 사이트의 구성이 달라지는 것을 기억하면 쉽게 이해할 수 있다.  
+
+**- Domain Name Server(Zone)**  
+
+도메인을 관리하는 도메인 서버(존)   
+
+도메인 이름 서버는 하나의 서버로 구성되지 않는다.  
+안정성을 위해 최소 두 개 이상의 서버가 하나의 도메인 네임을 담당한다.  
+여러 개의 서버를 구성한다면 하나의 서버로 운영될 경우 생길 수 있는 과부하 및 서비스 거부 공격에 대해 효율적으로 대응할 수 있다.  
+
+- 루트(Root) 네임 서버  
+루트 도메인 네임 서버는 각 최상위 도메인 네임 서버들의 주소를 알고 있다.    
+
+- TLD(최상위 도메인)를 관리하는 네임 서버  
+최상위 도메인 네임 서버는 권한 있는 네임 서버의 주소를 알고 있다.  
+
+- 권한 있는 네임 서버  
+`example.com` 등의 도메인 IP 주소 및 도메인 정보를 관리하는 권한을 가진 서버.  
+
+**[- DNS Lookup](https://www.javatpoint.com/dns-lookup)**  
+
+![](https://velog.velcdn.com/images/wlsk124/post/9edf9371-5ac9-4a83-a950-64ab9125baa4/image.png)  
+
+URL에 example.com 주소를 입력하면, `DNS Lookup` 과정이 발생 한다.  
+
+**1.** 브라우저는 Resolver에게 IP 주소를 요청한다.  
+>**Resolver(리졸버)**  
+: 요청받은 도메인의 IP 주소를 찾기 위해 여러 네임 서버에 반복적인 질의를 하는 이름 서버.  
+
+리졸버는 기존에 찾아본 도메인 정보의 내용이 담긴 캐시 파일을 살펴본다.  
+해당되는 도메인 정보가 있다면 즉시 IP 주소를 리턴한다.  
+
+해당되는 도메인 정보를 찾을수 없는 경우 2번을 진행한다.  
+
+**2.** DNS 리졸버는 IP 주소를 얻기 위해 네임 서버들에게 재귀적인 쿼리를 진행한다.   
+루트, 탑 레벨, 권한 있는 도메인 서버에 차례대로 쿼리를 진행하며 IP 주소를 알아낸다.   
+
+이때 리졸버는 쿼리수를 줄일 목적으로 기록되지 않은 도메인 네임 서버들의 주소를 저장하기도 한다.  
+
+**3.** 마지막으로 리졸버는 전달받은 example.com의 IP 주소를 기록하고 브라우저에게 전달한다.  
+
+**- Zone File**  
+
+도메인 네임 서버는 응답을 보내기 위해 한 개 이상의 존 파일을 가지고 있다.    
+도메인과 주소가 매핑된 일종의 테이블, IP주소를 반환할 수 있는 이유  
+
+>**Zone File(존 파일) 구성**  
+- Name(도메인 이름, 혹은 서브 도메인의 이름)  
+- Record class(네트워크 타입, 일반적으로 IN(인터넷)으로 지정)  
+- TTL(Time To Live, 클라이언트가 네트워크를 저장 가능한 시간)  
+- Record Type(반환될 데이터의 형식)  
+- Record Data(반환되는 데이터)  
+
+네임 서버들은 이러한 존 파일들을 바탕으로 요청에 해당되는 레코드를 리턴한다.  
+리졸버는 이 레코드를 살펴보고 리턴해야 할 IP 혹은 다음에 쿼리를 진행할 서버의 주소를 확인한다.  
+
+**- 대표적인 레코드 타입**  
+
+- **A**   
+데이터가 IPv4 주소임을 명시한다.  
+IPv4 주소는 보통 `127.0.0.1`과 같은 주소를 말한다.  
+
+- **AAAA**   
+데이터가 IPv6 주소임을 명시한다.  
+IPv6주소는 IPv4주소가 부족해지자 새롭게 도입된 주소 형식으로, 	`2001:0db8:85a3:08d3:1319:8a2e:0370:7334`과 같은 형식을 사용한다.  
+
+- **CNAME**  
+데이터가 도메인 주소임을 명시한다.  
+
+- **NS**   
+데이터가 도메인 네임 서버들의 주소임을 명시한다.  
+
+- **SOA**  
+데이터가 도메인 네임 서버들 중 주 서버의 정보들에 대한 데이터이다.  
+주 네임 서버와 통신할 수 있는 포트 번호, TTL, 도메인 주소 등이 적혀 있다.  
+
+**예시]**   
+
+![](https://velog.velcdn.com/images/wlsk124/post/69cba8e9-ee87-4d3d-bc70-3a1fcdc30fbe/image.png)  
+
+
+-----
+## 웹을 구성하는 기술  
+### 웹(WEB)  
+인터넷에서 제공되는 하이퍼텍스트 시스템.   
+
+**하이퍼텍스트**   
+참조를 통해 한 문서에서 다른 문서로 접근할 수 있는 텍스트   
+(문서안에 다른 문서의 위치정보 등을 포함한다)  
+
+>**하이퍼텍스트의 시작**   
+1989년 유럽 입자 물리 연구소(CERN) 직원이던 팀 버너스리가 정보 공유 수단으로써 고안했다.   
+연구소 내의 직원들이 수많은 정보를 주고 받을때, 운영체제나 애플리케이션에 상관없이 일정한 형식으로 출력되게 하는 새로운 개념이 필요했다. 그래서 일정한 형식의 기준인 HTML을 제안하고, 운영체제나 애플리케이션이 달라도 브라우저만 있으면 모두 동일한 정보를 볼 수 있도록 했다.  
+>
+-> **웹이 HTML로 대표되는 하이퍼텍스트 언어와 인터넷이 융합하여 탄생**  
+
+### 웹 애플리케이션에 대한 이해  
+
+**네이티브 애플리케이션(Native-application)**  
+
+특정기기에 설치해서 사용하는 애플리케이션.   
+ex) 핸드폰에서 모바일용 애플리케이션을 다운받아 설치하는 것.   
+
+Apple iOS, Android OS, Windows와 같은 특정 실행환경에 종속되게 된다.  
+
+**네이티브 애플리케이션의 장점**   
+
+1. 웹애플리케이션보다 빠르다.  
+2. 애플리케이션이 설치된 기기의 시스템/기기의 리소스에 접근이 용이하다.   
+3. 인터넷 없이 사용 가능하다.  
+4. 웹애플리케이션에 비해 안전하다.(앱스토어에 승인을 받아야 함)  
+
+**네이티브 애플리케이션의 단점**   
+
+1. 웹애플리케이션에 비해 개발비가 더 든다. (멀티 플랫폼 개발)  
+2. 빠른 업데이트가 힘들다.  
+3. 앱스토어에 승인 받기가 힘들고 비용이 발생한다.  
+
+**웹 애플리케이션(Web-application)**  
+
+웹 브라우저를 통해 접근이 가능한 어플리케이션.    
+정적인 웹사이트의 한계를 벗어나 다양한 동적인 응답을 웹 브라우저라는 소프트웨어를 통해 가능하게 한 애플리케이션.    
+ 
+**웹 애플리케이션의 장점**   
+
+1. 브라우저를 통해 실행되기 때문에 설치나 다운로드가 필요 없다.  
+2. 업데이트 등의 유지관리가 쉽다.  
+3. 네이티브 애플리케이션에 비해 만들기가 비교적 간편하다.  
+4. 애플리케이션 스토어 승인이 필요 없다.
+
+**웹 애플리케이션의 단점**   
+
+1. 인터넷이 없으면 사용이 안된다.  
+2. 네이티브 애플리케이션에 비해 속도가 느리다.  
+3. 애플리케이션 스토어에서 관리되지 않기 때문에 사용자 접근성이 떨어진다.  
+4. 질적으로나 보안상 위험에 노출되기가 쉽다.  
+
+###  클라이언트-서버 아키텍처  
+
+웹에서 제공되는 서비스는 클라이언트와 서버로 나뉜다.  
+이러한 구조를 **클라이언트-서버 아키텍처(2티어 아키텍처)** 라고 부른다.  
+
+**클라이언트 (client)**   
+서비스를 이용.   
+-> 사용자가 직접 이용하기 때문에 사용 편의성이나 휴대성 등을 고려해 개발한다.   
+
+**서버 (server)**    
+서비스를 제공.   
+-> 클라이언트가 언제 접속해서 서비스를 이용할지 모르기 때문에 유지보수를 할 시점을 제외하고 24시간 일년 내내 작동해야 한다. 하지만, 사용자와는 직접적 접점이 없기 때문에 편의성 보다는 기능에 중점을 두고 개발이 이루어 진다.  
+
+
+다음 장에서 클라이언트-서버 아키텍처에대해 조금 더 알아보도록 하겠습니다.  
+
+### 클라이언트-서버 아키텍처에 대한 이해  
+
+>**쇼핑몰 예시**   
+스마트폰에서 인터넷 연결이 없이 쇼핑몰 앱을 실행시켰을때, 쇼핑몰 앱은 정상적으로 동작할 수 없다. 이유는 상품 정보를 인터넷 어딘가에 존재하는 서버로부터 받아오기 때문이다.  
+만약 앱과 연결된 서버가 존재하지 않는다면, 새로운 상품이 나올때마다 끊임없이 앱을 업데이트를 해야 한다. 그리고 앱을 사용하는 고객들에게 상품 정보를 실시간으로 전달하기 매우 어렵다. 또한 결제는 금전 정보를 주고받는 은행 서버와의 연결이 필요하기 때문에, 서버가 없다면 결제를 할 수 없다.   
+>
+상품 정보 같은 리소스가 존재하는 곳과 리소스를 사용하는 앱을 분리시킨 것을 클라이언트-서버 아키텍처라고 부른다.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/9a2bbaed-d49b-42f1-8709-c77a96bd35ef/image.png)   
+
+상품 정보는 서버에서 다루고 있고, 클라이언트는 상품 정보를 조회할 뿐이다.  
+
+클라이언트와 서버는 요청과 응답을 주고받는 관계이다. 클라이언트-서버 아키텍처에서는 요청이 선행되고 그 후에 응답이 온다. 요청하지도 않았는데 응답이 오는 경우는 없다.  
+
+일반적으로 서버는 리소스를 전달해 주는 역할만 담당한다. 리소스를 저장하는 별도의 공간을 **데이터베이스** 라고 한다. 데이터베이스는 창고와 같은 역할을 한다.  
+`2티어 아키텍처 + 데이터베이스 = 3티어 아키텍처`   
+
+###  웹 애플리케이션 아키텍처  
+
+**웹사이트(website)와 웹 애플리케이션(web application)의 차이**  
+
+웹 개발 영역에서 website는 일반적으로 정적 페이지들의 집합체를 의미한다.  
+웹사이트가 정적 페이지들뿐만 아니라 동적 페이지를 포함하면 web application이 된다.  
+오늘날 만들어지는 대부분의 웹사이트들은 웹 애플리케이션들이다.   
+
+**웹 애플리케이션(web application) 특징**  
+
+1. 데스크탑 애플리케이션처럼 상호작용 가능하다.  
+2. 특정 기능을 가지고 있다.(정보 검색 등)  
+3. 정보나 자료 등의 콘텐츠 관리 시스템과 함께 작동한다.  
+
+**웹 애플리케이션 아키텍처**  
+
+클라이언트-서버 간의 연결에 대한 설명 방법.   
+-> 어떻게 애플리케이션 내부의 요소들이 상호간에 소통하는지 설명한다.  
+
+>유저가 웹브라우저에서 요청을 하면 애플리케이션의 다양한 요소들(브라우저, 유저 인터페이스, 미들웨어, 서버, 데이터베이스,)이 상호작용을 한다. 웹 애플리케이션 아키텍처는 이러한 요소들이 상호작용을 유지할 수 있도록 서로를 결부시키는 뼈대라고 할 수 있다.  
+
+**웹 애플리케이션 고려할 요소**   
+웹 애플리케이션은 인터넷에 공개되는 순간부터 글로벌 네트워크의 막대한 트래픽에 노출 될 수 있기 때문에 다음과 요소를 고려해야 한다.   
+
+- 신뢰성(reliability)  
+- 확장성(scalability)  
+- 보안성(security)  
+- 견고성(robustness)  
+
+### 웹 애플리케이션의 요청흐름  
+
+👉🏻 브라우저에 `https://www.google.com`를 입력한다.  
+👉🏻 브라우저는 URL을 입력 받으면 서버의 주소를 찾기 위해 DNS 서버에 요청을 보낸다.  
+👉🏻 IP 주소를 찾으면 해당 주소에 HTTPS 요청을 보낸다.  
+(방문 기록이 캐시 메모리에 있으면 주소를 캐시 메모리에서 가져온다.)  
+👉🏻 웹서버에 요청이 도착 한다.  
+👉🏻 웹서버는 저장소에 요청을 보내 페이지 관련 데이터들을 가져온다.  
+👉🏻 정보들은 가져오는 중에 비지니스 로직이 작용한다.    
+👉🏻 비지니스 로직들은 각 데이터들을 어떻게 다룰지가 정해져 있다.  
+👉🏻 로직들을 통해 요청 받은 데이터들이 처리되고 브라우저에 응답한다.  
+👉🏻 요청들이 브라우저에 응답으로 돌아왔을 때, web page 화면에서 출력된다.  
+
+모든 애플리케이션은 client-side 와 server-side로 작동한다. 유저가 요청을 하면 크게는 두 프로그램이 작동을 한다.  
+
+1. 유저의 입력에 따라 브라우저에서 작동하는 프로그램  
+2. HTTP 요청에 따라 서버에서 요청 처리하는 프로그램  
+
+>**Client-side** 는 주로 HTML, CSS, and JavaScript 의 언어를 조합해 사용하여 개발한다. 개발되는 코드는 브라우저에 의해 분석되어 처리되고, 서버와의 소통은 HTTP 요청을 통해 이루어 진다.  
+>
+**Server-side** 는 주로 Java, Python, JavaScript, C#, PHP, Ruby on Rails 등 서버사이드에서 실행 가능하고 HTTP 요청에 응답할 수 있는 언어들이 사용된다.  
+
+**웹 애플리케이션의 요소들**  
+
+**유저 인터페이스 요소**   
+유저 인터페이스와 유저 경험과 관련된 요소들이다. 이 요소들은 화면 출력, 로그나, 알림, 시스템 통계, 환경 설정 등의 웹 애플리케이션의 외적인 요소들이다.   
+
+**구조 요소**   
+웹 애플리케이션의 기능적인 부분을 담당한다. 유저와의 상호작용, 제어, 데이터베이스 등에 관련한 요소들이다. 웹 애플리케이션의 전체적인 구조를 담당한다. 구조 요소는 우리가 잘 아는, 웹 브라우저나 클라이언트, 웹 애플리케이션 서버, 그리고 데이터베이스로 이루어져 있다.  
+
+**Web Application Three Tier Architecture**   
+
+![](https://velog.velcdn.com/images/wlsk124/post/b30ea037-dbce-40e1-b0c9-bdaf5e5f8a0b/image.png)   
+
+- **Presentation Layer**  
+유저와 브라우저 등을 이용해 직접적으로 접촉을 한다.   
+Web Server가 이 영역에 포함되며, 유저 인터페이스 요소들을 포함한다.  
+
+- **Application Layer**   
+Business Layer, Business Logic 또는 Domain Logic이라고 불리는 이 영역은 유저의 요청을 브라우저로부터 받아서 처리한다.  
+Application Server가 이 영역에 포함되며, 데이터 접근을 위한 경로를 규격화 하는 등의 과정이 이 계층에 작성된다.  
+
+- **Data access layer**    
+Persistence layer 라고도 불리는 이 계층은 애플리케이선의 데이터 저장소에 접근하여 데이터를 불러 오거나 저장을 담당한다.    
+이 단계를 통해 Application Layer의 로직들은 어느 데이터베이스에 접근해서 데이터를 회수하고 혹은 저장할지를 더 최적화 할 수 있다.  
+
+**그 외, 웹 어플리케이션 구조의 요소들**   
+
+- **Cross-cutting**   
+주로 보안, 통신, 운영 관리등을 위한 요소들이다.    
+
+- **Third-party integrations**   
+제 3의 API 서비스를 이용하는 것을 의미한다.    
+ex) OAuth 2.0을 이용한 소셜 로그인, PG사를 이용한 결제 기능 등.  
+
+### 웹 애플리케이션의 구현  
+
+**웹 애플리케이션 구현방식**  
+
+**1. Single Page Application**  
+
+직관적으로 알기 쉽고 상호작용 가능한 요소들을 이용해 유저 경험을 극대화 한다.   
+
+유저의 입력과 요청에 의한 콘텐츠나 정보가 새로운 페이지를 불러오지 않고 현재 페이지에서 이루어진다.  
+
+필수적인 요소만 요청하여 페이지가 새로고침 되는 것을 방지해 유저 경험을 극대화한다.    
+
+**2. Microservice Architecture**  
+
+작고 가벼운 특정한 한가지 기능에 집중한 웹 애플리케이션을 의미한다.  
+
+각 애플리케이션의 기능 요소들은 상호간에 의존적으로 설계되지 않기 때문에, 개발단계와 개발완성 이후로도 같은 개발 언어를 사용할 필요가 없다.  
+
+원하는 언어를 사용해 기능 개발에 유연성을 갖고, 개발 과정의 속도와 생산성이 향상된다.  
+
+**3. Serverless Architecture**  
+
+개발자가 웹 애플리케이션의 서버와 기타 기반 기능들에 대해 외부의 클라우드 서비스 제공자에게 의탁하는 방식이다.  
+
+이 방식은 개발자가 기본적인 서버나 기반 기능들에 걱정할 필요 없이 특정기능의 개발에 집중 할 수 있게한다.  
+
+**웹 애플리케이션 구현 기술**  
+
+**HTTP(HyperText Transfer Protocol)**  
+
+웹 브라우저상에서 클라이언트와 서버간의 통신을 담당하는 프로토콜.   
+-> 데이터를 요청하고 요청에 대한 응답을 전송하는 무상태성의 프로토콜.  
+
+클라이언트의 데이터 요청과 서버의 응답을 반복하면서 웹 애플리케이션을 작동시킨다.  
+
+HTTP 요청 시, 처리 하고싶은 종류의 메서드 이름과 처리 대상의 이름이 포함된다.  
+HTTP 응답은 요청에 대한 처리 결과를 나타내는 상태코드와 헤더, 처리 결과 메시지가 포함된다.   
+
+처음에는 문서 전송에 주로 이용 되었지만, 오늘날에는 대용량 이미지, 음성, 영상, 파일 데이터 등 거의 모든 방식의 데이터 전송에 이용된다.  
+
+
+**Cookie & Session**  
+
+- 쿠키(Cookie)   
+웹 애플리케이션을 사용하는 유저의 정보를 클라이언트에 보관하고, 다음 접속부터는 유저의 정보를 클라이언트가 서버로 보내서 유저를 서버가 식별하게 한다. 쿠키에 담긴 내용으로 웹 애플리케이션에 유저가 설정했던 항목들에 대해 저장을 해서 다음에 이어서 같은 방식으로 작동하게 도와준다.  
+
+- 세션(Session)   
+세션의 경우 서버에 Session-Id라는 고유 아이디를 할당해서 유저를 식별한다. 단순하고 유출이 되면 안되는 정보는 서버에서 관리를 하고, 세션 ID와 매칭해서 저장해 관리한다. 세션정보는 쿠키에서 관리하고, 실제 매칭되는 값들은 서버 측에서 관리하는 것이 일반적이다.  
+
+**사용자 인증**     
+
+컴퓨터나 특정 시스템을 사용할 때 유저를 식별할 수 있는 ID 값과 암호를 통해 인증.   
+-> 의도하지 않은 제 3자가 컴퓨터나 시스템의 이용을 차단하기 위해 사용한다.  
+
+오늘날의 웹 애플리케이션의 사용자 인증은 점점 개인 정보를 이용한 인증이 강화되고 있다. 따라서, 웹에서의 인증은 개인정보를 바탕으로 한다. 사용자 식별용 고유 아이디와 암호 뿐만 아니라, 개인의 신원 또한 파악하는 다요소 인증(MFA)이 웹에서 보안의 필수 요소로 되었다.  
+
+-> 새로운 웹 애플리케이션에 가입할 때 개인 휴대전화로 일회용 패스워드를 받거나, 통신사 전용 소프트웨어를 사용하는 등의 추가인증 절차.  
+-> 은행과 같이 높은 보안을 요구하는 서비스는 물리적 하드웨어 토큰에 OTP를 사용하는 것까지 있다.  
+
+가장 일상적으로 접하는 것은 OAuth 방식의 로그인이다. 이 방식은 서비스 자격증명 메커니즘을 다른 믿을만한 제3의 서비스에 위임해 인증하는 방식이다.  
+
+### SSR과 CSR  
+
+**SSR(Server Side Rendering)**   
+
+![](https://velog.velcdn.com/images/wlsk124/post/e6667a3d-5539-4799-b230-449c1ba43d13/image.png)   
+
+Javascript가 웹 페이지를 브라우저에서 렌더링하는 대신, 서버에서 렌더링한다.   
+예시) 가구를 주문 했을 때 배송 출발지에서 조립을 완료한 상태로 보내는 경우.   
+
+브라우저가 서버의 URI로 GET 요청을 보내면, 서버는 정해진 웹 페이지 파일을 브라우저로 전송한다. 그리고 서버의 웹 페이지가 브라우저에 도착하면 완전히 렌더링된다.    
+
+서버에서 웹 페이지를 브라우저로 보내기 전에, 서버에서 완전히 렌더링했기 때문에 SSR(Server Side Rendering) 이라고 한다. 웹 페이지의 내용에 데이터베이스의 데이터가 필요한 경우, 서버는 데이터베이스의 데이터를 불러온 다음 웹 페이지를 완전히 렌더링 된 페이지로 변환한 후에 브라우저에 응답으로 보낸다.  
+
+브라우저가 다른 경로로 이동할 때마다 서버는 이 작업을 다시 수행한다.   
+
+**- SSR을 사용할 경우**   
+
+- SEO(Search Engine Optimization)가 우선순위인 경우  
+- 웹 페이지의 첫 화면 렌더링이 빠르게 필요한 경우   
+- 웹 페이지가 사용자와 상호작용이 적은 경우    
+
+**- SSR의 주의점**  
+
+- 자원이용이 서버에 집중되기 때문에 애플리케이션 유지비용이 높다.  
+- 일부 3rd party Javascript library의 경우 서버사이드 렌더링이 불가능할 수 있다.    
+
+**- SSR 예시**  
+
+- 네이버 블로그  
+네이버 블로그는 2020년에 SSR 방식을 도입했다. 대표적인 이유는 SSR이 검색엔진 최적화(Search Engine Optimization, SEO)에 유리한 이점이 있기 때문이다. 블로그 같은 경우 검색엔진에 최대한 노출되는 게 유리하고, 다른 웹사이트에 비해 사용자와 상호작용이 많지 않기 때문에 SSR이 합리적인 선택이 될 수 있다.    
+
+- The NewYork Times  
+뉴욕 타임스 홈페이지도 SSR 방식을 사용하고 있다. SSR의 단점인 많은 사용자가 클릭할 때마다 전체 웹사이트를 다시 서버에서 받아오기 때문에 발생하는 서버 과부하 이슈가 있음에도 불구하고, CSR에 비해 초기 로딩 속도가 빠르기 때문에 구독자가 신문기사를 빠르게 읽을 수 있다는 장점이 있다. 그뿐만 아니라 기사가 검색엔진에 노출되는 것이 중요하기 때문에 SEO(Search Engine Optimization)에 유리한 SSR을 이용하고 있다.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/8a50778f-e557-4243-b84a-27aea5013641/image.png)  
+
+-> 완성된 html 파일(todayspaper)을 받아와서 렌더링을 한다. html 파일 안에 해당 내용이 그대로 담겨있는 상태이기 때문에 검색엔진 크롤러가 내용을 수집하기 용이하다.  
+
+**CSR(Client Side Rendering)**   
+
+![](https://velog.velcdn.com/images/wlsk124/post/525e9886-d6ed-4c3c-b207-cfd0d29d66f2/image.png)  
+
+브라우저(클라이언트)에서 Javascript가 웹 페이지를 렌더링한다.  
+예시) 가구를 주문 했을 때 모든 부품이 나뉘어 배송이 된 다음 집에서 조립을 하는 경우.   
+
+웹 개발에서 사용하는 대표적인 클라이언트는 웹 브라우저이다. 브라우저의 요청을 서버로 보내면 서버는 웹 페이지를 렌더링하는 대신, 웹 페이지의 골격이 될 단일 페이지를 클라이언트에 보낸다. 이때 서버는 웹 페이지와 함께 JavaScript 파일을 보낸다.   
+
+클라이언트가 웹 페이지를 받으면, 웹 페이지와 함께 전달된 JavaScript 파일은 브라우저에서 웹 페이지를 완전히 렌더링 된 페이지로 바꾼다. 웹 페이지에 필요한 내용이 데이터베이스에 저장된 데이터인 경우, 브라우저는 데이터베이스에 저장된 데이터를 가져와서 웹 페이지에 렌더링을 해야한다. 이를 위해 API가 사용된다. 웹 페이지를 렌더링하는데 필요한 데이터를 API 요청으로 해결한다.  
+
+브라우저가 다른 경로로 이동하면, 서버가 웹 페이지를 다시 보내지 않는다. 브라우저는 브라우저가 요청한 경로에 따라 페이지를 다시 렌더링한다. 이때 보이는 웹 페이지의 파일은 맨 처음 서버로부터 전달받은 웹 페이지 파일과 동일한 파일이다.     
+
+**- CSR을 사용할 경우**   
+
+- SEO 가 우선순위가 아닌 경우  
+- 사이트에 풍부한 상호 작용이 있는 경우  
+- 웹 애플리케이션을 제작하는 경우   
+
+**- CSR의 주의점**  
+
+- 느린 렌더링 속도로 사용자 경험이 안 좋아 질 수 있다. 모든 렌더링의 부하가 클라이언트 쪽에 집중되기 때문에 사용자에 따라서 경험이 달라질 수 있다.
+- search engine bots와 상성이 안 좋다. Javascript가 렌더링해야 하는 정보들은 Google과 같은 search engine index에 포함이 안될 가능성이 매우 높다.   
+
+**- CSR 예시**  
+
+- 아고다  
+예약 사이트들은 CSR을 사용하고 있다. SSR은 서버에서 렌더링을 하기 때문에 상호작용(interaction)이 많아질수록 서버에 부담이 많은 반면, CSR은 서버가 클라이언트에 필요한 데이터만 넘겨주기 때문에 부담이 적다. 그리고 SPA(Single Page Application)를 기반으로 화면의 일부만 받아온 데이터로 변경해 주기 때문에 빠른 렌더링으로 User Experience(사용자 경험)에 유리하다.  
+
+**SSR와 CSR의 차이점**  
+
+페이지가 렌더링되는 위치.   
+-> SSR은 서버에서 페이지를 렌더링하고, CSR은 브라우저에서 페이지를 렌더링한다.   
+
+브라우저는 사용자가 다른 경로를 요청할 때마다 페이지를 새로고침 하지 않고, 동적으로 라우팅을 관리한다.   
+
+### CORS(Cross-Origin Resource Sharing)  
+[출처: MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)   
+
+보안 상의 이유로, 브라우저는 스크립트에서 시작한 cross-origin HTTP requests을 제한한다. 예를 들어, XMLHttpRequest와 Fetch API는 동일 출처 정책을 따른다. 즉, 이 API를 사용하는 웹 애플리케이션은 자신의 출처와 동일한 리소스만 불러올 수 있으며, 다른 출처의 리소스를 불러오려면 그 출처에서 올바른 CORS 헤더를 포함한 응답을 반환해야한다.   
+
+![](https://velog.velcdn.com/images/wlsk124/post/4411eea1-703c-4b93-b0a5-c1e0efffddff/image.png)    
+
+CORS 체제는 브라우저와 서버 간의 안전한 cross-origin 요청 및 데이터 전송을 지원한다. 최신 브라우저는 XMLHttpRequest 또는 Fetch와 같은 API에서 CORS를 사용하여 cross-origin HTTP requests의 위험을 완화한다.   
+
+**단순 요청(Simple requests)**   
+
+일부요청은 CORS preflight를 트리거하지 않는다.   
+`simple requests` - 다음 조건을 모두 충족하는 요청  
+
+**1. 다음 중 하나의 메서드 사용**  
+GET  
+HEAD  
+POST  
+**2. Content-Type 헤더는 다음의 값들만 허용**  
+application/x-www-form-urlencoded   
+multipart/form-data   
+text/plain   
+
+EX)  
+`https://foo.example`의 웹 컨텐츠가 `https://bar.other` 도메인의 컨텐츠를 호출하려 한다. `foo.example`에 배포된 자바스크립트에는 아래와 같은 코드가 사용된다.  
+
+```javascript
+const xhr = new XMLHttpRequest();
+const url = 'https://bar.other/resources/public-data/';
+
+xhr.open('GET', url);
+xhr.onreadystatechange = someHandler;
+xhr.send();
+```
+
+클라이언트와 서버간에 간단한 통신을 하고, CORS 헤더를 사용하여 권한을 처리한다.  
+이 경우 브라우저가 서버로 전송하는 내용을 살펴보고, 서버의 응답을 확인한다.  
+
+```http
+GET /resources/public-data/ HTTP/1.1
+Host: bar.other
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:71.0) Gecko/20100101 Firefox/71.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Connection: keep-alive
+Origin: https://foo.example
+```
+요청 헤더의 Origin을 보면, `https://foo.example`로 부터 요청이 왔다.  
+
+```
+HTTP/1.1 200 OK
+Date: Mon, 01 Dec 2008 00:23:53 GMT
+Server: Apache/2
+Access-Control-Allow-Origin: *
+Keep-Alive: timeout=2, max=100
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+Content-Type: application/xml
+
+[…XML Data…]
+```
+서버는 이에 대한 응답으로 `Access-Control-Allow-Origin` 헤더를 다시 전송한다. 가장 간단한 접근 제어 프로토콜은 Origin 헤더와 `Access-Control-Allow-Origin` 을 사용하는 것이다. 이 경우, 서버는 `Access-Control-Allow-Origin: *`로 응답해야 한다.(모든 도메인에서 접근할 수 있음)   
+
+`https://bar.other` 의 리소스 소유자가 오직 `https://foo.example` 의 요청만 리소스에 대한 접근을 허용하려는 경우 `Access-Control-Allow-Origin: https://foo.example`을 전송한다. 그러면 `https://foo.example` 이외의 도메인은 cross-site 방식으로 리소스에 접근할 수 없다. 리소스에 대한 접근을 허용하려면, `Access-Control-Allow-Origin` 헤더에는 요청의 Origin 헤더에서 전송된 값이 포함되어야 한다.  
+
+**프리플라이트 요청(Preflighted requests)**   
+
+preflighted request는 simple requests와 달리, 먼저 `OPTIONS` 메서드를 통해 다른 도메인의 리소스로 HTTP 요청을 보내 실제 요청이 전송하기에 안전한지 확인한다. cross-origin 요청은 유저 데이터에 영향을 줄 수 있기 때문에 이와같이 preflighted을 한다.   
+
+**다음 중 하나의 메서드라도 실행되는 경우 프리플라이트가 실행된다.**   
+
+PUT  
+DELETE  
+CONNECT  
+OPTIONS  
+TRACE  
+PATCH  
+
+**preflighted할 요청 예제**  
+
+```java
+const xhr = new XMLHttpRequest();
+xhr.open('POST', 'https://bar.other/resources/post-here/');
+xhr.setRequestHeader('Ping-Other', 'pingpong');
+xhr.setRequestHeader('Content-Type', 'application/xml');
+xhr.onreadystatechange = handler;
+xhr.send('<person><name>Arun</name></person>');
+```
+
+POST 요청과 함께 함께 보낼 XML body를 만든다. 또한 비표준 HTTP Ping-Other 요청 헤더가 설정된다. 이러한 헤더는 HTTP/1.1의 일부가 아니지만 일반적으로 웹 응용 프로그램에 유용하다. Content-Type 이 `application/xml`이고, 사용자 정의 헤더가 설정되었기 때문에 이 요청은 preflighted 처리된다.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/a65150f8-0adc-4e51-bf02-089c0a4c8234/image.png)  
+
+***** 참고: 아래 설명 된 것처럼 실제 POST 요청에는 `Access-Control-Request-*` 헤더가 포함되지 않는다. OPTIONS 요청에만 필요)  
+
+**첫 번째 통신 preflight request/response**  
+
+```
+OPTIONS /resources/post-here/ HTTP/1.1
+Host: bar.other
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:71.0) Gecko/20100101 Firefox/71.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Connection: keep-alive
+Origin: http://foo.example
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: X-PINGOTHER, Content-Type
+
+
+HTTP/1.1 204 No Content
+Date: Mon, 01 Dec 2008 01:15:39 GMT
+Server: Apache/2
+Access-Control-Allow-Origin: https://foo.example
+Access-Control-Allow-Methods: POST, GET, OPTIONS
+Access-Control-Allow-Headers: X-PINGOTHER, Content-Type
+Access-Control-Max-Age: 86400
+Vary: Accept-Encoding, Origin
+Keep-Alive: timeout=2, max=100
+Connection: Keep-Alive
+```
+**preflight request가 완료되면 실제 요청을 전송**   
+
+```
+POST /resources/post-here/ HTTP/1.1
+Host: bar.other
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:71.0) Gecko/20100101 Firefox/71.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Connection: keep-alive
+X-PINGOTHER: pingpong
+Content-Type: text/xml; charset=UTF-8
+Referer: https://foo.example/examples/preflightInvocation.html
+Content-Length: 55
+Origin: https://foo.example
+Pragma: no-cache
+Cache-Control: no-cache
+
+<person><name>Arun</name></person>
+
+
+HTTP/1.1 200 OK
+Date: Mon, 01 Dec 2008 01:15:40 GMT
+Server: Apache/2
+Access-Control-Allow-Origin: https://foo.example
+Vary: Accept-Encoding, Origin
+Content-Encoding: gzip
+Content-Length: 235
+Keep-Alive: timeout=2, max=99
+Connection: Keep-Alive
+Content-Type: text/plain
+
+[Some GZIP'd payload]
+```
+  
+-----
+## HTTP
+### HTTP Messages
+
+**HTTP(HyperText Transfer Protocol)**   
+
+HTML과 같은 문서를 전송하기 위한 Application Layer 프로토콜.  
+HTTP는 웹 브라우저와 웹 서버의 소통을 위해 디자인되었다. 전통적인 `클라이언트-서버` 모델에서 클라이언트가 HTTP messages 양식에 맞춰 요청을 보내면, 서버도 HTTP messages 양식에 맞춰 응답한다. HTTP는 특정 상태를 유지하지 않는 특징이 있다.   
+
+**HTTP messages**  
+
+클라이언트와 서버 사이에서 데이터가 교환되는 방식.   
+
+**- HTTP messages 유형**  
+요청(Requests)   
+응답(Responses)   
+
+HTTP messages는 몇 줄의 텍스트 정보로 구성되는데, 구성 파일, API, 기타 인터페이스에서 자동으로 완성한다.   
+-> 개발자가 이런 메시지를 직접 작성할 필요가 거의 없다.   
+
+![](https://velog.velcdn.com/images/wlsk124/post/a15fd3bd-f063-4991-b833-f25414b08f43/image.png)  
+
+요청(Requests)과 응답(Responses)은 유사한 구조를 가진다.  
+
+**1. start line**   
+start line에는 요청이나 응답의 상태를 나타낸다. 항상 첫 번째 줄에 위치.   
+응답에서는 status line이라고 부른다.  
+
+**2. HTTP headers**   
+요청을 지정하거나, 메시지에 포함된 본문을 설명하는 헤더의 집합.  
+
+**3. empty line**   
+헤더와 본문을 구분하는 빈 줄.   
+
+**4. body**   
+요청과 관련된 데이터나 응답과 관련된 데이터 또는 문서를 포함. 요청과 응답의 유형에 따라 선택적으로 사용한다.   
+
+#### 요청(Requests)  
+
+HTTP 요청은 클라이언트가 서버에 보내는 메시지이다.  
+
+**Start line**   
+
+**1.** 수행할 작업(GET, PUT, POST 등)이나 방식(HEAD or OPTIONS)을 설명하는 HTTP method를 나타낸다.  
+
+**2.** 요청 대상(일반적으로 URL이나 URI) 또는 프로토콜, 포트, 도메인의 절대 경로는 요청 컨텍스트에 작성된다. 요청 형식은 HTTP method마다 다르다.  
+**- origin 형식** : `?`와 `쿼리 문자열`이 붙는 절대 경로. POST, GET, HEAD, OPTIONS 등의 method와 함께 사용.  
+`POST / HTTP 1.1GET /background.png HTTP/1.0HEAD /test.html?query=alibaba HTTP/1.1OPTIONS /anypage.html HTTP/1.0`   
+**- absolute 형식** : 완전한 URL 형식으로, 프록시에 연결하는 경우 대부분 GET method와 함께 사용.   
+`GET http://developer.mozilla.org/en-US/docs/Web/HTTP/Messages HTTP/1.1`   
+**- authority 형식** : 도메인 이름과 포트 번호로 이루어진 URL의 authority component. HTTP 터널을 구축하는 경우, CONNECT와 함께 사용할 수 있다.  
+`CONNECT developer.mozilla.org:80 HTTP/1.1`  
+**- asterisk 형식** : `OPTIONS`와 함께 `별표(*)` 하나로 서버 전체를 표현.   
+`OPTIONS * HTTP/1.1`   
+
+**3.** HTTP 버전에 따라 HTTP message의 구조가 달라지기 때문에, start line에 HTTP 버전을 함께 입력한다.  
+
+**Headers**  
+
+요청의 Headers는 기본 구조를 따른다. 헤더 이름(대소문자 구분이 없는 문자열), 콜론( : ), 값을 입력한다. 값은 헤더에 따라 다르다. 여러 종류의 헤더가 있고, 다음과 같이 그룹을 나눌 수 있다.  
+
+**- General headers** : 메시지 전체에 적용되는 헤더로, body를 통해 전송되는 데이터와는 관련이 없는 헤더.  
+**- Request headers** : fetch를 통해 가져올 리소스나 클라이언트 자체에 대한 자세한 정보를 포함하는 헤더. User-Agent, Accept-Type, Accept-Language과 같은 헤더는 요청을 보다 구체화한다. Referer처럼 컨텍스트를 제공하거나 If-None과 같이 조건에 따라 제약을 추가할 수 있다.  
+**- Representation headers** : 이전에는 Entity headers로 불렀으며, body에 담긴 리소스의 정보(콘텐츠 길이, MIME 타입 등)를 포함하는 헤더.    
+
+**Body**   
+
+요청의 본문은 HTTP messages 구조의 마지막에 위치한다. 모든 요청에 body가 필요하진 않다. `GET, HEAD, DELETE, OPTIONS`처럼 서버에 리소스를 요청하는 경우에는 본문이 필요하지 않다. POST나 PUT과 같은 일부 요청은 데이터를 업데이트하기 위해 사용한다.   
+
+**- Single-resource bodies(단일-리소스 본문)** : 헤더 두 개(Content-Type과 Content-Length)로 정의된 단일 파일로 구성.  
+**- Multiple-resource bodies(다중-리소스 본문)** : 여러 파트로 구성된 본문에서는 각 파트마다 다른 정보를 지닌다. 보통 HTML form과 관련이 있다.  
+
+#### 응답(Responses)  
+
+**Status line**  
+
+1. 현재 프로토콜의 버전(HTTP/1.1)  
+2. 상태 코드 - 요청의 결과를 나타낸다. (200, 302, 404 등)  
+3. 상태 텍스트 - 상태 코드에 대한 설명  
+
+응답 Status line은 `HTTP/1.1 404 Not Found` 처럼 생겼다.   
+
+**Headers**   
+
+응답에 들어가는 HTTP headers는 요청 헤더와 동일한 구조를 가지고 있다. 값은 헤더에 따라 다르다. 요청의 헤더와 마찬가지로 몇 그룹으로 나눌 수 있다.   
+
+**- General headers** : 메시지 전체에 적용되는 헤더로, body를 통해 전송되는 데이터와는 관련이 없는 헤더.  
+**- Response headers** : 위치 또는 서버 자체에 대한 정보(이름, 버전 등)와 같이 응답에 대한 부가적인 정보를 갖는 헤더로, Vary, Accept-Ranges와 같이 상태 줄에 넣기에는 공간이 부족했던 추가 정보를 제공.  
+**- Representation headers** : 이전에는 Entity headers로 불렀으며, body에 담긴 리소스의 정보(콘텐츠 길이, MIME 타입 등)를 포함하는 헤더.  
+
+**Body**  
+
+응답의 본문은 HTTP messages 구조의 마지막에 위치한다. 모든 응답에 body가 필요하진 않다. 201, 204와 같은 상태 코드를 가지는 응답에는 본문이 필요하지 않다.   
+
+**- Single-resource bodies(단일-리소스 본문)** :
+길이가 알려진 단일-리소스 본문은 두 개의 헤더(Content-Type, Content-Length)로 정의. 길이를 모르는 단일 파일로 구성된 단일-리소스 본문은 Transfer-Encoding이 chunked로 설정되어 있으며, 파일은 chunk로 나뉘어 인코딩되어 있다.   
+**- Multiple-resource bodies(다중-리소스 본문)** : 서로 다른 정보를 담고 있는 body.   
+
+#### HTTP의 특징: Stateless(무상태성)   
+
+HTTP로 클라이언트와 서버가 통신을 주고받는 과정에서, HTTP가 클라이언트나 서버의 상태를 확인하지 않는다. 사용자는 쇼핑몰에 로그인하거나 상품을 클릭해서 상세 화면으로 이동하고, 상품을 카트에 담거나 로그아웃을 할 수도 있다. 클라이언트에서 발생한 이런 모든 상태를 HTTP 통신이 추적하지 않는다.   
+
+쇼핑몰에서 카트에 담기 버튼을 눌렀을 때, 카트에 담긴 상품 정보(상태)를 저장해둬야 하지만, HTTP는 통신 규약일 뿐이므로, 상태를 저장하지 않는다. 따라서, 필요에 따라 다른 방법(쿠키-세션, API 등)을 통해 상태를 확인할 수 있다.   
+
+-----
+## REST API    
+
+웹 애플리케이션에서는 HTTP 메서드를 사용해 서버와 통신한다.  
+
+GET - 웹 페이지나 데이터를 요청한다.   
+POST - 새로운 글이나 데이터를 전송한다.  
+DELETE - 저장된 글이나 데이터를 삭제한다.   
+
+-> 클라이언트와 서버가 HTTP 통신을 할 때, 요청에 따라 메서드의 사용이 달라진다.   
+
+### REST API란?  
+
+REST API에서 REST는 “Representational State Transfer”의 약자로, 로이 필딩의 박사학위 논문에서 웹(http)의 장점을 최대한 활용할 수 있는 아키텍처로써 처음 소개되었다. REST API는 웹에서 사용되는 데이터나 자원(Resource)을 HTTP URI로 표현하고, HTTP 프로토콜을 통해 요청과 응답을 정의하는 방식을 말한다.  
+
+HTTP 프로토콜 기반으로 요청과 응답에 따라 리소스를 주고받기 위해서는 알아보기 쉽고 잘 작성된 틀이 필요한데, 이 역할을 API가 수행한다.  
+
+### REST API를 디자인하는 방법  
+
+REST API를 작성할 때는 몇 가지 지켜야 할 규칙들이 있다.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/3362f311-3d08-456b-a7cc-aef4202806ce/image.png)  
+
+**REST 성숙도 모델 - 0단계**  
+
+0단계에서는 단순히 HTTP 프로토콜을 사용하기만 해도 된다. 물론, 해당 API를 REST API라고 할 수 없고, 0단계는 좋은 REST API를 작성하기 위한 기본 단계이다.   
+
+![](https://velog.velcdn.com/images/wlsk124/post/d678bfca-e0cf-449a-9020-ca1eaf1f1ee9/image.png)   
+
+**REST 성숙도 모델 - 1단계**  
+
+1단계에서는 개별 리소스와의 통신을 준수해야 한다.  
+
+앞서 REST API는 웹에서 사용되는 모든 데이터나 자원(Resource)을 HTTP URI로 표현한다고 했다. 그래서 모든 자원은 개별 리소스에 맞는 엔드포인트(Endpoint)를 사용해야 한다는 것과 요청하고 받은 자원에 대한 정보를 응답으로 전달해야 한다는 것이 1단계에서 의미한다.  
+
+0단계에서는 모든 요청에서 엔드포인트로 `/appointment`를 사용했다. 하지만 1단계에서는 요청하는 리소스가 무엇인지에 따라 다른 엔드포인트로 구분해서 사용해야 한다.  
+
+![](https://velog.velcdn.com/images/wlsk124/post/2a549512-ea47-4ab5-838d-c74dad440b24/image.png)  
+
+위의 예시에서 `예약 가능한 시간 확인`이라는 요청의 응답으로 받게 되는 자원(리소스)은 `맛동산 식당`의 예약 가능한 시간대이기 때문에, 요청 시 `/restaurant/맛동산`이라는 엔드포인트를 사용했다. 또한, 특정 시간에 예약하면, slot이라는 리소스의 id 1을 가진 리소스가 변경되기 때문에, 하단의 `특정 시간에 예약`이라는 요청에서는 `/slots/1`으로 실제 변경되는 리소스를 엔드포인트로 사용했다.  
+
+어떤 리소스를 변화시키는지 혹은 어떤 응답이 제공되는지에 따라 각기 다른 엔드포인트를 사용하기 때문에, 적절한 엔드포인트를 작성하는 것이 중요하다.  
+
+**엔드포인트 작성 시**   
+
+동사, HTTP 메서드, 혹은 어떤 행위에 대한 단어 사용 지양하기   
+리소스에 집중해 명사 형태의 단어로 작성하기    
+
+**+** 요청에 따른 응답으로 리소스를 전달할 때, 사용한 리소스에 대한 정보와 함께 리소스 사용에 대한 성공/실패 여부를 반환해야 한다. 예를 들어, 손님이 12시에 맛동산 식당에 예약을 진행했는데, 해당 시간에는 예약이 불가능할 때, 리소스 사용에 대한 실패 여부를 포함한 응답을 보내야 한다.  
+
+**REST 성숙도 모델 - 2단계**  
+
+2단계에서는 CRUD에 맞게 적절한 HTTP 메서드를 사용하는 것에 중점을 둔다. 0단계와 1단계 예시에서는 모든 요청을 CRUD에 상관없이 POST로 하고 있지만, 2단계에 따르면 이는 CRUD에 따른 적합한 메서드를 사용한 것이 아니다.  
+
+예약 가능한 시간을 확인하는 것은 `조회(READ)`하는 행위를 의미하고, 특정 시간에 예약하는 것은 `생성(CREATE)`하는 행위이다.  
+
+따라서 예약을 조회하기 위해서는 `GET 메서드`를 사용해 요청을 보내야 한다. 이때, GET 메서드는 body를 가지지 않기 때문에 `query parameter`를 사용해 필요한 리소스를 전달한다.  
+또한 예약을 생성(CREATE)하기 위해서는 `POST 메서드`를 사용하여 요청을 보내는 것이 바람직하다. 그리고 2단계에서는 요청에 대한 응답이 어떻게 반환되는지도 중요하다.  
+
+이 경우 응답은 새롭게 생성된 리소스를 보내주기 때문에, 응답 코드도 201 Created로 명확하게 작성해야 하고, 관련 리소스를 클라이언트가 Location 헤더에 작성된 URI를 통해 확인할 수 있도록 해야 2단계를 충족했다고 볼 수 있다.   
+
+![](https://velog.velcdn.com/images/wlsk124/post/eb65417a-2801-4bcb-b4b4-2af3fcad1727/image.png)   
+
+[**- HTTP 메서드 규칙**](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)  
+
+**REST 성숙도 모델 - 3단계**  
+
+마지막 단계는 HATEOAS(Hypertext As The Engine Of Application State)라는 약어로 표현되는 하이퍼미디어 컨트롤을 적용한다. 3단계의 요청은 2단계와 동일하지만, 응답에 리소스의 URI를 포함한 링크 요소를 삽입해 작성한 것이 다르다.  
+
+-> 응답의 링크 요소는 응답을 받은 다음 액션들을 하이퍼미디어 컨트롤을 포함한다.   
+
+![](https://velog.velcdn.com/images/wlsk124/post/3c5faac4-eb5a-40a8-b927-62faa8f237b1/image.png)  
+
+예를 들어 위와 같이 예약 가능 시간을 확인한 후에는 그 시간대에 예약을 할 수 있는 링크를 삽입하거나, 특정 시간에 예약을 완료하고 그 예약을 다시 확인할 수 있도록 링크를 작성해 넣을 수 있다. 응답에 링크를 넣어 새로운 기능에 접근할 수 있도록 하는 것이 3단계의 중요 포인트이다.  
+
+클라이언트 개발자들이 응답에 담겨 있는 링크들을 통해 쉽고, 효율적으로 리소스와 기능에 접근할 수 있게 하는 트리거가 될 수 있다.   
+
+로이 필딩은 3단계까지 만족하지 못하면 REST API가 아니기 때문에 HTTP API라고 불러야 한다고 주장하지만, 모범적인 API 디자인조차 REST 성숙도 모델의 3단계까지 적용한 경우는 극히 드물다. 따라서 2단계까지만 적용해도 REST API라고 불린다.  
+
+**Reference**   
+
+[- 5가지의 기본적인 REST API 디자인 가이드](https://blog.restcase.com/5-basic-rest-api-design-guidelines/)  
+[- 구글 API 작성 가이드](https://cloud.google.com/apis/design?hl=ko)  
+[- MS의 REST API 가이드라인](https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md)    
+
+### Open API  
+
+공공데이터에 쉽게 접근할 수 있도록 정부는 Open API의 형태로 공공데이터를 제공하고 있다. [공공데이터 포털](https://www.data.go.kr/) 에 접속해 원하는 키워드를 검색하면, 해당 키워드와 관련된 API를 확인할 수 있다.  
+
+이 API에는 "Open"이라는 키워드가 붙어 있다. 글자 그대로 누구에게나 열려있는 API이다. 그러나 "무제한으로 이용할 수 있다"라는 의미는 아니다. 기관이나 API마다 정해진 이용 수칙이 있고, 그 이용 수칙에 따라 제한사항(가격, 정보의 제한 등)이 있을 수 있다.   
+
+**API Key**  
+
+API를 이용하기 위해서는 API Key가 필요하다. API key는 서버의 문을 여는 열쇠라고 생각할 수 있다. 클라이언트의 요청에 따라 서버에서 응답한다는 말은 결국 서버를 운용하는 데에 비용이 발생한다는 말이다. 따라서 서버 입장에서 아무런 조건 없이 익명의 클라이언트에게 데이터를 제공할 의무도, 이유도 없다.   
+(가끔 API key가 필요하지 않은 경우도 있다.)  
+
+그래서 로그인된 이용자에게만 자원에 접근할 수 있는 권한을 API Key의 형태로 제공하고, 데이터를 요청할 때 API key를 같이 전달해야만 원하는 응답을 받을 수 있다.  
+
+-----
+## HTTP API 테스트 도구   
+
+웹 개발에서 사용하는 대표적인 클라이언트는 브라우저다. 브라우저는 서버에 HTTP 요청을 보낼 수 있는 훌륭한 도구이지만, 주로 웹 페이지를 받아오는 GET 요청에 사용한다. 브라우저의 주소창에 URL을 입력하면, 해당 URL의 root-endpoint로 GET 요청을 보낸다. 테스트를 위해 GET이 아닌 다른 요청을 보내려면, 개발자 도구의 콘솔 창에서 내장 함수 fetch를 사용해야 한다.  
+
+매번 코드를 작성할 수는 있지만, 테스트를 위해 매번 코드를 작성하는 건 비효율적인 작업이다. 그래서 HTTP 요청을 테스트할 수 있는 다양한 도구를 사용한다. 많은 API가 HTTP 프로토콜을 이용하므로, API 테스트 도구라고 부른다. 이러한 API 테스트 도구는 클라이언트 입장에서 서버 API를 테스트하거나, API를 만드는 과정에서도 매우 유용하다.  
+
+**HTTP API 테스트 도구 (CLI)**  
+- curl (대부분의 리눅스 환경에 내장되어 있다.)  
+- wuzz  
+
+**HTTP API 테스트 도구 (GUI)**  
+- Postman  
+- Insomnia  
+
+-----
+**Chrome Network Tab 사용 방법**  
+
+[![](https://velog.velcdn.com/images/wlsk124/post/2d5f6c88-42f1-4cca-be52-b6b06aecc96b/image.png)
+](https://www.youtube.com/watch?time_continue=57&v=e1gAyQuIFQo&feature=emb_title)

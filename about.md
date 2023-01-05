@@ -24,6 +24,5 @@ layout: page
 
 <ul>
 	<li><a href="https://github.com/SEBBE39JINAKIM">Github</a></li>
-	<li><a href="https://velog.io/@wlsk124">Velog</a></li>
 	
 </ul>

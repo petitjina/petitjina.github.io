@@ -7,9 +7,9 @@ tag:
 - Algorithm
 - Back-end
 headerImage: true
-projects: true
+blog: true
 hidden: true 
-category: project
+category: blog
 author: Jina Kim
 externalLink: false
 ---

@@ -1,15 +1,14 @@
 ---
-title: "[알고리즘] 조건문"
+title: "조건문"
 layout: post
 date: 2022.05.31
 tag:
-- Java
 - Algorithm
-- Back-end
+- Java
 headerImage: true
-blog: true
+algorithm: true
 hidden: true 
-category: blog
+category: algorithm
 author: Jina Kim
 externalLink: false
 ---

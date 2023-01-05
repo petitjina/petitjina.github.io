@@ -1,15 +1,14 @@
 ---
-title: "[알고리즘] 재귀"
+title: "재귀"
 layout: post
 date: 2022.07.05
 tag:
-- Java
 - Algorithm
-- Back-end
+- Java
 headerImage: true
-projects: true
+algorithm: true
 hidden: true 
-category: blog
+category: algorithm
 author: Jina Kim
 externalLink: false
 ---

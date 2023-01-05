@@ -9,7 +9,7 @@ tag:
 headerImage: true
 projects: true
 hidden: true 
-category: project
+category: blog
 author: Jina Kim
 externalLink: false
 ---

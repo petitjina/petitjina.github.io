@@ -1,15 +1,14 @@
 ---
-title: "[알고리즘] 반복문"
+title: "반복문"
 layout: post
 date: 2022.06.01
 tag:
-- Java
 - Algorithm
-- Back-end
+- Java
 headerImage: true
-blog: true
+algorithm: true
 hidden: true 
-category: blog
+category: algorithm
 author: Jina Kim
 externalLink: false
 ---

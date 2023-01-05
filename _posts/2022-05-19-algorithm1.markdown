@@ -1,5 +1,5 @@
 ---
-title: "[알고리즘] Java 기초"
+title: "Java 기초"
 layout: post
 date: 2022.05.19
 tag:

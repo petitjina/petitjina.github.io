@@ -11,6 +11,13 @@ layout: page
 	<li>Linux</li>
 	<li>Git</li>
 	<li>Java</li>
+	<li>Spring Boot</li>
+	<li>Spring WebFlux</li>
+	<li>Spring Security</li>
+	<li>AWS</li>
+	<li>JWT</li>
+	<li>MYSQL</li>
+	
 </ul>
 
 <h2>Projects</h2>

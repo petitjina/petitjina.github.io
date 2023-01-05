@@ -31,7 +31,7 @@ permalink: /:title/
 # if you don't want comments in your posts, leave categories empty
 disqus:
   shortname: github # enter this from your disqus account
-  categories: [blog, projects, study] # only show disqus for posts that have these categories
+  categories: [algorithm, projects, study] # only show disqus for posts that have these categories
 
 # if you don't have any of social below, comment the line
 #facebook: myfacebook
@@ -71,9 +71,9 @@ pagination:
 projects: true
 study: true
 
-# if you don't need "about" or "blog", comment them out below
+# if you don't need "about" or "algorithm", comment them out below
 about: true
-blog: true
+algorithm: true
 
 # do you want to show the "read time" of the posts?
 read-time: true
@@ -85,7 +85,7 @@ show-tags: true
 related: true
 
 # Display links for next and previous posts for the specified categories
-post-advance-links: [blog, projects, study]
+post-advance-links: [algorithm, projects, study]
 
 # show author block at the end of a post ?
 show-author: true

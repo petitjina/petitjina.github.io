@@ -3,13 +3,12 @@ title: "[알고리즘] Java 기초"
 layout: post
 date: 2022.05.19
 tag:
-- Java
 - Algorithm
-- Back-end
+- Java
 headerImage: true
-blog: true
+algorithm: true
 hidden: true 
-category: blog
+category: algorithm
 author: Jina Kim
 externalLink: false
 ---

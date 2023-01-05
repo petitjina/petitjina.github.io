@@ -9,11 +9,10 @@ tag:
 headerImage: true
 projects: true
 hidden: true 
-category: project
+category: blog
 author: Jina Kim
 externalLink: false
 ---
-
 
 ## 배열의 가장 큰 요소
 ### 문제  

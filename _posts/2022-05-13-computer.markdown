@@ -63,7 +63,7 @@ author: Jina Kim
     작은 용량의 데이터 저장 가능, 하지만 데이터를 읽고 쓰는 속도가 빠르다.  
     ex) RAM(Random Access Memory), ROM(Read Only Memory)  
 	
-    &#43; 캐시 메모리(Cache Memory)  
+    ➕ 캐시 메모리(Cache Memory)  
     : CPU가 사용한 관련된 데이터 중 재사용 가능성이 높은 데이터를 미리 불러오는 역할  
     ex) 데이터=현금, 주기억장치=ATM, 캐시 메모리=지갑
 

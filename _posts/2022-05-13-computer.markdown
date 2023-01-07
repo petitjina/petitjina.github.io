@@ -52,8 +52,8 @@ author: Jina Kim
 **2. 기억 장치(Memory Device)**    
 	: CPU 동작에 필요한 데이터를 장기적 또는 단기적으로 보관  
 
-![](https://velog.velcdn.com/images/wlsk124/post/0b8ae41a-9430-4c60-858d-0a1dce1dc101/image.png)
-	
+![](https://velog.velcdn.com/images/wlsk124/post/0b8ae41a-9430-4c60-858d-0a1dce1dc101/image.png)   
+
     보조 기억장치  
     : 컴퓨터에게 필요한 정보를 반영구적으로 저장.  
     큰 용량의 데이터 저장 가능, 하지만 데이터를 읽고 쓰는 속도가 느리다.  
@@ -63,7 +63,7 @@ author: Jina Kim
     작은 용량의 데이터 저장 가능, 하지만 데이터를 읽고 쓰는 속도가 빠르다.  
     ex) RAM(Random Access Memory), ROM(Read Only Memory)  
 	
-    + 캐시 메모리(Cache Memory)  
+    &#43; 캐시 메모리(Cache Memory)  
     : CPU가 사용한 관련된 데이터 중 재사용 가능성이 높은 데이터를 미리 불러오는 역할  
     ex) 데이터=현금, 주기억장치=ATM, 캐시 메모리=지갑
 
@@ -113,5 +113,6 @@ ex) IntelliJ, Eclipse, Visual Studio Code
 ![](https://velog.velcdn.com/images/wlsk124/post/97e776b3-d628-47b5-a880-d0d65d2e7400/image.webp)
 
 [그림 출처](https://www.guru99.com/dbms-architecture.html)  
-\* Client 화면에 관련: 프론트 엔드(Front-end)  
+
+&#42; Client 화면에 관련: 프론트 엔드(Front-end)  
 	Server 또는 Database 관련: 백 엔드(Back-end)  

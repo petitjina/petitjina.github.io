@@ -16,7 +16,7 @@ author: Jina Kim
 CLI(Command-Line Interface): 터미널 사용, 높은 안전성, 빠른 속도, 자원 절감
 GUI(Graphic User Interface): 마우스 사용, 친숙하고 편함
 
-\* 프롬프트(Prompt): 터미널에서 키보드의 입력을 확인하고 편집할 수 있는 한 줄의 공간.
+&#42; 프롬프트(Prompt): 터미널에서 키보드의 입력을 확인하고 편집할 수 있는 한 줄의 공간.
 ### CLI 기본 명령어
 - pwd(print working directory) - 현재 폴더가 위치한 경로
 - mkdir(make directories) - 새로운 폴더 생성
@@ -72,9 +72,9 @@ GUI(Graphic User Interface): 마우스 사용, 친숙하고 편함
 	모든 user를 group에 추가하고, 파일에 group 권한 할당
 - other: 파일을 만들지 않은 다른 모든 user를 의미 = global 권한 설정
 >
-\* chmod: 권한을 변경하는 명령어
-폴더나 파일의 읽기, 쓰기, 실행 권한을 변경
-OS에 로그인 사용자 = 폴더나 파일의 소유자 경우, 명령어 chmod 변경 가능 OS에 로그인한 사용자 ≠ 폴더나 파일의 소유자 경우, 명령어 sudo 이용
+&#42; chmod: 권한을 변경하는 명령어  
+폴더나 파일의 읽기, 쓰기, 실행 권한을 변경  
+OS에 로그인 사용자 &#61; 폴더나 파일의 소유자 경우, 명령어 chmod 변경 가능 OS에 로그인한 사용자 ≠ 폴더나 파일의 소유자 경우, 명령어 sudo 이용
 
 ### 권한을 변경하는 방식
 

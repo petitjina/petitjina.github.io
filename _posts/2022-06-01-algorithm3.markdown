@@ -165,7 +165,7 @@ public class Blogging {
 **나의 오답**  
 
 else문을 작성 하지 않아서 바뀐 문자만 입력되었다.  
-ex) "hello", 'l', 'k' -> 리턴 된 값(오답) "kk" / 리턴해야 하는 값 "hekko"
+ex) "hello", 'l', 'k' -> 리턴 된 값(오답) "kk" &#47; 리턴해야 하는 값 "hekko"
 
 -----
 ## Double for loof

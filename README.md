@@ -1,5 +1,5 @@
 <p align="center">
-    <h2 align="center">Jina Kim- <a href="https://sebbe39jinakim.github.io/">Blog</a></h2>
+    <h2 align="center">Jina Kim- <a href="https://petitjina.github.io/">Blog</a></h2>
 </p>
 
 
